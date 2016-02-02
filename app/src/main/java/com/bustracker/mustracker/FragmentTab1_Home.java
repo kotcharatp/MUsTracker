@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 public class FragmentTab1_Home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment1_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         return rootView;
     }
 
