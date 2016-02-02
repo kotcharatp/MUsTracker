@@ -9,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FragmentTab2 extends Fragment {
+public class FragmentTab3_Bus extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment2, container, false);
+        View rootView = inflater.inflate(R.layout.fragment3_Bus, container, false);
         return rootView;
     }
 
