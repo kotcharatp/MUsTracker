@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#06365a">
 
     <TextView
         android:layout_width="wrap_content"
@@ -9,5 +10,17 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="Fragment 3" />
+
+    <Spinner
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:id="@+id/spinner"
+        android:background="@drawable/spinner_border"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:spinnerMode="dropdown"
+        android:entries="@array/routes_list"
+        />
 
 </RelativeLayout>
