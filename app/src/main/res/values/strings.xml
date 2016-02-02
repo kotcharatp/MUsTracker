@@ -2,6 +2,13 @@
     <string name="app_name">MUsTracker</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="routes_list">
+        <item>Salaya to Phayathai</item>
+        <item>Salaya to Siriraj</item>
+        <item>Phayathai to Salaya</item>
+        <item>Siriraj to Salaya</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
