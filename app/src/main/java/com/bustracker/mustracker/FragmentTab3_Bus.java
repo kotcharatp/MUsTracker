@@ -14,6 +14,9 @@ public class FragmentTab3_Bus extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment3_bus, container, false);
+
+
+
         return rootView;
     }
 
