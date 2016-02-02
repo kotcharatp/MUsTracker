@@ -33,8 +33,6 @@ public class MainActivity extends ActionBarActivity {
             }
         }); */
 
-        //TUK TAI:DLKFAL:SDKFALS:KDFA:LSDKF:SKTce
-
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Seat Available"));
