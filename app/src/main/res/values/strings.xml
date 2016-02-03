@@ -14,8 +14,11 @@
 
         <item>Student</item>
         <item>Teacher</item>
-        <Item>Staff</Item>
+        <item>Staff</item>
     </string-array>
+
+    <string name="routeMU">Default Route</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
