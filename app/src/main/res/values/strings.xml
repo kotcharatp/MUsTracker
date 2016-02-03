@@ -18,6 +18,13 @@
     </string-array>
 
     <string name="routeMU">Default Route</string>
+    <string name="stationMU">Position in MU</string>
+    <string-array name="station_MU">
+
+        <item>Salaya</item>
+        <item>Phayathai</item>
+        <item>Siriraj</item>
+    </string-array>
 
 
     <!-- TODO: Remove or change this placeholder text -->

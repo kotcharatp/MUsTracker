@@ -48,15 +48,32 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        spinner = (Spinner)findViewById(R.id.spinner);
+        spinner = (Spinner)findViewById(R.id.spinner1);
         adapter = ArrayAdapter.createFromResource(this,R.array.routes_list,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int route, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getBaseContext(),parent.getItemAtPosition(route)+"selected", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+"selected", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner = (Spinner)findViewById(R.id.spinner2);
+        adapter = ArrayAdapter.createFromResource(this,R.array.station_MU,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+"selected", Toast.LENGTH_LONG).show();
             }
 
             @Override
