@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -57,6 +58,9 @@ public class FragmentTab3_Bus extends Fragment {
     private static void setUpMap() {
         // For showing a move to my loction button
         mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.setTrafficEnabled(true);
+
         // For dropping a marker at a point on the Map
         mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Mahidol University").snippet("Main Station"));
         // For zooming automatically to the Dropped PIN Location
@@ -68,29 +72,18 @@ public class FragmentTab3_Bus extends Fragment {
         mMap.addPolyline(
                 new PolylineOptions().add(new LatLng(13.788112, 100.327534)).add(new LatLng(latitude, longitude)).color(Color.BLUE));
         mMap.addPolyline(
-                new PolylineOptions().add(new LatLng(13.780407, 100.442659)).add(new LatLng(13.788112, 100.327534)).color(Color.BLUE));
-
-        String serverKey = "AIzaSyBumsm3eWV31p1xqlt5yona3yeVaw9XjHc";
-        LatLng origin = new LatLng(37.7849569, -122.4068855);
-        LatLng destination = new LatLng(37.7814432, -122.4460177);
-
-
-        /*
-        GoogleDirection.withServerKey(serverKey)
-                .from(origin)
-                .to(destination)
-                .execute(new DirectionCallback() {
-                    @Override
-                    public void onDirectionSuccess(Path.Direction direction) {
-                        // Do something here
-                    }
-
-                    @Override
-                    public void onDirectionFailure(Throwable t) {
-                        // Do something here
-                    }
-                });*/
+                new PolylineOptions().add(new LatLng(13.788642, 100.356099)).add(new LatLng(13.788112, 100.327534)).color(Color.BLUE));
+        mMap.addPolyline(
+                new PolylineOptions().add(new LatLng(13.780407, 100.442659)).add(new LatLng(13.788642, 100.356099)).color(Color.BLUE));
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        setUpMapIfNeeded();
+    }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
