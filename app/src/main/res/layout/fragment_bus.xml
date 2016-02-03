@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Fragment 3" />
+        android:text="Fragment 3"
+        android:id="@+id/textView" />
 
     <Spinner
         android:layout_width="300dp"
@@ -22,5 +23,16 @@
         android:spinnerMode="dropdown"
         android:entries="@array/routes_list"
         />
+
+    <fragment
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/location_map"
+        android:layout_below="@+id/spinner"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp" />
+
 
 </RelativeLayout>
