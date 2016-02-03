@@ -8,8 +8,17 @@
         <item>Phayathai to Salaya</item>
         <item>Siriraj to Salaya</item>
     </string-array>
+    <string name="positionMU">Position in MU</string>
+
+    <string-array name="position_MU">
+
+        <item>Student</item>
+        <item>Teacher</item>
+        <Item>Staff</Item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
+
 </resources>
