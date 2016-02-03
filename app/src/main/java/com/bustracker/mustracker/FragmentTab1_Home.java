@@ -19,9 +19,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
+
 public class FragmentTab1_Home extends Fragment {
     Button btnClick;
     TextView timerText;
@@ -41,8 +41,10 @@ public class FragmentTab1_Home extends Fragment {
         });
         return rootView;
     }
+
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @SuppressLint("NewApi")
+
     public class CounterClass extends CountDownTimer{
         public CounterClass(long millisInFuture, long countDownInterval){
             super(millisInFuture, countDownInterval);
