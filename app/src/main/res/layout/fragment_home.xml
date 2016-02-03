@@ -5,10 +5,21 @@
     android:orientation="vertical">
 
     <TextView
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/timer"
+        android:layout_marginTop="111dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="50sp"/>
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Click"
+        android:id="@+id/clickButton"
+        android:layout_below="@+id/timer"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Fragment 1" />
-
+        android:layout_marginTop="51dp" />
 </RelativeLayout>
