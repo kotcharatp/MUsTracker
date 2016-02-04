@@ -31,5 +31,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_signup_page">signup_page</string>
+    <string name="title_activity_signin_page">signin_page</string>
 
 </resources>
