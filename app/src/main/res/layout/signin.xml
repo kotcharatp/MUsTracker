@@ -35,21 +35,24 @@
 
     <Button
         android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="Login"
         android:id="@+id/button2"
         android:layout_below="@+id/editText5"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/border_style"
         android:layout_marginTop="30dp"
 
-        />
+        android:textColor="#ffffff" />
 
     <Button
         android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="Sign up"
         android:id="@+id/button3"
         android:layout_below="@+id/button2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp" />
+        android:background="@drawable/border_style"
+        android:layout_marginTop="15dp"
+        android:textColor="#ffffff" />
 </RelativeLayout>
