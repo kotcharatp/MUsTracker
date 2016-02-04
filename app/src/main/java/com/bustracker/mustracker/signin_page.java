@@ -1,5 +1,6 @@
 package com.bustracker.mustracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,14 @@ public class signin_page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin_page);
 
+    }
+
+    public void gotoMainActivity(View v){
+        startActivity(new Intent(signin_page.this, MainActivity.class));
+    }
+
+    public void gotosignup(View v){
+        startActivity(new Intent(signin_page.this, signup_page.class));
     }
 
 }

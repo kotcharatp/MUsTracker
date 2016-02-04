@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.bustracker.mustracker.signin_page">
-
-    <include layout="@layout/content_signin_page" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="match_parent"
@@ -50,7 +43,8 @@
         android:background="@drawable/border_style"
         android:layout_marginTop="30dp"
 
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:onClick="gotoMainActivity" />
 
     <Button
         android:layout_width="130dp"
@@ -61,7 +55,6 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/border_style"
         android:layout_marginTop="15dp"
-        android:textColor="#ffffff" />
-
-
-</android.support.design.widget.CoordinatorLayout>
+        android:textColor="#ffffff"
+        android:onClick="gotosignup" />
+</RelativeLayout>
