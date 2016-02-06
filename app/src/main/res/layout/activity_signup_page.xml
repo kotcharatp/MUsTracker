@@ -12,25 +12,30 @@
 
     <EditText
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/editText"
-        android:text="First name"
+        android:text="   First name"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/signup_text_border"
+        android:autoText="false"
+        android:textColor="#949494" />
 
     <EditText
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/editText2"
-        android:text="Last name"
+        android:text="   Last name"
         android:layout_below="@+id/editText"
         android:layout_alignStart="@+id/editText"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/signup_text_border"
+        android:textColor="#949494" />
 
     <EditText
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:id="@+id/editText3"
         android:layout_below="@+id/editText2"
         android:layout_alignStart="@+id/editText2"
@@ -49,7 +54,7 @@
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="300dp"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/position"
         android:layout_alignStart="@+id/position"
         android:layout_marginBottom="1dp"></Spinner>
