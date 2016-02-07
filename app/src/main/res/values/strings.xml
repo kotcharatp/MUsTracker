@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="routes_list">
+        <item>Default Route</item>
         <item>Salaya to Phayathai</item>
         <item>Salaya to Siriraj</item>
         <item>Phayathai to Salaya</item>
@@ -11,16 +12,16 @@
     <string name="positionMU">Position in MU</string>
 
     <string-array name="position_MU">
-
+        <item>Position in MU</item>
         <item>Student</item>
         <item>Teacher</item>
         <item>Staff</item>
     </string-array>
 
     <string name="routeMU">Default Route</string>
-    <string name="stationMU">Position in MU</string>
+    <string name="stationMU">Default Station</string>
     <string-array name="station_MU">
-
+        <item>Default Station</item>
         <item>Salaya</item>
         <item>Phayathai</item>
         <item>Siriraj</item>

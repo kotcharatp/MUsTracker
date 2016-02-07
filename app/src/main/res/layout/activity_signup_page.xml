@@ -11,109 +11,86 @@
         android:layout_alignParentStart="true" />
 
     <EditText
-        android:layout_width="300dp"
+        android:layout_width="330dp"
         android:layout_height="40dp"
-        android:id="@+id/editText"
-        android:text="   First name"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:id="@+id/firstEdit"
         android:background="@drawable/signup_text_border"
         android:autoText="false"
-        android:textColor="#949494" />
+        android:textColor="#949494"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:hint="  First name" />
 
     <EditText
-        android:layout_width="300dp"
+        android:layout_width="330dp"
         android:layout_height="40dp"
-        android:id="@+id/editText2"
-        android:text="   Last name"
-        android:layout_below="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_marginTop="10dp"
+        android:id="@+id/lastEdit"
+        android:layout_below="@+id/firstEdit"
+        android:layout_alignStart="@+id/firstEdit"
+        android:layout_marginTop="20dp"
         android:background="@drawable/signup_text_border"
-        android:textColor="#949494" />
+        android:textColor="#949494"
+        android:hint="  Last name" />
 
     <EditText
-        android:layout_width="300dp"
+        android:layout_width="330dp"
         android:layout_height="40dp"
-        android:id="@+id/editText3"
-        android:layout_below="@+id/editText2"
-        android:layout_alignStart="@+id/editText2"
-        android:text="ID"
-        android:layout_marginTop="10dp" />
-
-    <TextView android:text="@string/positionMU"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/position"
-        android:textColor="#06365a"
-        android:layout_below="@+id/editText3"
-        android:layout_alignStart="@+id/editText3"
-        android:layout_marginTop="10dp" />
+        android:id="@+id/emailEdit"
+        android:layout_below="@+id/lastEdit"
+        android:layout_alignStart="@+id/lastEdit"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/signup_text_border"
+        android:textColor="#949494"
+        android:hint="  MU e-mail" />
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="300dp"
+        android:layout_width="330dp"
         android:layout_height="40dp"
-        android:layout_below="@+id/position"
-        android:layout_alignStart="@+id/position"
-        android:layout_marginBottom="1dp"></Spinner>
-
-    <TextView android:text="@string/routeMU"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/route"
-        android:textColor="#06365a"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/spinner"
-        android:layout_marginBottom="160dp"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="40dp" />
+        android:background="@drawable/signup_text_border"
+        android:layout_below="@+id/emailEdit"
+        android:layout_alignStart="@+id/emailEdit"
+        android:layout_marginTop="20dp"></Spinner>
 
     <Spinner
         android:id="@+id/spinner1"
-        android:layout_width="300dp"
+        android:layout_width="330dp"
         android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        android:layout_alignTop="@+id/route"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="40dp"></Spinner>
+        android:background="@drawable/signup_text_border"
+        android:layout_below="@+id/spinner"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"></Spinner>
 
     <TextView
         android:layout_width="200dp"
         android:layout_height="70dp"
         android:text=" Sign Up"
         android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
         android:textColor="#ffffff"
-        android:textSize="50dp" />
-
-    <TextView android:text="@string/stationMU"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView3"
-        android:textColor="#06365a"
-        android:layout_below="@+id/spinner1"
-        android:layout_alignStart="@+id/spinner"
-        android:layout_marginTop="15dp" />
+        android:textSize="50dp"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        />
 
     <Spinner
         android:id="@+id/spinner2"
-        android:layout_width="300dp"
+        android:layout_width="330dp"
         android:layout_height="45dp"
-        android:layout_marginLeft="40dp"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentStart="true"></Spinner>
+        android:background="@drawable/signup_text_border"
+        android:layout_below="@+id/spinner1"
+        android:layout_alignStart="@+id/spinner1"
+        android:layout_marginTop="20dp"></Spinner>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="Sigh up"
         android:id="@+id/button"
         android:layout_below="@+id/spinner2"
         android:layout_centerHorizontal="true"
-        android:onClick="gotoMainActivity" />
+        android:onClick="gotoMainActivity"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/signup_button_border"
+        android:textColor="#ffffff" />
 </RelativeLayout>

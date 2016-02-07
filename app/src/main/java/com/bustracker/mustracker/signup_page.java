@@ -10,8 +10,12 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class signup_page extends AppCompatActivity {
 
@@ -19,6 +23,12 @@ public class signup_page extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_page);
+
+        final EditText firstText = (EditText)findViewById(R.id.firstEdit);
+
+        final EditText lastText = (EditText)findViewById(R.id.lastEdit);
+
+        final EditText emailText = (EditText)findViewById(R.id.emailEdit);
 
         Spinner spinner = (Spinner)findViewById(R.id.spinner);
 
@@ -28,7 +38,6 @@ public class signup_page extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position) + " selected", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -44,7 +53,6 @@ public class signup_page extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+" selected", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -60,7 +68,6 @@ public class signup_page extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getBaseContext(),parent.getItemAtPosition(position)+" selected", Toast.LENGTH_LONG).show();
             }
 
             @Override

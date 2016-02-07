@@ -12,33 +12,33 @@
         android:background="#06365a" />
 
     <EditText
-        android:layout_width="350dp"
+        android:layout_width="330dp"
         android:layout_height="40dp"
-        android:id="@+id/editText4"
-        android:text="   Username"
+        android:id="@+id/userText"
         android:background="@drawable/signin_text_border"
-        android:layout_alignTop="@+id/imageView2"
         android:textColor="#949494"
+        android:layout_below="@+id/imageView3"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:layout_alignEnd="@+id/editText5" />
+        android:hint="  Username" />
 
     <EditText
-        android:layout_width="350dp"
+        android:layout_width="330dp"
         android:layout_height="40dp"
-        android:id="@+id/editText5"
-        android:layout_below="@+id/editText4"
+        android:id="@+id/passText"
+        android:layout_below="@+id/userText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:background="@drawable/signin_text_border"
         android:textColor="#949494"
-        android:text="   Password" />
+        android:hint="  Password" />
 
     <Button
         android:layout_width="130dp"
         android:layout_height="45dp"
         android:text="Sign in"
         android:id="@+id/button2"
-        android:layout_below="@+id/editText5"
+        android:layout_below="@+id/passText"
         android:layout_centerHorizontal="true"
         android:background="@drawable/border_style"
         android:layout_marginTop="30dp"
