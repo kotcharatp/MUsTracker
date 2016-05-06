@@ -2,24 +2,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/home">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map_home"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        tools:context="com.bustracker.mustracker.MapsActivity"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
-        android:layout_width="200dp"
-        android:layout_height="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/timer"
-        android:layout_marginTop="111dp"
-        android:layout_alignParentTop="true"
+        android:textSize="75dp"
+        android:gravity="center_vertical|center_horizontal"
         android:layout_centerHorizontal="true"
-        android:textSize="50sp"/>
+        android:layout_alignParentTop="true"
+        android:textColor="#ffffff" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click"
         android:id="@+id/clickButton"
+        android:layout_below="@+id/spinner2_home"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:id="@+id/spinner1_home"
+        android:layout_width="330dp"
+        android:layout_height="40dp"
+        android:background="@drawable/signup_text_border"
+        android:layout_above="@+id/spinner2_home"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"></Spinner>
+
+    <Spinner
+        android:id="@+id/spinner2_home"
+        android:layout_width="330dp"
+        android:layout_height="40dp"
+        android:background="@drawable/signup_text_border"
+        android:layout_above="@+id/map_home"
+        android:layout_alignStart="@+id/spinner1_home"
+        android:layout_marginBottom="10dp"></Spinner>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textTest"
+        android:layout_below="@+id/clickButton"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="The bus will arrive"
+        android:id="@+id/textView3"
         android:layout_below="@+id/timer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="51dp" />
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
+
 </RelativeLayout>

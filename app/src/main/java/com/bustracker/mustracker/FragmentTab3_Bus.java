@@ -5,10 +5,13 @@ package com.bustracker.mustracker;
  */
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -96,11 +100,9 @@ public class FragmentTab3_Bus extends Fragment {
         }
     }
 
-    // Server = AIzaSyBumsm3eWV31p1xqlt5yona3yeVaw9XjHc
-
     private static void setUpMap() {
         // For showing a move to my loction button
-        mMap.setMyLocationEnabled(true);
+
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setTrafficEnabled(true);
 
@@ -147,11 +149,9 @@ public class FragmentTab3_Bus extends Fragment {
 
     @Override
     public void onResume()
-    {
-        super.onResume();
+    {   super.onResume();
         setUpMapIfNeeded();
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

@@ -2,20 +2,12 @@ package com.bustracker.mustracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 public class signup_page extends AppCompatActivity {
 
@@ -46,7 +38,7 @@ public class signup_page extends AppCompatActivity {
             }
         });
 
-        Spinner spinner2 = (Spinner)findViewById(R.id.spinner1);
+        Spinner spinner2 = (Spinner)findViewById(R.id.spinner1_home);
         ArrayAdapter<String> adapterr = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.routes_list));
         spinner2.setAdapter(adapterr);
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -61,7 +53,7 @@ public class signup_page extends AppCompatActivity {
             }
         });
 
-        Spinner spinner3 = (Spinner)findViewById(R.id.spinner2);
+        Spinner spinner3 = (Spinner)findViewById(R.id.spinner2_home);
         ArrayAdapter<String> adapterrr = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.station_MU));
         spinner3.setAdapter(adapterrr);
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -43,7 +43,8 @@
         android:background="@drawable/border_style"
         android:layout_marginTop="30dp"
 
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:onClick="gotoMainActivity" />
 
     <Button
         android:layout_width="130dp"
@@ -54,5 +55,6 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/border_style"
         android:layout_marginTop="15dp"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:onClick="gotosignup" />
 </RelativeLayout>

@@ -22,7 +22,6 @@ public class signin_page extends AppCompatActivity {
         final EditText userText = (EditText)findViewById(R.id.userText);
         final EditText passText = (EditText)findViewById(R.id.passText);
 
-
     }
 
     public void gotoMainActivity(View v){

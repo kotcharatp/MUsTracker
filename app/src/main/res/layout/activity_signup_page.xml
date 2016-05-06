@@ -20,7 +20,8 @@
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:hint="  First name" />
+        android:hint="  First name"
+        android:textSize="15dp" />
 
     <EditText
         android:layout_width="330dp"
@@ -31,7 +32,8 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/signup_text_border"
         android:textColor="#949494"
-        android:hint="  Last name" />
+        android:hint="  Last name"
+        android:textSize="15dp" />
 
     <EditText
         android:layout_width="330dp"
@@ -42,7 +44,8 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/signup_text_border"
         android:textColor="#949494"
-        android:hint="  MU e-mail" />
+        android:hint="  MU e-mail"
+        android:textSize="15dp" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -54,7 +57,7 @@
         android:layout_marginTop="20dp"></Spinner>
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/spinner1_home"
         android:layout_width="330dp"
         android:layout_height="45dp"
         android:background="@drawable/signup_text_border"
@@ -74,20 +77,20 @@
         />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spinner2_home"
         android:layout_width="330dp"
         android:layout_height="45dp"
         android:background="@drawable/signup_text_border"
-        android:layout_below="@+id/spinner1"
-        android:layout_alignStart="@+id/spinner1"
+        android:layout_below="@+id/spinner1_home"
+        android:layout_alignStart="@+id/spinner1_home"
         android:layout_marginTop="20dp"></Spinner>
 
     <Button
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Sigh up"
-        android:id="@+id/button"
-        android:layout_below="@+id/spinner2"
+        android:text="Sign Up"
+        android:id="@+id/signup_button"
+        android:layout_below="@+id/spinner2_home"
         android:layout_centerHorizontal="true"
         android:onClick="gotoMainActivity"
         android:layout_marginTop="15dp"
