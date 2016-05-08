@@ -31,11 +31,14 @@ public class chooseLanguage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 itemData a = (itemData) adapter.getItem(position);
-                Toast.makeText(chooseLanguage.this, a.getText(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(chooseLanguage.this, a.getText(), Toast.LENGTH_SHORT).show();
 
                 Configuration config = new Configuration();
-                if(a.getText().equals("English")){
+                if(a.getText().equals("Thai")){
                     config.locale = new Locale("th");
+                    getResources().updateConfiguration(config, null);
+                } else {
+                    config.locale = new Locale("en");
                     getResources().updateConfiguration(config, null);
                 }
 
