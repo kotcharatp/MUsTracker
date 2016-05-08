@@ -8,14 +8,13 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.arshad.map.permission.MAPS_RECEIVE" />
 
-
     <application
         android:allowBackup="true"
-        android:icon="@drawable/bus_icon"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -32,30 +31,39 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <!-- SIGN IN PAGE-->
+        <!-- CHOOSE LANGUAGE -->
         <activity
-            android:name=".signin_page"
-            android:label="@string/app_name"
+            android:name=".chooseLanguage"
+            android:label="@string/title_activity_choose_language"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- SIGN UP PAGE-->
+        <!-- SIGN IN PAGE -->
+        <activity
+            android:name=".signin_page"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" />
+
+        <!-- SIGN UP PAGE -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <!-- MAIN ACTIVITY-->
+        <!-- MAIN ACTIVITY -->
         <activity
             android:name=".signup_page"
             android:label="@string/title_activity_signup_page"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".createEditRoute"
+            android:label="@string/title_activity_create_edit_route"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

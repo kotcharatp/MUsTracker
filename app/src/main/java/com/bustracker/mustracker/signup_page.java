@@ -22,7 +22,7 @@ public class signup_page extends AppCompatActivity {
 
         final EditText emailText = (EditText)findViewById(R.id.emailEdit);
 
-        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        Spinner spinner = (Spinner)findViewById(R.id.spinner_language);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.position_MU));
         spinner.setAdapter(adapter);

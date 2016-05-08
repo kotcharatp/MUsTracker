@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("Seat Available"));
+        //tabLayout.addTab(tabLayout.newTab().setText("Seat Available"));
         tabLayout.addTab(tabLayout.newTab().setText("Bus Schedule"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

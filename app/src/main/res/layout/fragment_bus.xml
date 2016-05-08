@@ -15,7 +15,7 @@
     <Spinner
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_language"
         android:background="@drawable/spinner_border"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -29,7 +29,7 @@
         android:layout_height="200dp"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/location_map"
-        android:layout_below="@+id/spinner"
+        android:layout_below="@+id/spinner_language"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp" />

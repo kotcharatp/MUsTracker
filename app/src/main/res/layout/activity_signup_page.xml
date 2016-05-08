@@ -48,7 +48,7 @@
         android:textSize="15dp" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_language"
         android:layout_width="330dp"
         android:layout_height="40dp"
         android:background="@drawable/signup_text_border"
@@ -61,7 +61,7 @@
         android:layout_width="330dp"
         android:layout_height="45dp"
         android:background="@drawable/signup_text_border"
-        android:layout_below="@+id/spinner"
+        android:layout_below="@+id/spinner_language"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"></Spinner>
 

@@ -5,32 +5,23 @@ package com.bustracker.mustracker;
  */
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Path;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -48,7 +39,7 @@ public class FragmentTab3_Bus extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
 
-        final Spinner routeSpinner = (Spinner)rootView.findViewById(R.id.spinner);
+        final Spinner routeSpinner = (Spinner)rootView.findViewById(R.id.spinner_language);
         final ListView mylist = (ListView) rootView.findViewById(R.id.listView);
         dList = new ArrayList<routeSchedule>();
         routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -138,7 +129,7 @@ public class FragmentTab3_Bus extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_layout, null);
 
-            TextView txt = (TextView) view.findViewById(R.id.titleText);
+            TextView txt = (TextView) view.findViewById(R.id.language_name);
             txt.setText(d.toString());
             TextView timeText = (TextView) view.findViewById(R.id.timeText);
             timeText.setText(d.getTime());
