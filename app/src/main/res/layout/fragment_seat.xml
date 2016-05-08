@@ -1,13 +1,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#06365a">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Fragment 2" />
+        android:text="Fragment 3"
+        android:id="@+id/textView" />
+
+    <Spinner
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:id="@+id/spinner_language"
+        android:background="@drawable/spinner_border"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:spinnerMode="dropdown"
+        android:entries="@array/routes_list"
+        />
+
+    <fragment
+        android:layout_width="100dp"
+        android:layout_height="200dp"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/location_map"
+        android:layout_below="@+id/spinner_language"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/location_map"
+        android:background="#ffffff" />
 
 </RelativeLayout>

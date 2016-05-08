@@ -19,7 +19,7 @@ public class chooseLanguage extends AppCompatActivity {
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
-        list = new ArrayList<>();
+        list = new ArrayList<itemData>();
         list.add(new itemData("English",R.drawable.us_flag));
         list.add(new itemData("Thai",R.drawable.thai_flag));
         Spinner sp = (Spinner)findViewById(R.id.spinner_language);
