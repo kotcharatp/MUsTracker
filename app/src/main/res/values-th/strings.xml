@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MUsTracker</string>
+    <string name="action_settings">ตั้งค่า</string>
+    <string name="hello_blank_fragment">สวัสดี</string>
+    <string name="positionMU">ตำแหน่งในมหิดล</string>
+    <string name="routeMU">เส้นทางตั้งต้น</string>
+    <string name="stationMU">สถานีตั้งต้น</string>
+    <string name="title_activity_choose_language">เลือกภาษา</string>
+    <string name="title_activity_create_edit_route">สร้าง/ แก้ไขเส้นทาง</string>
+    <string name="title_activity_signin_page">เข้าสู่ระบบ</string>
+    <string name="title_activity_signup_page">ลงทะเบียน</string>
+    <string name="title_activity_maps">แผนที่</string>
+    <string name="home">หน้าแรก</string>
+    <string name="busschedule">ตารางเดินรถ</string>
+    <string name="buswill">รถจะมาถึง</string>
+    <string name="defautroute">เส้นทางตั้งต้น</string>
+</resources>

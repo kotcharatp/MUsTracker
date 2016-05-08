@@ -2,12 +2,17 @@
     <string name="app_name">MUsTracker</string>
     <string name="action_settings">Settings</string>
 
+    <string name="home">Home</string>
+    <string name="busschedule">Bus Schedule</string>
+    <string name="buswill">The bus will arrive</string>
+
+
     <string-array name="routes_list">
-        <item>Default Route</item>
-        <item>Salaya to Phayathai</item>
-        <item>Salaya to Siriraj</item>
-        <item>Phayathai to Salaya</item>
-        <item>Siriraj to Salaya</item>
+        <item><string name="defautroute">Default Route</string></item>
+        <item><string name="satopa">Salaya to Phayathai</string></item>
+        <item><string name="satosi">Salaya to Siriraj</string></item>
+        <item><string name="phatosa">Phayathai to Salaya</string></item>
+        <item><string name="sitosa">Siriraj to Salaya</string></item>
     </string-array>
     <string name="positionMU">Position in MU</string>
 

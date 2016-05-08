@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="The bus will arrive"
+        android:text="@string/buswill"
         android:id="@+id/textView3"
         android:layout_below="@+id/timer"
         android:layout_centerHorizontal="true"

@@ -1,6 +1,7 @@
 package com.bustracker.mustracker;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class chooseLanguage extends AppCompatActivity {
     public ArrayList<itemData> list;
@@ -30,6 +32,13 @@ public class chooseLanguage extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 itemData a = (itemData) adapter.getItem(position);
                 Toast.makeText(chooseLanguage.this, a.getText(), Toast.LENGTH_SHORT).show();
+
+                Configuration config = new Configuration();
+                if(a.getText().equals("English")){
+                    config.locale = new Locale("th");
+                    getResources().updateConfiguration(config, null);
+                }
+
             }
 
             @Override
