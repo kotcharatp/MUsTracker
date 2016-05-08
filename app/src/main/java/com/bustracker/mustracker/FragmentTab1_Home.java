@@ -137,7 +137,7 @@ public class FragmentTab1_Home extends Fragment {
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
-            outputText.setText("Getting Values Pls wait..");
+            outputText.setText(R.string.outputText);
         }
 
         @Override

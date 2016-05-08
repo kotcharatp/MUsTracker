@@ -65,6 +65,7 @@ public class FragmentTab2_Seat extends Fragment {
         final Spinner routeSpinner = (Spinner)rootView.findViewById(R.id.spinner_language);
         final ListView mylist = (ListView) rootView.findViewById(R.id.listView);
         dList = new ArrayList<routeSchedule>();
+
         routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -207,7 +208,7 @@ public class FragmentTab2_Seat extends Fragment {
             br.close();
 
         }catch(Exception e){
-            Log.d("Exception while downloading url", e.toString());
+            //Log.d("Exception while downloading url", e.toString());
         }finally{
             iStream.close();
             urlConnection.disconnect();

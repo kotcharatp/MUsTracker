@@ -7,12 +7,24 @@
     <string name="routeMU">เส้นทางตั้งต้น</string>
     <string name="stationMU">สถานีตั้งต้น</string>
     <string name="title_activity_choose_language">เลือกภาษา</string>
-    <string name="title_activity_create_edit_route">สร้าง/ แก้ไขเส้นทาง</string>
+    <string name="title_activity_create_edit_route">สร้าง/แก้ไขเส้นทาง</string>
     <string name="title_activity_signin_page">เข้าสู่ระบบ</string>
     <string name="title_activity_signup_page">ลงทะเบียน</string>
     <string name="title_activity_maps">แผนที่</string>
     <string name="home">หน้าแรก</string>
     <string name="busschedule">ตารางเดินรถ</string>
     <string name="buswill">รถจะมาถึง</string>
-    <string name="defautroute">เส้นทางตั้งต้น</string>
+    <string name="defaultroute">เส้นทางตั้งต้น</string>
+    <string name="phatosa">พญาไท ไป ศิริราช</string>
+    <string name="satopa">ศาลายา ไป พญาไท</string>
+    <string name="satosi">ศาลายา ไป ศิริราช</string>
+    <string name="sitosa">ศิริราช ไป ศาลายา</string>
+    <string name="defaultstation">สถานีตั้งต้น</string>
+    <string name="phayathai">พญาไท</string>
+    <string name="salaya">ศาลายา</string>
+    <string name="siriraj">ศิริราช</string>
+    <string name="outputText">กำลังโหลดข้อมูล กรุณารอ...</string>
+    <string name="busno">หมายเลขรถ: </string>
+    <string name="driver">คนขับ: </string>
+    <string name="tel">เบอร์โทร: </string>
 </resources>
