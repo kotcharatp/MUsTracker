@@ -57,7 +57,7 @@
         android:layout_marginTop="20dp"></Spinner>
 
     <Spinner
-        android:id="@+id/spinner1_home"
+        android:id="@+id/spinner_route"
         android:layout_width="330dp"
         android:layout_height="45dp"
         android:background="@drawable/signup_text_border"
@@ -77,12 +77,12 @@
         />
 
     <Spinner
-        android:id="@+id/spinner2_home"
+        android:id="@+id/spinner_station"
         android:layout_width="330dp"
         android:layout_height="45dp"
         android:background="@drawable/signup_text_border"
-        android:layout_below="@+id/spinner1_home"
-        android:layout_alignStart="@+id/spinner1_home"
+        android:layout_below="@+id/spinner_route"
+        android:layout_alignStart="@+id/spinner_route"
         android:layout_marginTop="20dp"></Spinner>
 
     <Button
@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:id="@+id/signup_button"
-        android:layout_below="@+id/spinner2_home"
+        android:layout_below="@+id/spinner_station"
         android:layout_centerHorizontal="true"
         android:onClick="gotoMainActivity"
         android:layout_marginTop="15dp"

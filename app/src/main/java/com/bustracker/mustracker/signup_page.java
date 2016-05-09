@@ -38,7 +38,7 @@ public class signup_page extends AppCompatActivity {
             }
         });
 
-        Spinner spinner2 = (Spinner)findViewById(R.id.spinner1_home);
+        Spinner spinner2 = (Spinner)findViewById(R.id.spinner_route);
         ArrayAdapter<String> adapterr = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.routes_list));
         spinner2.setAdapter(adapterr);
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -53,7 +53,7 @@ public class signup_page extends AppCompatActivity {
             }
         });
 
-        Spinner spinner3 = (Spinner)findViewById(R.id.spinner2_home);
+        Spinner spinner3 = (Spinner)findViewById(R.id.spinner_station);
         ArrayAdapter<String> adapterrr = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.station_MU));
         spinner3.setAdapter(adapterrr);
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

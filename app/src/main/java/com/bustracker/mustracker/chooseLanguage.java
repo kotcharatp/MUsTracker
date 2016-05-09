@@ -34,18 +34,15 @@ public class chooseLanguage extends AppCompatActivity {
                 Toast.makeText(chooseLanguage.this, a.getText(), Toast.LENGTH_SHORT).show();
 
                 Configuration config = new Configuration();
-                if(a.getText().equals("English")){
+                if(a.getText().equals("Thai")){
                     config.locale = new Locale("th");
                     getResources().updateConfiguration(config, null);
                 }
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
         //itemData class for info & languageAdapter for creating Adapter
     }
 

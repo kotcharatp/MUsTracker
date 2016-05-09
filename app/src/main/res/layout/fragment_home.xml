@@ -32,25 +32,25 @@
         android:layout_height="wrap_content"
         android:text="Click"
         android:id="@+id/clickButton"
-        android:layout_below="@+id/spinner2_home"
+        android:layout_below="@+id/spinner_station"
         android:layout_centerHorizontal="true" />
 
     <Spinner
-        android:id="@+id/spinner1_home"
+        android:id="@+id/spinner_route"
         android:layout_width="330dp"
         android:layout_height="40dp"
         android:background="@drawable/signup_text_border"
-        android:layout_above="@+id/spinner2_home"
+        android:layout_above="@+id/spinner_station"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"></Spinner>
 
     <Spinner
-        android:id="@+id/spinner2_home"
+        android:id="@+id/spinner_station"
         android:layout_width="330dp"
         android:layout_height="40dp"
         android:background="@drawable/signup_text_border"
         android:layout_above="@+id/map_home"
-        android:layout_alignStart="@+id/spinner1_home"
+        android:layout_alignStart="@+id/spinner_route"
         android:layout_marginBottom="10dp"></Spinner>
 
     <TextView
@@ -70,6 +70,7 @@
         android:layout_below="@+id/timer"
         android:layout_centerHorizontal="true"
         android:textColor="#ffffff"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:contextClickable="false" />
 
 </RelativeLayout>

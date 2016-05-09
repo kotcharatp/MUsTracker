@@ -11,10 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -48,6 +49,11 @@ public class FragmentTab1_Home extends Fragment {
     private GoogleMap map;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar();
+        ((AppCompatActivity) getActivity()).setTitle("MUST BUS");
+        //for crate home button
+
+
         //TIMER
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         btnClick = (Button) rootView.findViewById(R.id.clickButton);
@@ -69,12 +75,12 @@ public class FragmentTab1_Home extends Fragment {
         });
 
         //SPINNER
-        Spinner sp1 = (Spinner) rootView.findViewById(R.id.spinner1_home);
+        Spinner sp1 = (Spinner) rootView.findViewById(R.id.spinner_route);
         ArrayAdapter<String> adapter_route = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.routes_list));
         adapter_route.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         sp1.setAdapter(adapter_route);
 
-        Spinner sp2 = (Spinner) rootView.findViewById(R.id.spinner2_home);
+        Spinner sp2 = (Spinner) rootView.findViewById(R.id.spinner_station);
         ArrayAdapter<String> adapter_station = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.station_MU));
         adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         sp2.setAdapter(adapter_station);
