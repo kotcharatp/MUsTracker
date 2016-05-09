@@ -1,5 +1,9 @@
 package com.bustracker.mustracker;
 
+import android.content.Context;
+import android.content.res.Resources;
+import com.bustracker.mustracker.R;
+
 /**
  * Created by kotcharat on 2/3/16.
  */
@@ -11,6 +15,11 @@ public class routeSchedule {
     private String tel;
     private int busno;
 
+    private String busnoText;
+    private String driverText;
+    private String telText;
+
+
     public routeSchedule(String route, String driver, String time, String tel, int busno){
         this.route = route;
         this.driver = driver;
@@ -18,6 +27,7 @@ public class routeSchedule {
         this.time = time;
         this.busno =busno;
     }
+
 
     //public long getId() {return _id;}
     //public void setId(long id) {this._id = id; }
@@ -34,9 +44,18 @@ public class routeSchedule {
 
     @Override
     public String toString() {
-        return "Bus number: " + busno + "\n" +
-                "Driver: " + driver + "\n" +
-                "Tel: " + tel;
+        //return "Bus number: " + busno + "\n" +
+        //        "Driver: " + driver + "\n" +
+        //        "Tel: " + tel;
+
+        // To get be able to call value from R.string.
+        busnoText = MainActivity.getContext().getResources().getString(R.string.busno);
+        driverText = MainActivity.getContext().getResources().getString(R.string.driver);
+        telText = MainActivity.getContext().getResources().getString(R.string.tel);
+
+        return busnoText +" "+ busno + "\n" +
+                driverText +" "+ driver + "\n" +
+               telText +" "+ tel;
     }
 
 }

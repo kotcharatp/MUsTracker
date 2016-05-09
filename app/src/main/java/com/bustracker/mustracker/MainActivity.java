@@ -3,6 +3,7 @@ package com.bustracker.mustracker;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
+
+    private static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,8 @@ public class MainActivity extends ActionBarActivity {
                         .setAction("Action", null).show();
             }
         }); */
+
+        mContext = this;
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.home));
@@ -72,6 +77,10 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    public static Context getContext(){
+        return mContext;
     }
 
     @Override

@@ -13,6 +13,6 @@
     <string name="title_activity_maps">แผนที่</string>
     <string name="home">หน้าแรก</string>
     <string name="busschedule">ตารางเดินรถ</string>
-    <string name="buswill">รถจะมาถึงประมาณ</string>
+    <string name="buswill">รถจะมาถึง</string>
     <string name="defautroute">เส้นทางตั้งต้น</string>
 </resources>
