@@ -7,10 +7,7 @@
     android:fitsSystemWindows="true"
     tools:context="com.bustracker.mustracker.chooseLanguage">
 
-
-
     <include layout="@layout/content_choose_language" />
-
 
 
 </android.support.design.widget.CoordinatorLayout>
