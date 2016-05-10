@@ -4,15 +4,32 @@
 
     <string name="home">Home</string>
     <string name="busschedule">Bus Schedule</string>
-    <string name="buswill">The bus will arrive</string>
+    <string name="buswill">The bus will approximately arrive</string>
+
+    <!-- For page home -->
+    <string name="outputText">Getting Values Pls wait..</string>
+    <string name="loading">Loading Data ...</string>
+    <string name="mahidol">Mahidol University</string>
+    <string name="PinkloaS">Pinkloa Station</string>
+    <string name="pinkloades">Pinkloa Pork Noodle Station</string>
+    <string name="start">Start</string>
+    <string name="destination"></string>
+
+    <!--Default route for translate to Thai-->
+    <string name="defaultroute">Default Route</string>
+    <string name="satopa">Salaya to Phayathai</string>
+    <string name="satosi">Salaya to Siriraj</string>
+    <string name="phatosa">Phayathai to Salaya</string>
+    <string name="sitosa">Siriraj to Salaya</string>
 
 
     <string-array name="routes_list">
-        <item><string name="defautroute">Default Route</string></item>
-        <item><string name="satopa">Salaya to Phayathai</string></item>
-        <item><string name="satosi">Salaya to Siriraj</string></item>
-        <item><string name="phatosa">Phayathai to Salaya</string></item>
-        <item><string name="sitosa">Siriraj to Salaya</string></item>
+        <item>@string/defaultroute</item>
+        <item>@string/satopa</item>
+        <item>@string/satosi</item>
+        <item>@string/phatosa</item>
+        <item>@string/sitosa</item>
+
     </string-array>
     <string name="positionMU">Position in MU</string>
 
@@ -23,14 +40,25 @@
         <item>Staff</item>
     </string-array>
 
+    <!-- Default route for translate to Thai -->
     <string name="routeMU">Default Route</string>
     <string name="stationMU">Default Station</string>
+    <string name="defaultstation">Default Station</string>
+    <string name="salaya">Salaya</string>
+    <string name="phayathai">Phayathai</string>
+    <string name="siriraj">Siriraj</string>
+
     <string-array name="station_MU">
-        <item>Default Station</item>
-        <item>Salaya</item>
-        <item>Phayathai</item>
-        <item>Siriraj</item>
+        <item>@string/defaultstation</item>
+        <item>@string/salaya</item>
+        <item>@string/phayathai</item>
+        <item>@string/siriraj</item>
     </string-array>
+
+    <!-- For print in list on bus schedule page -->
+    <string name="busno">Bus number:</string>
+    <string name="driver">Driver:</string>
+    <string name="tel">Tel:</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

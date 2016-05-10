@@ -322,9 +322,9 @@ public class FragmentTab2_Seat extends Fragment {
         if (mMarkerPoints.size() == 1) {
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         } else if (mMarkerPoints.size() == 2) {
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
         } else {
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         }
 
         // Add new marker to the Google Map Android API V2
@@ -349,19 +349,16 @@ public class FragmentTab2_Seat extends Fragment {
         mMap.setTrafficEnabled(true);
 
         // For dropping a marker at a point on the Map
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Mahidol University")
-                .snippet("Main Station").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
+                .title(MainActivity.getContext().getResources().getString(R.string.mahidol))
+                .snippet(MainActivity.getContext().getResources().getString(R.string.start))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
         // For zooming automatically to the Dropped PIN Location
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(13.791393, 100.349620), 13.0f));
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        //mMap.addPolyline(
-        //        new PolylineOptions().add(new LatLng(13.788112, 100.327534)).add(new LatLng(latitude, longitude)).color(Color.BLUE));
-        //mMap.addPolyline(
-        //        new PolylineOptions().add(new LatLng(13.788642, 100.356099)).add(new LatLng(13.788112, 100.327534)).color(Color.BLUE));
-        //mMap.addPolyline(
-        //        new PolylineOptions().add(new LatLng(13.780407, 100.442659)).add(new LatLng(13.788642, 100.356099)).color(Color.BLUE));
     }
 
     //custom adapter

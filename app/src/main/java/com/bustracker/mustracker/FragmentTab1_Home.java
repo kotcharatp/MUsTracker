@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -44,8 +44,10 @@ public class FragmentTab1_Home extends Fragment {
     View rootView;
 
     //GOOGLE MAP
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-    static final LatLng KIEL = new LatLng(53.551, 9.993);
+
+    static final LatLng MAHIDOL = new LatLng(13.792686, 100.326425);
+    static final LatLng STATION1 = new LatLng(13.782057, 100.417540);
+    static final LatLng PHAYATHAI = new LatLng(13.764905, 100.526270);
     private GoogleMap map;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,15 +89,23 @@ public class FragmentTab1_Home extends Fragment {
 
         //GOOGLE MAP
         map = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_home)).getMap();
-        Marker hamburg = map.addMarker(new MarkerOptions().position(HAMBURG)
-                .title("Hamburg"));
-        Marker kiel = map.addMarker(new MarkerOptions()
-                .position(KIEL)
-                .title("Kiel")
-                .snippet("Kiel is cool"));
+        map.getUiSettings().setZoomControlsEnabled(true);
 
-        // Move the camera instantly to hamburg with a zoom of 15.
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 15));
+        Marker mahidol = map.addMarker(new MarkerOptions().position(MAHIDOL)
+                .title(getString(R.string.mahidol))
+                .snippet(getString(R.string.start)));
+        Marker station1 = map.addMarker(new MarkerOptions()
+                .position(STATION1)
+                .title(getString(R.string.PinkloaS))
+                .snippet(getString(R.string.pinkloades))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon)));
+        Marker phayathai = map.addMarker(new MarkerOptions().position(PHAYATHAI)
+                .title(getString(R.string.phayathai))
+                .snippet(getString(R.string.destination)));
+
+        // Move the camera instantly to mahidol with a zoom of 15.
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(STATION1, 15));
+
 
         // Zoom in, animating the camera.
         map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
@@ -139,11 +149,11 @@ public class FragmentTab1_Home extends Fragment {
             outputText = (TextView) rootView.findViewById(R.id.textTest);
 
             pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage("Loading Data ...");
+            pDialog.setMessage(getString(R.string.loading));
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
-            outputText.setText("Getting value.. please wait");
+            outputText.setText(R.string.outputText);
         }
 
         @Override
