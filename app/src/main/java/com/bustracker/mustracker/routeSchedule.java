@@ -49,13 +49,12 @@ public class routeSchedule {
         //        "Tel: " + tel;
 
         // To get be able to call value from R.string.
-        busnoText = MainActivity.getContext().getResources().getString(R.string.busno);
-        driverText = MainActivity.getContext().getResources().getString(R.string.driver);
-        telText = MainActivity.getContext().getResources().getString(R.string.tel);
+        busnoText = "Bus number: ";
+        driverText = "Driver: ";
+        telText = "Tell: ";
 
         return busnoText +" "+ busno + "\n" +
                 driverText +" "+ driver + "\n" +
-               telText +" "+ tel;
+                telText +" "+ tel;
     }
-
 }
