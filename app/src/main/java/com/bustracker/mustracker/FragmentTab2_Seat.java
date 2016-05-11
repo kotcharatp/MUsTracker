@@ -5,6 +5,7 @@ package com.bustracker.mustracker;
  */
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Criteria;
@@ -35,7 +36,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -53,47 +57,67 @@ public class FragmentTab2_Seat extends Fragment {
     private static GoogleMap mMap;
     private static Double latitude, longitude;
     ArrayAdapter<routeSchedule> routeArrayAdapter;
+
+    //Array list for each route
     public List<routeSchedule> dList;
+    public List<routeSchedule> satopaList;
+    public List<routeSchedule> satosiList;
+    public List<routeSchedule> phatosaList;
+    public List<routeSchedule> sitosaList;
+
     ArrayList<LatLng> mMarkerPoints;
     private GoogleApiClient client;
+    View rootView;
+    TextView outputText;
+
+    private  static  String url = "http://bus.atilal.com/schedule.php?";
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
+        outputText = (TextView) rootView.findViewById(R.id.textView);
 
-        final Spinner routeSpinner = (Spinner)rootView.findViewById(R.id.spinner_language);
+        final Spinner routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
         final ListView mylist = (ListView) rootView.findViewById(R.id.listView);
+
+        //Initialize route array list, allocate memory
         dList = new ArrayList<routeSchedule>();
+        satopaList = new ArrayList<routeSchedule>();
+        satosiList = new ArrayList<routeSchedule>();
+        phatosaList = new ArrayList<routeSchedule>();
+        sitosaList = new ArrayList<routeSchedule>();
 
         routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (routeSpinner.getSelectedItemPosition() == 0) {
-                    dList.clear();
-                    dList.add(new routeSchedule("Salaya-Phayathai", "Prakorb", "5:30", "081-111-1111", 1));
-                    dList.add(new routeSchedule("Salaya-Phayathai", "Somchai", "7:00", "082-122-1212", 2));
-                    dList.add(new routeSchedule("Salaya-Phayathai", "Somsri", "7:30", "091-422-1212", 3));
-                    dList.add(new routeSchedule("Salaya-Phayathai", "Somruk", "8:00", "082-122-1212", 2));
-                    dList.add(new routeSchedule("Salaya-Phayathai", "Somjai", "9:00", "082-122-1212", 2));
 
-                } if (routeSpinner.getSelectedItemPosition() == 1) {
-                    dList.clear();
-                    dList.add(new routeSchedule("Salaya-Siriraj", "Somsuk", "6:00", "099-155-1441", 1));
-                } if (routeSpinner.getSelectedItemPosition() == 2) {
-                    dList.clear();
+                if (routeSpinner.getSelectedItemPosition() == 0) {
+                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satopaList);
+                }
+
+                if (routeSpinner.getSelectedItemPosition() == 1) {
+                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satopaList);
+
+                }
+
+                if (routeSpinner.getSelectedItemPosition() == 2) {
+                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satosiList);
 
                 }
                 if (routeSpinner.getSelectedItemPosition() == 3) {
-                    dList.clear();
-
+                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, phatosaList);
                 }
-                routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, dList);
+                if (routeSpinner.getSelectedItemPosition() == 4) {
+                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, sitosaList);
+                                    }
                 mylist.setAdapter(routeArrayAdapter);
+
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         latitude = 13.792686;
@@ -151,8 +175,66 @@ public class FragmentTab2_Seat extends Fragment {
 
         }
 
+        //GET JSON DATA FROM SERVER
+        new JSONParse().execute();
         return rootView;
     }
+
+    //JSON CLASS
+    private class JSONParse extends AsyncTask<String, Void, String> {
+        private ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage(getString(R.string.loading));
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            StringBuilder sb = new StringBuilder();
+            String content = MyHttpURL.getData(url);
+            try {
+                JSONObject obj = new JSONObject(content);
+                JSONArray station = obj.getJSONArray("station");
+                for (int i = 0; i < station.length(); i++) {
+                    JSONObject info = (JSONObject) station.get(i);
+
+                    String route = info.getString("route_name");
+                    if (route.equals("Salaya-Phayathai")) {
+                        satopaList.add(new routeSchedule(route, info.getString("driver_name"),
+                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
+                    } else if(route.equals("Salaya-Siriraj")) {
+                        satosiList.add(new routeSchedule(route, info.getString("driver_name"),
+                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
+                    } else if(route.equals("Phayathai-Salaya")) {
+                        phatosaList.add(new routeSchedule(route, info.getString("driver_name"),
+                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
+                    } else if(route.equals("Siriraj-Salaya")) {
+                        sitosaList.add(new routeSchedule(route, info.getString("driver_name"),
+                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
+                    }
+                }
+
+                return sb.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            pDialog.dismiss();
+            outputText.setText(result);
+        }
+    }
+
 
     private String getDirectionsUrl(LatLng origin,LatLng dest){
 
@@ -382,6 +464,8 @@ public class FragmentTab2_Seat extends Fragment {
             txt.setText(d.toString());
             TextView timeText = (TextView) view.findViewById(R.id.timeText);
             timeText.setText(d.getTime());
+            TextView travelText = (TextView) view.findViewById(R.id.travelText);
+            travelText.setText(String.valueOf(d.getBusno()));
 
             return view;
         }
