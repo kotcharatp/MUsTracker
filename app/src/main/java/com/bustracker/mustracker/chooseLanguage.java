@@ -12,6 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Locale;
 
+//LINK WITH ITEMDATA & LANGUAGE ADAPTER
 public class chooseLanguage extends AppCompatActivity {
     public ArrayList<itemData> list;
     @Override

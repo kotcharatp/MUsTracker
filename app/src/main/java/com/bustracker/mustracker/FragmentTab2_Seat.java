@@ -5,7 +5,6 @@ package com.bustracker.mustracker;
  */
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.location.Criteria;
@@ -36,10 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,72 +48,52 @@ import java.util.HashMap;
 import java.util.List;
 
 // Now is bus schedule
+//link with DIRECTIONJSONPARSER & ROUTESCHEDULE
 public class FragmentTab2_Seat extends Fragment {
 
     private static GoogleMap mMap;
     private static Double latitude, longitude;
     ArrayAdapter<routeSchedule> routeArrayAdapter;
-
-    //Array list for each route
     public List<routeSchedule> dList;
-    public List<routeSchedule> satopaList;
-    public List<routeSchedule> satosiList;
-    public List<routeSchedule> phatosaList;
-    public List<routeSchedule> sitosaList;
-
     ArrayList<LatLng> mMarkerPoints;
     private GoogleApiClient client;
-    View rootView;
-    TextView outputText;
-
-    private  static  String url = "http://bus.atilal.com/schedule.php?";
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
-        outputText = (TextView) rootView.findViewById(R.id.textView);
 
-        final Spinner routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
+        final Spinner routeSpinner = (Spinner)rootView.findViewById(R.id.spinner_language);
         final ListView mylist = (ListView) rootView.findViewById(R.id.listView);
-
-        //Initialize route array list, allocate memory
         dList = new ArrayList<routeSchedule>();
-        satopaList = new ArrayList<routeSchedule>();
-        satosiList = new ArrayList<routeSchedule>();
-        phatosaList = new ArrayList<routeSchedule>();
-        sitosaList = new ArrayList<routeSchedule>();
-
         routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 if (routeSpinner.getSelectedItemPosition() == 0) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satopaList);
-                }
+                    dList.clear();
+                    dList.add(new routeSchedule("Salaya-Phayathai", "Prakorb", "5:30", "081-111-1111", 1));
+                    dList.add(new routeSchedule("Salaya-Phayathai", "Somchai", "7:00", "082-122-1212", 2));
+                    dList.add(new routeSchedule("Salaya-Phayathai", "Somsri", "7:30", "091-422-1212", 3));
+                    dList.add(new routeSchedule("Salaya-Phayathai", "Somruk", "8:00", "082-122-1212", 2));
+                    dList.add(new routeSchedule("Salaya-Phayathai", "Somjai", "9:00", "082-122-1212", 2));
 
-                if (routeSpinner.getSelectedItemPosition() == 1) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satopaList);
-
-                }
-
-                if (routeSpinner.getSelectedItemPosition() == 2) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satosiList);
+                } if (routeSpinner.getSelectedItemPosition() == 1) {
+                    dList.clear();
+                    dList.add(new routeSchedule("Salaya-Siriraj", "Somsuk", "6:00", "099-155-1441", 1));
+                } if (routeSpinner.getSelectedItemPosition() == 2) {
+                    dList.clear();
 
                 }
                 if (routeSpinner.getSelectedItemPosition() == 3) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, phatosaList);
-                }
-                if (routeSpinner.getSelectedItemPosition() == 4) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, sitosaList);
-                                    }
-                mylist.setAdapter(routeArrayAdapter);
+                    dList.clear();
 
+                }
+                routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, dList);
+                mylist.setAdapter(routeArrayAdapter);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         latitude = 13.792686;
@@ -175,67 +151,8 @@ public class FragmentTab2_Seat extends Fragment {
 
         }
 
-        //GET JSON DATA FROM SERVER
-        new JSONParse().execute();
         return rootView;
     }
-
-    //JSON CLASS
-    private class JSONParse extends AsyncTask<String, Void, String> {
-        private ProgressDialog pDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage(getString(R.string.loading));
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... args) {
-            StringBuilder sb = new StringBuilder();
-            String content = MyHttpURL.getData(url);
-            try {
-                JSONObject obj = new JSONObject(content);
-                JSONArray station = obj.getJSONArray("station");
-                for (int i = 0; i < station.length(); i++) {
-                    JSONObject info = (JSONObject) station.get(i);
-
-                    String route = info.getString("route_name");
-                    if (route.equals("Salaya-Phayathai")) {
-                        satopaList.add(new routeSchedule(route, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(route.equals("Salaya-Siriraj")) {
-                        satosiList.add(new routeSchedule(route, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(route.equals("Phayathai-Salaya")) {
-                        phatosaList.add(new routeSchedule(route, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(route.equals("Siriraj-Salaya")) {
-                        sitosaList.add(new routeSchedule(route, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    }
-                }
-
-                return sb.toString();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            pDialog.dismiss();
-            outputText.setText(result);
-        }
-    }
-
-
     private String getDirectionsUrl(LatLng origin,LatLng dest){
 
         // Origin of route
@@ -258,7 +175,6 @@ public class FragmentTab2_Seat extends Fragment {
 
         return url;
     }
-
     /** A method to download json data from url */
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
@@ -290,14 +206,13 @@ public class FragmentTab2_Seat extends Fragment {
             br.close();
 
         }catch(Exception e){
-            //Log.d("Exception while downloading url", e.toString());
+            Log.d("Exception while downloading url", e.toString());
         }finally{
             iStream.close();
             urlConnection.disconnect();
         }
         return data;
     }
-
     /** A class to download data from Google Directions URL */
     private class DownloadTask extends AsyncTask<String, Void, String> {
 
@@ -329,10 +244,8 @@ public class FragmentTab2_Seat extends Fragment {
             parserTask.execute(result);
         }
     }
-
     /** A class to parse the Google Directions in JSON format */
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>> >{
-
         // Parsing the data in non-ui thread
         @Override
         protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
@@ -380,14 +293,13 @@ public class FragmentTab2_Seat extends Fragment {
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
                 lineOptions.width(10);
-                lineOptions.color(Color.GREEN);
+                lineOptions.color(Color.RED);
             }
 
             // Drawing polyline in the Google Map for the i-th route
             mMap.addPolyline(lineOptions);
         }
     }
-
     private void drawMarker(LatLng point) {
         mMarkerPoints.add(point);
 
@@ -404,15 +316,14 @@ public class FragmentTab2_Seat extends Fragment {
         if (mMarkerPoints.size() == 1) {
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         } else if (mMarkerPoints.size() == 2) {
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
-        } else {
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        } else {
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         }
 
         // Add new marker to the Google Map Android API V2
         mMap.addMarker(options);
     }
-
     public void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
@@ -423,7 +334,6 @@ public class FragmentTab2_Seat extends Fragment {
                 setUpMap();
         }
     }
-
     private static void setUpMap() {
         // For showing a move to my loction button
 
@@ -431,18 +341,20 @@ public class FragmentTab2_Seat extends Fragment {
         mMap.setTrafficEnabled(true);
 
         // For dropping a marker at a point on the Map
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                .title(MainActivity.getContext().getResources().getString(R.string.mahidol))
-                .snippet(MainActivity.getContext().getResources().getString(R.string.start))
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-
+        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Mahidol University")
+                .snippet("Main Station").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
         // For zooming automatically to the Dropped PIN Location
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(13.791393, 100.349620), 13.0f));
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
+        //mMap.addPolyline(
+        //        new PolylineOptions().add(new LatLng(13.788112, 100.327534)).add(new LatLng(latitude, longitude)).color(Color.BLUE));
+        //mMap.addPolyline(
+        //        new PolylineOptions().add(new LatLng(13.788642, 100.356099)).add(new LatLng(13.788112, 100.327534)).color(Color.BLUE));
+        //mMap.addPolyline(
+        //        new PolylineOptions().add(new LatLng(13.780407, 100.442659)).add(new LatLng(13.788642, 100.356099)).color(Color.BLUE));
     }
-
     //custom adapter
     class RouteArrayAdapter extends ArrayAdapter<routeSchedule> {
 
@@ -464,13 +376,10 @@ public class FragmentTab2_Seat extends Fragment {
             txt.setText(d.toString());
             TextView timeText = (TextView) view.findViewById(R.id.timeText);
             timeText.setText(d.getTime());
-            TextView travelText = (TextView) view.findViewById(R.id.travelText);
-            travelText.setText(String.valueOf(d.getBusno()));
 
             return view;
         }
     }
-
     @Override
     public void onResume()
     {   super.onResume();

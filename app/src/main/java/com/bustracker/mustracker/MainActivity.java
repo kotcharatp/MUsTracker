@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+//LINK WITH PADERADAPTER
 public class MainActivity extends ActionBarActivity {
 
     private static Context mContext;

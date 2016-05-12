@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 
+//LINK WITH MYHTTPHRL
 public class FragmentTab1_Home extends Fragment {
     private  static  String url = "http://bus.atilal.com/location_an.php?";
     String name, version;
@@ -195,7 +196,7 @@ public class FragmentTab1_Home extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             pDialog.dismiss();
-            //outputText.setText(result);
+            outputText.setText(result);
         }
     }
 }
