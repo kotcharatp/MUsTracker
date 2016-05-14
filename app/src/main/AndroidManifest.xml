@@ -63,7 +63,8 @@
         <activity
             android:name=".createEditRoute"
             android:label="@string/title_activity_create_edit_route"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".schedule_details"></activity>
     </application>
 
 </manifest>

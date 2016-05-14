@@ -21,10 +21,26 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 //LINK WITH PADERADAPTER
 public class MainActivity extends ActionBarActivity {
 
     private static Context mContext;
+
+    //For dropdown
+    public static ArrayList<String> routeEnglish = new ArrayList<String>();
+    public static ArrayList<String> routeThai = new ArrayList<String>();
+    public static ArrayList<String> stationEnglish = new ArrayList<String>();
+    public static ArrayList<String> stationThai = new ArrayList<String>();
+
+    //For plot in the map
+    //public static ArrayList<ArrayList<plotRoute>> plot = new ArrayList<ArrayList<plotRoute>>();
+    public static ArrayList<plotRoute> plotData = new ArrayList<plotRoute>();
+
+    //public static HashMap<String,List<plotRoute>> hm = new HashMap<String, List<plotRoute>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
