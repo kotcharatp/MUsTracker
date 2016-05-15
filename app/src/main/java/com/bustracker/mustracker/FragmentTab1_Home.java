@@ -56,9 +56,9 @@ public class FragmentTab1_Home extends Fragment {
     View rootView;
 
     //GOOGLE MAP
-    static final LatLng MAHIDOL = new LatLng(13.792686, 100.326425);
+    //static final LatLng MAHIDOL = new LatLng(13.792686, 100.326425);
     static final LatLng STATION1 = new LatLng(13.782057, 100.417540);
-    static final LatLng PHAYATHAI = new LatLng(13.764905, 100.526270);
+    //static final LatLng PHAYATHAI = new LatLng(13.764905, 100.526270);
     private GoogleMap map;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
