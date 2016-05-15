@@ -35,6 +35,9 @@ public class MainActivity extends ActionBarActivity {
     public static ArrayList<String> routeThai = new ArrayList<String>();
     public static ArrayList<String> stationEnglish = new ArrayList<String>();
     public static ArrayList<String> stationThai = new ArrayList<String>();
+    public static ArrayList<String> stationTime = new ArrayList<String>();
+    public static ArrayList<String> time = new ArrayList<String>();
+
 
     //For plot in the map
     //public static ArrayList<ArrayList<plotRoute>> plot = new ArrayList<ArrayList<plotRoute>>();

@@ -66,7 +66,6 @@ public class FragmentTab1_Home extends Fragment {
         ((AppCompatActivity) getActivity()).setTitle("MUST BUS");
         //for crate home button
 
-
         //TIMER
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         btnClick = (Button) rootView.findViewById(R.id.clickButton);
@@ -178,7 +177,7 @@ public class FragmentTab1_Home extends Fragment {
         }
 
         @Override
-         public void onFinish() {
+        public void onFinish() {
             timerText.setText("Completed.");
         }
     }

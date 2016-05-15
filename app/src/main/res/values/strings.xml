@@ -68,5 +68,9 @@
     <string name="title_activity_signin_page">signin_page</string>
     <string name="title_activity_choose_language">chooseLanguage</string>
     <string name="title_activity_create_edit_route">createEditRoute</string>
+    <string name="SetNotification">Set Notification</string>
+    <string name="TheBus">The bus will approximately come to the station at</string>
+    <string name="SetNotiTime">Set your notification time</string>
+    <string name="yourRouteStation">Your route and station</string>
 
 </resources>

@@ -35,4 +35,11 @@
     <string name="start">จุดเริ่มต้น</string>
     <string name="destination">จุดหมายปลายทาง</string>
 
+    <string name="SetNotification">ตั้งค่าการแจ้งเตือน</string>
+    <string name="TheBus">รถประจำทางจะมาถึงประมาณ</string>
+    <string name="SetNotiTime">ตั้งเวลาการแจ้งเตือน</string>
+    <string name="yourRouteStation">เส้นทางและสถานีสำหรับแจ้งเตือน</string>
+
+
+
 </resources>

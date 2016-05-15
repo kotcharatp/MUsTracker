@@ -175,7 +175,7 @@ public class FragmentTab3_Bus extends Fragment {
             client = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.API).build();
 
             for(int i=0; i<data.size(); i++){
-                
+
                 drawMarker(data.get(i).getPosition(), data.get(i).getTitle(), data.get(i).getSnip());
 
                 if(i!=data.size()-1) {
@@ -272,8 +272,7 @@ public class FragmentTab3_Bus extends Fragment {
             pDialog.dismiss();
             outputText.setText(result);
             adapter_route2.notifyDataSetChanged();
-            routeArrayAdapter.notifyDataSetChanged();
-
+            //routeArrayAdapter.notifyDataSetChanged();
         }
     }
 

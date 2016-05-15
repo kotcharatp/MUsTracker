@@ -14,7 +14,11 @@ import java.util.Locale;
 
 //LINK WITH ITEMDATA & LANGUAGE ADAPTER
 public class chooseLanguage extends AppCompatActivity {
+
+    //can use every activity for check language
+    String language;
     public ArrayList<itemData> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +38,14 @@ public class chooseLanguage extends AppCompatActivity {
                 itemData a = (itemData) adapter.getItem(position);
                 //Toast.makeText(chooseLanguage.this, a.getText(), Toast.LENGTH_SHORT).show();
 
+                //SET LANGUAGE
                 Configuration config = new Configuration();
                 if(a.getText().equals("Thai")){
+                    language = "th";
                     config.locale = new Locale("th");
                     getResources().updateConfiguration(config, null);
                 } else {
+                    language = "en";
                     config.locale = new Locale("en");
                     getResources().updateConfiguration(config, null);
                 }
@@ -51,6 +58,8 @@ public class chooseLanguage extends AppCompatActivity {
     }
 
     public void gotocreateEditRoute(View v){
-        startActivity(new Intent(chooseLanguage.this, createEditRoute.class));
+        Intent i = new Intent(chooseLanguage.this, createEditRoute.class);
+        i.putExtra("language",language);
+        startActivity(i);
     }
 }
