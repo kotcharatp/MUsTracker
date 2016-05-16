@@ -4,13 +4,16 @@ package com.bustracker.mustracker;
  * Created by kotcharat on 1/31/16.
  */
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,33 +104,99 @@ public class FragmentTab3_Bus extends Fragment {
         phatosaList = new ArrayList<routeSchedule>();
         sitosaList = new ArrayList<routeSchedule>();*/
 
-        routeSpinner.setSelection(0);
+        //GET JSON DATA FROM SERVER
+        new JSONParse().execute();
+
         final List<plotRoute> dList = new ArrayList<plotRoute>();
+
+        for (int j = 0; j < routeD.size(); j++) {
+            if (routeD.get(j).getRoute().equals("Salaya to Phayathai")) {
+                dList.add(routeD.get(j));
+            }
+        }
+        int k;
+        for (k = 0; k < busSchedule.size(); k++) {
+            if (busSchedule.get(k).getRoute().equals("Salaya to Phayathai")) {
+                busList.add(busSchedule.get(k));
+            }
+        }
+
+        plotRouteStation(dList);
+        routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
+        routeArrayAdapter.notifyDataSetChanged();
+        mylist.setAdapter(routeArrayAdapter);
+
+        mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int temp = position;
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setPositiveButton("Add to notify route", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), createEditRoute.class);
+                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("driver", busList.get(temp).getDriver());
+                        intent.putExtra("phoneNum", busList.get(temp).getTel());
+                        intent.putExtra("route_name", busList.get(temp).getRoute());
+                        intent.putStringArrayListExtra("stationList", (ArrayList) dList);
+                        Log.d("listsize", String.valueOf(dList.size()));
+
+                        startActivity(intent);
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("View schedule details", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(getActivity(), schedule_details.class);
+                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("driver", busList.get(temp).getDriver());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("phoneNum", busList.get(temp).getTel());
+                        intent.putExtra("route_name", busList.get(temp).getRoute());
+
+                        intent.putStringArrayListExtra("stationList", (ArrayList) dList);
+                        Log.d("listsize", String.valueOf(dList.size()));
+                        startActivity(intent);
+                    }
+                });
+                alertDialogBuilder.setCancelable(true);
+                alertDialogBuilder.setMessage("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
+                        "Aenean commodo ligula eget dolor. Aenean massa. ");
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+            }
+        });
 
         routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 busList.clear();
+                dList.clear();
 
-                for(int i=0; i<MainActivity.routeEnglish.size(); i++){
-                    if(routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i))){
-                        for(int j=0; j<routeD.size(); j++){
-                            if(routeD.get(j).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
+                for (int i = 0; i < MainActivity.routeEnglish.size(); i++) {
+                    if (routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i))) {
+                        for (int j = 0; j < routeD.size(); j++) {
+                            if (routeD.get(j).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
                                 dList.add(routeD.get(j));
                             }
                         }
 
-                        for(int k=0; k<busSchedule.size(); k++){
-                            if(busSchedule.get(k).getRoute().equals(routeSpinner.getSelectedItem().toString())){
+                        for (int k = 0; k < busSchedule.size(); k++) {
+                            if (busSchedule.get(k).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
                                 busList.add(busSchedule.get(k));
                             }
                         }
-
+                        /*
                         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                             @Override
                             public void onInfoWindowClick(Marker marker) {
-                                for(int k=0; k<busList.size(); k++) {
+                                for (int k = 0; k < busList.size(); k++) {
                                     startActivity(new Intent(getActivity(), schedule_details.class));
                                     Intent intent = new Intent(getActivity(), schedule_details.class);
                                     intent.putExtra("time", busSchedule.get(k).getTime());
@@ -136,7 +205,7 @@ public class FragmentTab3_Bus extends Fragment {
                                     intent.putExtra("route_name", busSchedule.get(k).getRoute());
                                 }
                             }
-                        });
+                        });*/
 
                         mMap.clear();
                         setUpMap();
@@ -146,8 +215,8 @@ public class FragmentTab3_Bus extends Fragment {
                     }
                     dList.clear();
                 }
-
                 mylist.setAdapter(routeArrayAdapter);
+
 
             }
 
@@ -155,8 +224,48 @@ public class FragmentTab3_Bus extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        //GET JSON DATA FROM SERVER
-        new JSONParse().execute();
+/*
+        mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int temp = position;
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setPositiveButton("Add to notify route", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), createEditRoute.class);
+                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("driver", busList.get(temp).getDriver());
+                        intent.putExtra("phoneNum", busList.get(temp).getTel());
+                        intent.putExtra("route_name", busList.get(temp).getRoute());
+                        startActivity(intent);
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("View schedule details", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(getActivity(), schedule_details.class);
+                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("driver", busList.get(temp).getDriver());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("phoneNum", busList.get(temp).getTel());
+
+                        intent.putExtra("route_name", busList.get(temp).getRoute());
+                        startActivity(intent);
+                    }
+                });
+                alertDialogBuilder.setCancelable(true);
+                alertDialogBuilder.setMessage("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
+                        "Aenean commodo ligula eget dolor. Aenean massa. ");
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+            }
+        });*/
+
         return rootView;
     }
 
@@ -193,17 +302,17 @@ public class FragmentTab3_Bus extends Fragment {
 
     //JSON CLASS
     private class JSONParse extends AsyncTask<String, Void, String> {
-        private ProgressDialog pDialog;
+        private ProgressDialog p;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage(getString(R.string.loading));
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
+            p = new ProgressDialog(getActivity());
+            p.setMessage(getString(R.string.loading));
+            p.setIndeterminate(false);
+            p.setCancelable(true);
+            p.show();
         }
 
         @Override
@@ -269,10 +378,11 @@ public class FragmentTab3_Bus extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            pDialog.dismiss();
+            p.dismiss();
             outputText.setText(result);
             adapter_route2.notifyDataSetChanged();
-            //routeArrayAdapter.notifyDataSetChanged();
+            routeArrayAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -504,7 +614,7 @@ public class FragmentTab3_Bus extends Fragment {
             TextView txt = (TextView) view.findViewById(R.id.language_name);
             txt.setText(d.toString());
             TextView timeText = (TextView) view.findViewById(R.id.timeText);
-            timeText.setText(d.getTime());
+            timeText.setText(d.getTimeNormal());
             TextView travelText = (TextView) view.findViewById(R.id.travelText);
             travelText.setText(String.valueOf(d.getBusno()));
 
@@ -516,6 +626,8 @@ public class FragmentTab3_Bus extends Fragment {
     public void onResume()
     {   super.onResume();
         setUpMapIfNeeded();
+        setUpMap();
+
 
     }
 

@@ -59,6 +59,9 @@
     <string name="busno">Bus number:</string>
     <string name="driver">Driver:</string>
     <string name="tel">Tel:</string>
+    
+    <!-- For schedule detail page-->
+    <string name="travelTime">Approximate travel time</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

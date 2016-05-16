@@ -186,7 +186,7 @@ public class createEditRoute extends AppCompatActivity {
                     }
 
                     //STATIONS TEMP
-                    ArrayList<String> a = new ArrayList<>();
+                    ArrayList<String> a = new ArrayList<String>();
                     if(checkLanguage.contains("en")){
                         for(int c=0;c<stationEnglish1.size();c++) {
                                 a.add(stationEnglish1.get(c));
@@ -199,7 +199,7 @@ public class createEditRoute extends AppCompatActivity {
 
 
                     //STATIONS TIME
-                    ArrayList<String> b = new ArrayList<>();
+                    ArrayList<String> b = new ArrayList<String>();
                     for(int c=0;c<stationTime1.size();c++) {
                         b.add(stationTime1.get(c));
                     }
