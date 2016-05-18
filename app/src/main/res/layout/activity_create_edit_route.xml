@@ -4,13 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.bustracker.mustracker.createEditRoute"
-    android:background="@drawable/home">
+    tools:context="com.bustracker.mustracker.createEditRoute">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,29 +13,46 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <ImageButton
-            android:layout_width="60dp"
-            android:layout_height="30dp"
-            android:id="@+id/backButton"
-            android:src="@drawable/back_button"
-            android:background="#06365a"
-            android:onClick="gotochooseLanguage"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <FrameLayout
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Set Notification"
-            android:id="@+id/createEdit"
-            android:layout_below="@+id/backButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="34dp"
-            android:contextClickable="false"
-            android:textColor="#ffffff"
-            android:textSize="25dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_width="wrap_content">
+
+            <ImageView
+                android:layout_width="390dp"
+                android:layout_height="150dp"
+                android:id="@+id/imageView"
+                android:background="#06365a"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="0.46" />
+
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:id="@+id/backButton"
+                android:src="@drawable/back_button"
+                android:background="#06365a"
+                android:onClick="gotochooseLanguage"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Set Notification"
+                android:id="@+id/createEdit"
+                android:layout_below="@+id/backButton"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="34dp"
+                android:contextClickable="false"
+                android:textColor="#ffffff"
+                android:textSize="25dp"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
 
         <Spinner
             android:id="@+id/spinner_route"
@@ -49,7 +61,9 @@
             android:background="@drawable/signup_text_border"
             android:layout_marginTop="31dp"
             android:layout_below="@+id/routeStation"
-            android:layout_centerHorizontal="true"></Spinner>
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:text = "fuck"></Spinner>
 
         <Spinner
             android:id="@+id/spinner_station"
@@ -58,7 +72,8 @@
             android:background="@drawable/signup_text_border"
             android:layout_below="@+id/spinner_route"
             android:layout_alignStart="@+id/spinner_route"
-            android:layout_marginTop="20dp"></Spinner>
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"></Spinner>
 
         <Spinner
             android:id="@+id/spinner_day"
@@ -67,26 +82,39 @@
             android:background="@drawable/signup_text_border"
             android:layout_below="@+id/spinner_route"
             android:layout_alignStart="@+id/spinner_route"
-            android:layout_marginTop="20dp"></Spinner>
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"></Spinner>
 
-        <TextView
-            android:layout_width="wrap_content"
+
+        <FrameLayout
+            android:layout_width="311dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+            <TextView
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="The bus will approximately come to the station at"
             android:id="@+id/timeRob"
             android:layout_marginTop="20dp"
             android:textColor="#06365a"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:layout_marginLeft="20dp" />
 
-        <TextView
-            android:layout_width="320dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/outputText"
-            android:background="#e1dede"
-            android:textSize="14dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/outputText"
+                android:background="#e1dede"
+                android:textSize="14dp"
+                android:layout_marginLeft="20dp"
+                android:layout_gravity="right|top" />
+        </FrameLayout>
+
+
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -96,7 +124,8 @@
             android:id="@+id/time"
             android:layout_marginTop="20dp"
             android:textColor="#06365a"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:layout_marginLeft="20dp" />
 
         <TimePicker
             android:layout_width="wrap_content"
@@ -125,7 +154,8 @@
             android:id="@+id/routeStation"
             android:layout_marginTop="20dp"
             android:textColor="#06365a"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:layout_marginLeft="30dp" />
 
         <ListView
             android:layout_width="match_parent"
@@ -144,7 +174,8 @@
             android:background="@drawable/rounded_button"
             android:layout_marginTop="15dp"
             android:textColor="#ffffff"
-            android:onClick="gotoMainActivityFromRoute" />
+            android:onClick="gotoMainActivityFromRoute"
+            android:layout_marginBottom="10dp" />
 
 
     </LinearLayout>

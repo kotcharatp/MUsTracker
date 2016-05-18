@@ -69,6 +69,7 @@ public class createEditRoute extends AppCompatActivity {
         adapter_route.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         sp_route.setAdapter(adapter_route);
 
+
         //SPINNER 2
         final Spinner sp_station = (Spinner) findViewById(R.id.spinner_station);
 
