@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -30,7 +29,7 @@ public class chooseLanguage extends AppCompatActivity {
         list.add(new itemData("English",R.drawable.us_flag));
         list.add(new itemData("Thai",R.drawable.thai_flag));
         Spinner sp = (Spinner)findViewById(R.id.spinner_language);
-        final languageAdapter adapter=new languageAdapter(this,R.layout.language_layout,R.id.language_name,list);
+        final languageAdapter adapter=new languageAdapter(this,R.layout.language_layout,R.id.arriveText,list);
         sp.setAdapter(adapter);
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

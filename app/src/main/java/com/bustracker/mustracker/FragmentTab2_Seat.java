@@ -4,16 +4,16 @@ package com.bustracker.mustracker;
  * Created by kotcharat on 1/31/16.
  */
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
-import android.location.Criteria;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +39,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,178 +49,325 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 // Now is bus schedule
 public class FragmentTab2_Seat extends Fragment {
 
+    ArrayAdapter<String> adapter_route2;
+
     private static GoogleMap mMap;
-    private static Double latitude, longitude;
     ArrayAdapter<routeSchedule> routeArrayAdapter;
 
     //Array list for each route
-    public List<routeSchedule> dList;
-    public List<routeSchedule> satopaList;
+    /*public List<routeSchedule> satopaList;
     public List<routeSchedule> satosiList;
     public List<routeSchedule> phatosaList;
-    public List<routeSchedule> sitosaList;
+    public List<routeSchedule> sitosaList;*/
+    public List<routeSchedule> busSchedule;
+    public List<routeSchedule> busList;
+    public List<plotRoute> dList;
 
     ArrayList<LatLng> mMarkerPoints;
     private GoogleApiClient client;
-    View rootView;
     TextView outputText;
 
+    //URL for getting data from server
     private  static  String url = "http://bus.atilal.com/schedule.php?";
+    private static String url2 = "http://bus.atilal.com/plot_routestation.php?";
 
+    ArrayList<plotRoute> routeD = new ArrayList<plotRoute>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /*
-        View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
         outputText = (TextView) rootView.findViewById(R.id.textView);
 
+
         final Spinner routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
+
+        if(Locale.getDefault().getLanguage().contains("en")){
+            adapter_route2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
+
+        }else{
+            adapter_route2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeThai);
+
+        }
+        adapter_route2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
+        adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        routeSpinner.setAdapter(adapter_route2);
+
         final ListView mylist = (ListView) rootView.findViewById(R.id.listView);
 
         //Initialize route array list, allocate memory
-        dList = new ArrayList<routeSchedule>();
-        satopaList = new ArrayList<routeSchedule>();
+        busSchedule = new ArrayList<routeSchedule>();
+        busList = new ArrayList<routeSchedule>();
+        dList = new ArrayList<plotRoute>();
+        /*satopaList = new ArrayList<routeSchedule>();
         satosiList = new ArrayList<routeSchedule>();
         phatosaList = new ArrayList<routeSchedule>();
-        sitosaList = new ArrayList<routeSchedule>();
+        sitosaList = new ArrayList<routeSchedule>();*/
+
+        //GET JSON DATA FROM SERVER
+        new JSONParse().execute();
+
+
+        /*for (int j = 0; j < routeD.size(); j++) {
+            if (routeD.get(j).getRoute().equals("Salaya to Phayathai")) {
+                dList.add(routeD.get(j));
+                Log.d("listsize", String.valueOf(dList.size()));
+            }
+        }
+        int k;
+        for (k = 0; k < busSchedule.size(); k++) {
+            if (busSchedule.get(k).getRoute().equals("Salaya to Phayathai")) {
+                busList.add(busSchedule.get(k));
+            }
+        }
+
+        plotRouteStation(dList);*/
+
+        routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
+        routeArrayAdapter.notifyDataSetChanged();
+        mylist.setAdapter(routeArrayAdapter);
+
+        mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int temp = position;
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setPositiveButton("Add to notify route", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), createEditRoute.class);
+                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("driver", busList.get(temp).getDriver());
+                        intent.putExtra("phoneNum", busList.get(temp).getTel());
+                        intent.putExtra("route_name", busList.get(temp).getRoute());
+
+                        startActivity(intent);
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("View schedule details", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Intent intent = new Intent(getActivity(), schedule_details.class);
+                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("driver", busList.get(temp).getDriver());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("phoneNum", busList.get(temp).getTel());
+                        intent.putExtra("route_name", busList.get(temp).getRoute());
+
+                        startActivity(intent);
+                    }
+                });
+                alertDialogBuilder.setCancelable(true);
+                alertDialogBuilder.setMessage("Do you want to view the bus schedule details or add notification to this route?");
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+            }
+        });
 
         routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if (routeSpinner.getSelectedItemPosition() == 0) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satopaList);
-                }
+                busList.clear();
+                dList.clear();
 
-                if (routeSpinner.getSelectedItemPosition() == 1) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satopaList);
+                for (int i = 0; i < MainActivity.routeEnglish.size(); i++) {
+                    if (routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i))) {
+                        for (int j = 0; j < routeD.size(); j++) {
+                            if (routeD.get(j).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
+                                dList.add(routeD.get(j));
+                            }
+                        }
 
-                }
+                        for (int k = 0; k < busSchedule.size(); k++) {
+                            if (busSchedule.get(k).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
+                                busList.add(busSchedule.get(k));
+                            }
+                        }
+                        /*
+                        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                            @Override
+                            public void onInfoWindowClick(Marker marker) {
+                                for (int k = 0; k < busList.size(); k++) {
+                                    startActivity(new Intent(getActivity(), schedule_details.class));
+                                    Intent intent = new Intent(getActivity(), schedule_details.class);
+                                    intent.putExtra("time", busSchedule.get(k).getTime());
+                                    intent.putExtra("bus_num", busSchedule.get(k).getBusno());
+                                    intent.putExtra("phoneNum", busSchedule.get(k).getTel());
+                                    intent.putExtra("route_name", busSchedule.get(k).getRoute());
+                                }
+                            }
+                        });*/
 
-                if (routeSpinner.getSelectedItemPosition() == 2) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, satosiList);
-
-                }
-                if (routeSpinner.getSelectedItemPosition() == 3) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, phatosaList);
-                }
-                if (routeSpinner.getSelectedItemPosition() == 4) {
-                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, sitosaList);
+                        mMap.clear();
+                        setUpMap();
+                        plotRouteStation(dList);
+                        routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
+                        routeArrayAdapter.notifyDataSetChanged();
+                    }
+                    dList.clear();
                 }
                 mylist.setAdapter(routeArrayAdapter);
+
 
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        latitude = 13.792686;
-        longitude = 100.326425;
+/*
+        mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int temp = position;
 
-        setUpMapIfNeeded();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                alertDialogBuilder.setPositiveButton("Add to notify route", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), createEditRoute.class);
+                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("driver", busList.get(temp).getDriver());
+                        intent.putExtra("phoneNum", busList.get(temp).getTel());
+                        intent.putExtra("route_name", busList.get(temp).getRoute());
+                        startActivity(intent);
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("View schedule details", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                        Intent intent = new Intent(getActivity(), schedule_details.class);
+                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("driver", busList.get(temp).getDriver());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("phoneNum", busList.get(temp).getTel());
+
+                        intent.putExtra("route_name", busList.get(temp).getRoute());
+                        startActivity(intent);
+                    }
+                });
+                alertDialogBuilder.setCancelable(true);
+                alertDialogBuilder.setMessage("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
+                        "Aenean commodo ligula eget dolor. Aenean massa. ");
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+            }
+        });*/
+
+        return rootView;
+    }
+
+    private void plotRouteStation(List<plotRoute> data){
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
 
         if (status != ConnectionResult.SUCCESS) { // Google Play Services are not available
-
             int requestCode = 10;
             Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this.getActivity(), requestCode);
             dialog.show();
 
         } else { // Google Play Services are available
-
             // Initializing
             mMarkerPoints = new ArrayList<LatLng>();
 
-            //setUpMapIfNeeded();
-
-            // Getting LocationManager object from System Service LOCATION_SERVICE
-            //LocationManager locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
-
-            // Creating a criteria object to retrieve provider
-            //Criteria criteria = new Criteria();
-
-            // Getting the name of the best provider
-            //String provider = locationManager.getBestProvider(criteria, true);
-
             client = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.API).build();
 
-            LatLng startPoint = new LatLng(13.792686, 100.326425);
-            LatLng endPoint = new LatLng(13.782057, 100.417540);
-            LatLng endPoint2 = new LatLng(13.764905, 100.526270);
-            drawMarker(startPoint);
-            drawMarker(endPoint);
-            drawMarker(endPoint2);
+            for(int i=0; i<data.size(); i++){
 
-            LatLng origin = mMarkerPoints.get(0);
-            LatLng dest1 = mMarkerPoints.get(1);
-            LatLng dest2 = mMarkerPoints.get(2);
+                drawMarker(data.get(i).getPosition(), data.get(i).getTitle(), data.get(i).getSnip());
 
-            // Getting URL to the Google Directions API
-            String url = getDirectionsUrl(origin, dest1);
-            DownloadTask downloadTask = new DownloadTask();
+                if(i!=data.size()-1) {
+                    LatLng startPoint = data.get(i).getPosition();
+                    LatLng endPoint = data.get(i + 1).getPosition();
+                    String url = getDirectionsUrl(startPoint, endPoint);
+                    DownloadTask downloadTask = new DownloadTask();
+                    downloadTask.execute(url);
+                }
 
-            // Start downloading json data from Google Directions API
-            downloadTask.execute(url);
-
-            String url2 = getDirectionsUrl(dest1, dest2);
-            DownloadTask downloadTask2 = new DownloadTask();
-            downloadTask2.execute(url2);
+            }
 
         }
-
-        //GET JSON DATA FROM SERVER
-        new JSONParse().execute();
-        */
-        return rootView;
-
     }
 
     //JSON CLASS
     private class JSONParse extends AsyncTask<String, Void, String> {
-        private ProgressDialog pDialog;
+        private ProgressDialog p;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage(getString(R.string.loading));
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
+            p = new ProgressDialog(getActivity());
+            p.setMessage(getString(R.string.loading));
+            p.setIndeterminate(false);
+            p.setCancelable(true);
+            p.show();
         }
 
         @Override
         protected String doInBackground(String... args) {
             StringBuilder sb = new StringBuilder();
             String content = MyHttpURL.getData(url);
+            String contentRoute = MyHttpURL.getData(url2);
+
             try {
                 JSONObject obj = new JSONObject(content);
                 JSONArray station = obj.getJSONArray("station");
+
                 for (int i = 0; i < station.length(); i++) {
                     JSONObject info = (JSONObject) station.get(i);
 
-                    String route = info.getString("route_name");
-                    if (route.equals("Salaya-Phayathai")) {
-                        satopaList.add(new routeSchedule(route, info.getString("driver_name"),
+                    String routeS = info.getString("route_name");
+                    String driver = info.getString("driver_name");
+                    String driver_thai = info.getString("driver_Thai");
+                    String phone = info.getString("phoneNum");
+                    String time = info.getString("time");
+                    int busnum = info.getInt("bus_num");
+
+                    busSchedule.add(new routeSchedule(routeS, driver, driver_thai, time, phone, busnum));
+
+                    /*
+
+                    if (routeS.equals("Salaya-Phayathai")) {
+                        satopaList.add(new routeSchedule(routeS, info.getString("driver_name"),
                                 info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(route.equals("Salaya-Siriraj")) {
-                        satosiList.add(new routeSchedule(route, info.getString("driver_name"),
+                    } else if(routeS.equals("Salaya-Siriraj")) {
+                        satosiList.add(new routeSchedule(routeS, info.getString("driver_name"),
                                 info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(route.equals("Phayathai-Salaya")) {
-                        phatosaList.add(new routeSchedule(route, info.getString("driver_name"),
+                    } else if(routeS.equals("Phayathai-Salaya")) {
+                        phatosaList.add(new routeSchedule(routeS, info.getString("driver_name"),
                                 info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(route.equals("Siriraj-Salaya")) {
-                        sitosaList.add(new routeSchedule(route, info.getString("driver_name"),
+                    } else if(routeS.equals("Siriraj-Salaya")) {
+                        sitosaList.add(new routeSchedule(routeS, info.getString("driver_name"),
                                 info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    }
+                    }*/
+                }
+
+                //For getting route and station lat long from phpmyadmin
+                JSONObject objRoute = new JSONObject(contentRoute);
+                JSONArray routeDrop = objRoute.getJSONArray("station");
+
+                for (int i = 0; i < routeDrop.length(); i++){
+                    JSONObject info = (JSONObject) routeDrop.get(i);
+
+                    String route = info.getString("route");
+                    LatLng point = new LatLng(info.getDouble("latitude"), info.getDouble("longitude"));
+                    String title = info.getString("station");
+                    String snip = info.getString("station_thai");
+
+                    MainActivity.plotData.add(new plotRoute(route, point, title, snip));
+                    routeD.add(new plotRoute(route, point, title, snip));
                 }
 
                 return sb.toString();
@@ -233,8 +379,11 @@ public class FragmentTab2_Seat extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            pDialog.dismiss();
+            p.dismiss();
             outputText.setText(result);
+            adapter_route2.notifyDataSetChanged();
+            routeArrayAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -390,7 +539,7 @@ public class FragmentTab2_Seat extends Fragment {
         }
     }
 
-    private void drawMarker(LatLng point) {
+    private void drawMarker(LatLng point, String title, String snip) {
         mMarkerPoints.add(point);
 
         // Creating MarkerOptions
@@ -405,13 +554,13 @@ public class FragmentTab2_Seat extends Fragment {
          */
         if (mMarkerPoints.size() == 1) {
             options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        } else if (mMarkerPoints.size() == 2) {
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
         } else {
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
         }
 
         // Add new marker to the Google Map Android API V2
+        options.title(title).snippet(snip);
+
         mMap.addMarker(options);
     }
 
@@ -433,14 +582,15 @@ public class FragmentTab2_Seat extends Fragment {
         mMap.setTrafficEnabled(true);
 
         // For dropping a marker at a point on the Map
+        /*
         mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
                 .title(MainActivity.getContext().getResources().getString(R.string.mahidol))
                 .snippet(MainActivity.getContext().getResources().getString(R.string.start))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        */
 
         // For zooming automatically to the Dropped PIN Location
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(13.791393, 100.349620), 13.0f));
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
     }
@@ -462,10 +612,10 @@ public class FragmentTab2_Seat extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_layout, null);
 
-            TextView txt = (TextView) view.findViewById(R.id.language_name);
+            TextView txt = (TextView) view.findViewById(R.id.arriveText);
             txt.setText(d.toString());
-            TextView timeText = (TextView) view.findViewById(R.id.timeText);
-            timeText.setText(d.getTime());
+            TextView timeText = (TextView) view.findViewById(R.id.stationText);
+            timeText.setText(d.getTimeNormal());
             TextView travelText = (TextView) view.findViewById(R.id.travelText);
             travelText.setText(String.valueOf(d.getBusno()));
 
@@ -477,6 +627,9 @@ public class FragmentTab2_Seat extends Fragment {
     public void onResume()
     {   super.onResume();
         setUpMapIfNeeded();
+        setUpMap();
+
+
     }
 
     @Override

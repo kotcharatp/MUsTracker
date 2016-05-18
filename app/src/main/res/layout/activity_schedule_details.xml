@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/travelText"
-        android:textSize="60dp"
+        android:textSize="50dp"
         android:gravity="center_vertical|center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
@@ -43,19 +43,20 @@
         android:text="@string/travelTime"
         android:id="@+id/textView3"
         android:textColor="#ffffff"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:contextClickable="false"
         android:layout_below="@+id/travelText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp" />
+        android:layout_marginTop="10dp" />
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/call"
         android:src="@drawable/phone"
         android:layout_below="@+id/imageView"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,7 +78,11 @@
         android:id="@+id/myList"
         android:layout_below="@+id/detail"
         android:layout_alignParentStart="true"
-        android:clickable="false"/>
+        android:clickable="false"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+
+        />
 
 
 </RelativeLayout>

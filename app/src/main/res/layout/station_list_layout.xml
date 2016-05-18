@@ -4,13 +4,12 @@
     android:padding="10dp">
 
     <TextView
-        android:layout_width="70dp"
+        android:layout_width="220dp"
         android:layout_height="50dp"
         android:id="@+id/stationText"
         android:minHeight="50dp"
         android:minWidth="50dp"
-        android:textAlignment="center"
-        android:textSize="27dp"
+        android:textSize="30dp"
         android:textStyle="bold"
         android:textColor="#06365a" />
 
@@ -22,22 +21,9 @@
         android:layout_alignTop="@+id/stationText"
         android:layout_toEndOf="@+id/stationText"
         android:minHeight="50dp"
+        android:textSize="25dp"
         android:layout_marginLeft="20dp"
         android:textColor="#0b5c94"
         android:textAlignment="gravity" />
 
-    <TextView
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:id="@+id/travelText"
-        android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/arriveText"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/arriveText"
-        android:minHeight="50dp"
-        android:minWidth="50dp"
-        android:textAlignment="center"
-        android:textSize="27dp"
-        android:textStyle="bold"
-        android:textColor="#06365a"/>
 </RelativeLayout>

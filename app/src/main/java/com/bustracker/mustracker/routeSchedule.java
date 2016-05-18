@@ -2,9 +2,12 @@ package com.bustracker.mustracker;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
+
 import com.bustracker.mustracker.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by kotcharat on 2/3/16.
@@ -67,6 +70,7 @@ public class routeSchedule {
     private String route;
     private String station;
     private String driver;
+    private String driverThai;
     private String time;
     private String tel;
     private int busno;
@@ -76,9 +80,10 @@ public class routeSchedule {
     private String telText;
 
 
-    public routeSchedule(String route, String driver, String time, String tel, int busno){
+    public routeSchedule(String route, String driver, String driverThai, String time, String tel, int busno){
         this.route = route;
         this.driver = driver;
+        this.driverThai = driverThai;
         this.tel = tel;
         this.time = time;
         this.busno =busno;
@@ -108,8 +113,19 @@ public class routeSchedule {
         driverText = MainActivity.getContext().getResources().getString(R.string.driver);
         telText = MainActivity.getContext().getResources().getString(R.string.tel);
 
+        String driverLanguage = new String();
+
+        //Log.d("Language ", MainActivity.getContext().getResources().getConfiguration().locale.getLanguage());
+        String language = MainActivity.getContext().getResources().getConfiguration().locale.getLanguage();
+        //For make driver name Thai in case the user choose thai language
+        if(language.contains("en")){
+            driverLanguage = driver;
+        } else{
+            driverLanguage = driverThai;
+        }
+
         return busnoText +" "+ busno + "\n" +
-                driverText +" "+ driver + "\n" +
+                driverText +" "+ driverLanguage + "\n" +
                 telText +" "+ tel;
     }
 }

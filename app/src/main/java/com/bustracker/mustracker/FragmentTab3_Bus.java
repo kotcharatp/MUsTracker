@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,7 +33,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -51,10 +48,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 // Now is bus schedule
 public class FragmentTab3_Bus extends Fragment {
@@ -71,6 +65,7 @@ public class FragmentTab3_Bus extends Fragment {
     public List<routeSchedule> sitosaList;*/
     public List<routeSchedule> busSchedule;
     public List<routeSchedule> busList;
+    public List<plotRoute> dList;
 
     ArrayList<LatLng> mMarkerPoints;
     private GoogleApiClient client;
@@ -82,15 +77,28 @@ public class FragmentTab3_Bus extends Fragment {
 
     ArrayList<plotRoute> routeD = new ArrayList<plotRoute>();
 
-
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
         outputText = (TextView) rootView.findViewById(R.id.textView);
 
+        //GET JSON DATA FROM SERVER
+        new JSONParse().execute();
 
         final Spinner routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
-        adapter_route2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
+
+        /*ArrayList<String> res;
+        String lan = getResources().getConfiguration().locale.getLanguage();
+        //Change language according to the language setting
+        Log.d("Language at bus", getResources().getConfiguration().locale.getLanguage());
+        if(lan.equals("en")){
+            res = MainActivity.routeEnglish;
+        } else {
+            res = MainActivity.routeThai;
+        }
+
+        adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, res);*/
+        adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
         adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         routeSpinner.setAdapter(adapter_route2);
 
@@ -99,29 +107,8 @@ public class FragmentTab3_Bus extends Fragment {
         //Initialize route array list, allocate memory
         busSchedule = new ArrayList<routeSchedule>();
         busList = new ArrayList<routeSchedule>();
-        /*satopaList = new ArrayList<routeSchedule>();
-        satosiList = new ArrayList<routeSchedule>();
-        phatosaList = new ArrayList<routeSchedule>();
-        sitosaList = new ArrayList<routeSchedule>();*/
+        dList = new ArrayList<plotRoute>();
 
-        //GET JSON DATA FROM SERVER
-        new JSONParse().execute();
-
-        final List<plotRoute> dList = new ArrayList<plotRoute>();
-
-        for (int j = 0; j < routeD.size(); j++) {
-            if (routeD.get(j).getRoute().equals("Salaya to Phayathai")) {
-                dList.add(routeD.get(j));
-            }
-        }
-        int k;
-        for (k = 0; k < busSchedule.size(); k++) {
-            if (busSchedule.get(k).getRoute().equals("Salaya to Phayathai")) {
-                busList.add(busSchedule.get(k));
-            }
-        }
-
-        plotRouteStation(dList);
         routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
         routeArrayAdapter.notifyDataSetChanged();
         mylist.setAdapter(routeArrayAdapter);
@@ -136,13 +123,11 @@ public class FragmentTab3_Bus extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), createEditRoute.class);
-                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("time", busList.get(temp).getTimeNormal());
                         intent.putExtra("bus_num", busList.get(temp).getBusno());
                         intent.putExtra("driver", busList.get(temp).getDriver());
                         intent.putExtra("phoneNum", busList.get(temp).getTel());
                         intent.putExtra("route_name", busList.get(temp).getRoute());
-                        intent.putStringArrayListExtra("stationList", (ArrayList) dList);
-                        Log.d("listsize", String.valueOf(dList.size()));
 
                         startActivity(intent);
                     }
@@ -152,20 +137,17 @@ public class FragmentTab3_Bus extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         Intent intent = new Intent(getActivity(), schedule_details.class);
-                        intent.putExtra("time", busList.get(temp).getTime());
+                        intent.putExtra("time", busList.get(temp).getTimeNormal());
                         intent.putExtra("driver", busList.get(temp).getDriver());
                         intent.putExtra("bus_num", busList.get(temp).getBusno());
                         intent.putExtra("phoneNum", busList.get(temp).getTel());
                         intent.putExtra("route_name", busList.get(temp).getRoute());
 
-                        intent.putStringArrayListExtra("stationList", (ArrayList) dList);
-                        Log.d("listsize", String.valueOf(dList.size()));
                         startActivity(intent);
                     }
                 });
                 alertDialogBuilder.setCancelable(true);
-                alertDialogBuilder.setMessage("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
-                        "Aenean commodo ligula eget dolor. Aenean massa. ");
+                alertDialogBuilder.setMessage("Do you want to view the bus schedule details or add notification to this route?");
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
 
@@ -180,7 +162,7 @@ public class FragmentTab3_Bus extends Fragment {
                 dList.clear();
 
                 for (int i = 0; i < MainActivity.routeEnglish.size(); i++) {
-                    if (routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i))) {
+                    if (routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i)) || routeSpinner.getSelectedItem().toString().equals(MainActivity.routeThai.get(i))) {
                         for (int j = 0; j < routeD.size(); j++) {
                             if (routeD.get(j).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
                                 dList.add(routeD.get(j));
@@ -330,11 +312,12 @@ public class FragmentTab3_Bus extends Fragment {
 
                     String routeS = info.getString("route_name");
                     String driver = info.getString("driver_name");
+                    String driver_thai = info.getString("driver_Thai");
                     String phone = info.getString("phoneNum");
                     String time = info.getString("time");
                     int busnum = info.getInt("bus_num");
 
-                    busSchedule.add(new routeSchedule(routeS, driver, time, phone, busnum));
+                    busSchedule.add(new routeSchedule(routeS, driver, driver_thai, time, phone, busnum));
 
                     /*
 
@@ -611,9 +594,9 @@ public class FragmentTab3_Bus extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_layout, null);
 
-            TextView txt = (TextView) view.findViewById(R.id.language_name);
+            TextView txt = (TextView) view.findViewById(R.id.arriveText);
             txt.setText(d.toString());
-            TextView timeText = (TextView) view.findViewById(R.id.timeText);
+            TextView timeText = (TextView) view.findViewById(R.id.stationText);
             timeText.setText(d.getTimeNormal());
             TextView travelText = (TextView) view.findViewById(R.id.travelText);
             travelText.setText(String.valueOf(d.getBusno()));

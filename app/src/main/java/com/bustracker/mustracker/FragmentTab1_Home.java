@@ -238,7 +238,6 @@ public class FragmentTab1_Home extends Fragment {
 
                     routeD.add(new plotRoute(route, point, stationEng, stationThai));
                 }
-                Log.d("dList size at JSON", String.valueOf(routeD.size()));
 
                 /*JSONObject objPlot = new JSONObject(contentRoute);
                 JSONArray plot = objPlot.getJSONArray("station");

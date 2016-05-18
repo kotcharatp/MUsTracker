@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class languageAdapter extends ArrayAdapter<itemData> {
         View itemView=inflater.inflate(groupid,parent,false);
         ImageView imageView=(ImageView)itemView.findViewById(R.id.flag);
         imageView.setImageResource(list.get(position).getImageId());
-        TextView textView=(TextView)itemView.findViewById(R.id.language_name);
+        TextView textView=(TextView)itemView.findViewById(R.id.arriveText);
         textView.setText(list.get(position).getText());
         return itemView;
     }

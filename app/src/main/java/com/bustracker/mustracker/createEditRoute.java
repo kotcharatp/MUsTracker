@@ -56,7 +56,7 @@ public class createEditRoute extends AppCompatActivity {
 
         //GET INTENT FROM CHOOSELANGUAGE ACTIVITY
         Intent i = getIntent();
-        checkLanguage = i.getExtras().getString("language");
+        checkLanguage = getResources().getConfiguration().locale.getLanguage();
 
         //SPINNER 1
         final Spinner sp_route = (Spinner) findViewById(R.id.spinner_route);
