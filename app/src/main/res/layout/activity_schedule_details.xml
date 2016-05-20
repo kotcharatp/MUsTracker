@@ -3,24 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background = "#E6000000"
+    android:id="@+id/mainlayout"
 
     tools:context="com.bustracker.mustracker.schedule_details">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="195dp"
+        android:layout_height="390dp"
         android:id="@+id/imageView"
-        android:background="#06365a"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageButton
-        android:layout_width="60dp"
-        android:layout_height="30dp"
-        android:id="@+id/backButton"
-        android:src="@drawable/back_button"
-        android:background="#06365a"
-        android:layout_alignParentTop="true"
+        android:background="#FFFFFF"
+        android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -28,13 +21,15 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/travelText"
-        android:textSize="50dp"
+        android:textSize="45dp"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:textColor="#ffffff"
-        android:layout_marginTop="35dp"
-        android:text="test" />
+        android:textColor="@color/colorPrimaryDark"
+        android:text="test"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="185dp"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,47 +37,65 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/travelTime"
         android:id="@+id/textView3"
-        android:textColor="#ffffff"
-        android:textSize="25dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22dp"
         android:contextClickable="false"
         android:layout_below="@+id/travelText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/call"
         android:src="@drawable/phone"
-        android:layout_below="@+id/imageView"
-        android:layout_alignEnd="@+id/textView3"
-        android:layout_marginTop="10dp" />
+        android:layout_alignTop="@+id/detail"
+        android:layout_alignEnd="@+id/textView3" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="New Text"
         android:id="@+id/detail"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/call"
         android:textColor="#0b5c94"
         android:textSize="20dp"
-        android:layout_toStartOf="@+id/call"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp" />
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="15dp"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_toStartOf="@+id/call" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/myList"
-        android:layout_below="@+id/detail"
-        android:layout_alignParentStart="true"
+        android:textColor="@color/colorPrimaryDark"
         android:clickable="false"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
+        android:divider="@color/colorPrimary"
+        android:layout_below="@+id/call"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="7dp"
+        android:layout_alignBottom="@+id/imageView" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_below="@+id/imageView"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignStart="@+id/detail"
+        android:text="@string/tapanywhere"
+        android:textColor="#A9A9A9"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="20dp"
         />
+
+    <ImageView
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:id="@+id/busImg"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp" />
 
 
 </RelativeLayout>

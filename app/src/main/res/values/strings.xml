@@ -62,6 +62,7 @@
     
     <!-- For schedule detail page-->
     <string name="travelTime">Approximate travel time</string>
+    <string name="tapanywhere">Tap anywhere to dismiss</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

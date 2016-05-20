@@ -40,7 +40,7 @@
     <string name="TheBus">รถประจำทางจะมาถึงประมาณ</string>
     <string name="SetNotiTime">ตั้งเวลาการแจ้งเตือน</string>
     <string name="yourRouteStation">เส้นทางและสถานีสำหรับแจ้งเตือน</string>
-
+    <string name="tapanywhere">กดที่ไหนก็ได้เพื่อปิด</string>
 
 
 </resources>

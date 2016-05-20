@@ -5,10 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +20,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -26,7 +32,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class schedule_details extends ActionBarActivity {
+public class schedule_details extends Activity {
 
     public String route;
     public String time;
@@ -40,6 +46,9 @@ public class schedule_details extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_details);
 
+        //GET JSON DATA FROM SERVER
+        new JSONParse().execute();
+
         stationList = new ArrayList<stationClass>();
 
         travelText = (TextView) findViewById(R.id.travelText);
@@ -49,18 +58,29 @@ public class schedule_details extends ActionBarActivity {
         time = intent.getStringExtra("time");
         String driver = intent.getStringExtra("driver");
         route = intent.getStringExtra("route_name");
+        int busno = intent.getIntExtra("bus_num", 0);
         final String phone = intent.getStringExtra("phoneNum");
 
-        ImageButton back = (ImageButton) findViewById(R.id.backButton);
-        back.setOnClickListener(new View.OnClickListener() {
+
+        ImageView busImg = (ImageView) findViewById(R.id.busImg);
+        String uri = "@drawable/" + "no_" + String.valueOf(busno);
+        Log.d("Bus no", String.valueOf(busno));
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        busImg.setImageDrawable(res);
+
+
+        RelativeLayout rlayout = (RelativeLayout) findViewById(R.id.mainlayout);
+        rlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
+
         });
 
         TextView travelText = (TextView) findViewById(R.id.travelText);
-        travelText.setText("30 minutes");
+        travelText.setText("30 mins");
 
         TextView detail = (TextView) findViewById(R.id.detail);
         detail.setText(getString(R.string.driver) + "  " + driver + "\n" +
@@ -78,9 +98,6 @@ public class schedule_details extends ActionBarActivity {
                 }
             }
         });
-
-        //GET JSON DATA FROM SERVER
-        new JSONParse().execute();
 
         final ListView mylist = (ListView) findViewById(R.id.myList);
         stationClassArrayAdapter = new StationArrayAdapter(this, 0, stationList);
@@ -151,9 +168,7 @@ public class schedule_details extends ActionBarActivity {
                     String timeLeave = info.getString("time_leave");
                     String timeTravel = info.getString("time_travel");
 
-                    Log.d("time from schedule", time);
                     if(route.equals(routeGet) && time.equals(timeLeave)){
-                        Log.d("hello", "1");
                         stationList.add(new stationClass(station, day, timeLeave, timeTravel));
                     }
                 }

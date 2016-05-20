@@ -124,7 +124,7 @@ public class FragmentTab3_Bus extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), createEditRoute.class);
                         intent.putExtra("time", busList.get(temp).getTimeNormal());
-                        intent.putExtra("bus_num", busList.get(temp).getBusno());
+                        intent.putExtra("ƒ", busList.get(temp).getBusno());
                         intent.putExtra("driver", busList.get(temp).getDriver());
                         intent.putExtra("phoneNum", busList.get(temp).getTel());
                         intent.putExtra("route_name", busList.get(temp).getRoute());
@@ -194,6 +194,7 @@ public class FragmentTab3_Bus extends Fragment {
                         plotRouteStation(dList);
                         routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
                         routeArrayAdapter.notifyDataSetChanged();
+
                     }
                     dList.clear();
                 }
@@ -557,7 +558,7 @@ public class FragmentTab3_Bus extends Fragment {
         }
     }
 
-    private static void setUpMap() {
+    private void setUpMap() {
         // For showing a move to my loction button
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -603,15 +604,6 @@ public class FragmentTab3_Bus extends Fragment {
 
             return view;
         }
-    }
-
-    @Override
-    public void onResume()
-    {   super.onResume();
-        setUpMapIfNeeded();
-        setUpMap();
-
-
     }
 
     @Override
