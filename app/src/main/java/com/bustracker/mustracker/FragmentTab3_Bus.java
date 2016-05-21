@@ -63,13 +63,12 @@ public class FragmentTab3_Bus extends Fragment {
     public List<routeSchedule> satosiList;
     public List<routeSchedule> phatosaList;
     public List<routeSchedule> sitosaList;*/
-    public List<routeSchedule> busSchedule;
-    public List<routeSchedule> busList;
+    public List<routeSchedule> busSchedule, busList;
     public List<plotRoute> dList;
 
     ArrayList<LatLng> mMarkerPoints;
     private GoogleApiClient client;
-    TextView outputText;
+    TextView outputText, totalRoute;
 
     //URL for getting data from server
     private  static  String url = "http://bus.atilal.com/schedule.php?";
@@ -81,6 +80,7 @@ public class FragmentTab3_Bus extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
         outputText = (TextView) rootView.findViewById(R.id.textView);
+        totalRoute = (TextView) rootView.findViewById(R.id.totalRoute);
 
         //GET JSON DATA FROM SERVER
         new JSONParse().execute();
@@ -194,6 +194,7 @@ public class FragmentTab3_Bus extends Fragment {
                         plotRouteStation(dList);
                         routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
                         routeArrayAdapter.notifyDataSetChanged();
+                        totalRoute.setText(getResources().getString(R.string.numberroute) + " " + busList.size());
 
                     }
                     dList.clear();
@@ -366,7 +367,6 @@ public class FragmentTab3_Bus extends Fragment {
             outputText.setText(result);
             adapter_route2.notifyDataSetChanged();
             routeArrayAdapter.notifyDataSetChanged();
-
         }
     }
 

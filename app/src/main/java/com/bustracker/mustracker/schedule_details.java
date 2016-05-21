@@ -2,6 +2,7 @@ package com.bustracker.mustracker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,7 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class schedule_details extends Activity {
@@ -38,7 +41,9 @@ public class schedule_details extends Activity {
     public String time;
     TextView travelText;
     public List<stationClass> stationList;
+    public List<stationClass> stationNotday;
     ArrayAdapter<stationClass> stationClassArrayAdapter;
+    String travelMin;
 
 
     @Override
@@ -50,6 +55,7 @@ public class schedule_details extends Activity {
         new JSONParse().execute();
 
         stationList = new ArrayList<stationClass>();
+        stationNotday = new ArrayList<stationClass>();
 
         travelText = (TextView) findViewById(R.id.travelText);
 
@@ -80,7 +86,7 @@ public class schedule_details extends Activity {
         });
 
         TextView travelText = (TextView) findViewById(R.id.travelText);
-        travelText.setText("30 mins");
+        //travelText.setText("30 mins");
 
         TextView detail = (TextView) findViewById(R.id.detail);
         detail.setText(getString(R.string.driver) + "  " + driver + "\n" +
@@ -100,7 +106,10 @@ public class schedule_details extends Activity {
         });
 
         final ListView mylist = (ListView) findViewById(R.id.myList);
-        stationClassArrayAdapter = new StationArrayAdapter(this, 0, stationList);
+        if(stationList.size()==0){
+            stationClassArrayAdapter = new StationArrayAdapter(this, 0, stationNotday);
+        } else stationClassArrayAdapter = new StationArrayAdapter(this, 0, stationList);
+
         stationClassArrayAdapter.notifyDataSetChanged();
         mylist.setAdapter(stationClassArrayAdapter);
 
@@ -135,17 +144,17 @@ public class schedule_details extends Activity {
 
     //JSON CLASS
     class JSONParse extends AsyncTask<String, Void, String> {
-        //private ProgressDialog p;
+        ProgressDialog p;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-        /*p = new ProgressDialog(this);
+        p = new ProgressDialog(schedule_details.this);
         p.setMessage(getString(R.string.loading));
         p.setIndeterminate(false);
         p.setCancelable(true);
-        p.show();*/
+        p.show();
         }
 
         @Override
@@ -168,9 +177,24 @@ public class schedule_details extends Activity {
                     String timeLeave = info.getString("time_leave");
                     String timeTravel = info.getString("time_travel");
 
-                    if(route.equals(routeGet) && time.equals(timeLeave)){
-                        stationList.add(new stationClass(station, day, timeLeave, timeTravel));
-                    }
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+                    Date d = new Date();
+                    String dayOfTheWeek = sdf.format(d);
+                    Log.d("day", dayOfTheWeek);
+
+                    //dayOfTheWeek.equals(day);
+
+                        if(route.equals(routeGet) && time.equals(timeLeave)){
+                            if(!station.isEmpty()) {
+                                if(day.equals(dayOfTheWeek)) {
+                                    stationList.add(new stationClass(station, day, timeLeave, timeTravel));
+                                }else if(day.equals("Monday")) {
+                                    stationNotday.add(new stationClass(station, day, timeLeave, timeTravel));
+                                }
+                            }
+                            else if(station.isEmpty() && day.equals(dayOfTheWeek)) travelMin = timeTravel + " " + getResources().getString(R.string.minute);
+                            else if(station.isEmpty() && day.equals("Monday")) travelMin = timeTravel + " " + getResources().getString(R.string.minute);
+                        }
                 }
 
                 return sb.toString();
@@ -183,6 +207,7 @@ public class schedule_details extends Activity {
         @Override
         protected void onPostExecute(String result) {
             stationClassArrayAdapter.notifyDataSetChanged();
+            travelText.setText(travelMin);
 
         }
     }
@@ -209,7 +234,7 @@ public class schedule_details extends Activity {
             timeText.setText(d.getStation());
 
             TextView arriveText = (TextView) view.findViewById(R.id.arriveText);
-            arriveText.setText(d.getTime_leave());
+            arriveText.setText(d.getTime_travel());
 
             return view;
         }
