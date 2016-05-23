@@ -67,12 +67,10 @@
             android:name=".createEditRoute"
             android:label="@string/title_activity_create_edit_route"
             android:theme="@style/AppTheme" />
-
-        <activity android:name=".schedule_details">
-
-
-
-        </activity>
+        <activity android:name=".schedule_details"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

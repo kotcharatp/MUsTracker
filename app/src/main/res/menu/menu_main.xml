@@ -3,5 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.bustracker.mustracker.MainActivity">
 
+    <item
+        android:id="@+id/preferences"
+        android:title="Preferences" />
 
 </menu>

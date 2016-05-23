@@ -208,6 +208,7 @@ public class schedule_details extends Activity {
         protected void onPostExecute(String result) {
             stationClassArrayAdapter.notifyDataSetChanged();
             travelText.setText(travelMin);
+            p.dismiss();
 
         }
     }
