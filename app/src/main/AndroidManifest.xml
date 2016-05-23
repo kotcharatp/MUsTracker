@@ -38,7 +38,6 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -59,12 +58,28 @@
         <activity
             android:name=".signup_page"
             android:label="@string/title_activity_signup_page"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
+
+        <!-- SET NOTIFICATION -->
         <activity
             android:name=".createEditRoute"
             android:label="@string/title_activity_create_edit_route"
             android:theme="@style/AppTheme" />
-        <activity android:name=".schedule_details"></activity>
+        <activity android:name=".schedule_details" />
+
+        <!-- CHOOSE DAY SUB OF SET NOTIFICATION-->
+        <activity
+            android:name=".chooseDay"
+            android:label="@string/title_activity_choose_day"
+            android:theme="@style/AppTheme" />
+
+        <!-- NAVIGATION SETTING: SLIDE BAR-->
+        <activity
+            android:name=".NavigationSetting"
+            android:label="@string/title_activity_navigation_setting"
+            android:theme="@style/AppTheme">
+
+        </activity>
     </application>
 
 </manifest>

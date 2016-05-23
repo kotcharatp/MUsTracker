@@ -11,7 +11,7 @@
         android:id="@+id/map_home"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="400dp"
-        android:layout_height="300dp"
+        android:layout_height="280dp"
         tools:context="com.bustracker.mustracker.MapsActivity"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
@@ -25,7 +25,8 @@
         android:gravity="center_vertical|center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -67,10 +68,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/buswill"
         android:id="@+id/textView3"
-        android:layout_below="@+id/timer"
-        android:layout_centerHorizontal="true"
         android:textColor="#ffffff"
         android:textSize="20dp"
-        android:contextClickable="false" />
+        android:contextClickable="false"
+        android:layout_below="@+id/timer"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
