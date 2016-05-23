@@ -59,6 +59,12 @@
     <string name="busno">Bus number:</string>
     <string name="driver">Driver:</string>
     <string name="tel">Tel:</string>
+    <string name="numberroute">Total round</string>
+    
+    <!-- For schedule detail page-->
+    <string name="travelTime">Approximate travel time</string>
+    <string name="tapanywhere">Tap anywhere to dismiss</string>
+    <string name="minute">minutes</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

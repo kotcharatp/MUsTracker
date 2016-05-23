@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Spinner;
+  import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,7 +33,9 @@ public class createEditRoute extends AppCompatActivity {
 
     private static String url2 = "http://bus.atilal.com/route_station.php?";
     TextView outputText;
-    String time,days="";
+    ArrayAdapter <String> adapter_route;
+    ArrayAdapter <String> adapter_station;
+    String time;
     JSONObject info;
     String checkLanguage;
 
@@ -95,6 +97,7 @@ public class createEditRoute extends AppCompatActivity {
 
         //GET INTENT FROM CHOOSELANGUAGE ACTIVITY
         Intent i = getIntent();
+        checkLanguage = getResources().getConfiguration().locale.getLanguage();
 
         //GET INTENT FROM CHOOSEDAY
         Bundle extras = i.getExtras();
@@ -124,11 +127,12 @@ public class createEditRoute extends AppCompatActivity {
         //sp_route.setAdapter(new NothingSelectedSpinnerAdapter(adapter_route, R.layout.contact_spinner_row_nothing_selected, this));
         sp_route.setAdapter(adapter_route);
 
+
         //SPINNER 2
-        sp_station = (Spinner) findViewById(R.id.spinner_station);
+        final Spinner sp_station = (Spinner) findViewById(R.id.spinner_station);
 
         //SPINNER 3
-        sp_stationTime = (Spinner) findViewById(R.id.spinner_day);
+        final Spinner sp_stationTime = (Spinner) findViewById(R.id.spinner_day);
 
         sp_route.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -136,18 +140,16 @@ public class createEditRoute extends AppCompatActivity {
                 if(checkLanguage.contains("en")){
                     for(int i=0;i<allRouteEng.size();i++){
                         if(parent.getSelectedItem().equals(allRouteEng.get(i).getRouteEng())){
-                            adapter_station = new ArrayAdapter(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteEng.get(i).getStationEng());
+                            adapter_station = new ArrayAdapter<String>(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteEng.get(i).getStationEng());
                             adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                            //sp_station.setAdapter(new NothingSelectedSpinnerAdapter(adapter_station,R.layout.contact_spinner_row_station,createEditRoute.this));
                             sp_station.setAdapter(adapter_station);
                         }
                     }
                 }else{
                     for(int i=0;i<allRouteThai.size();i++){
                         if(parent.getSelectedItem().equals(allRouteThai.get(i).getRouteEng())){
-                            adapter_station = new ArrayAdapter(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteThai.get(i).getStationEng());
+                            adapter_station = new ArrayAdapter<String>(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteThai.get(i).getStationEng());
                             adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                            //sp_station.setAdapter(new NothingSelectedSpinnerAdapter(adapter_station,R.layout.contact_spinner_row_station,createEditRoute.this));
                             sp_station.setAdapter(adapter_station);
                         }
                     }
@@ -252,7 +254,7 @@ public class createEditRoute extends AppCompatActivity {
                     ArrayList<String> a = new ArrayList<>();
                     if(checkLanguage.contains("en")){
                         for(int c=0;c<stationEnglish1.size();c++) {
-                            a.add(stationEnglish1.get(c));
+                                a.add(stationEnglish1.get(c));
                         }
                     }else{
                         for(int c=0;c<stationThai1.size();c++) {
@@ -287,6 +289,7 @@ public class createEditRoute extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            outputText.setText("hello it's judy");
             adapter_route.notifyDataSetChanged();
         }
     }

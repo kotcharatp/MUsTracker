@@ -39,7 +39,7 @@
     <string name="TheBus">รถประจำทางจะมาถึงประมาณ</string>
     <string name="SetNotiTime">ตั้งเวลาการแจ้งเตือน</string>
     <string name="yourRouteStation">เส้นทางและสถานีสำหรับแจ้งเตือน</string>
-    <string name="setDay">ตั้งค่าวัน</string>
+
 
 
 </resources>

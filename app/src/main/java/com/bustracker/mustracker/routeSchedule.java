@@ -67,6 +67,7 @@ public class routeSchedule {
     private String route;
     private String station;
     private String driver;
+    private String driverThai;
     private String time;
     private String tel;
     private int busno;
@@ -76,9 +77,10 @@ public class routeSchedule {
     private String telText;
 
 
-    public routeSchedule(String route, String driver, String time, String tel, int busno){
+    public routeSchedule(String route, String driver, String driverThai, String time, String tel, int busno){
         this.route = route;
         this.driver = driver;
+        this.driverThai = driverThai;
         this.tel = tel;
         this.time = time;
         this.busno =busno;
@@ -91,6 +93,7 @@ public class routeSchedule {
     public String getDriver() {return driver; }
     public void setDriver(String name) {this.driver = name; }
     public void setTime(String time) {this.time = time; }
+    //public String getTime() {return time;}
     public String getTimeNormal() {return time;}
     public void setTel(String tel) {this.tel = tel; }
     public String getTel(){return tel;}
@@ -111,8 +114,19 @@ public class routeSchedule {
         driverText = NavigationSetting.getContext().getResources().getString(R.string.driver);
         telText = NavigationSetting.getContext().getResources().getString(R.string.tel);
 
+        String driverLanguage = new String();
+
+        //Log.d("Language ", MainActivity.getContext().getResources().getConfiguration().locale.getLanguage());
+        String language = MainActivity.getContext().getResources().getConfiguration().locale.getLanguage();
+        //For make driver name Thai in case the user choose thai language
+        if(language.contains("en")){
+            driverLanguage = driver;
+        } else{
+            driverLanguage = driverThai;
+        }
+
         return busnoText +" "+ busno + "\n" +
-                driverText +" "+ driver + "\n" +
+                driverText +" "+ driverLanguage + "\n" +
                 telText +" "+ tel;
     }
 }

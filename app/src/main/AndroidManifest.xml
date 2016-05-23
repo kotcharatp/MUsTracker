@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.arshad.map.permission.MAPS_RECEIVE" />
 
+    <!-- for call function -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -58,9 +61,7 @@
         <activity
             android:name=".signup_page"
             android:label="@string/title_activity_signup_page"
-            android:theme="@style/AppTheme"/>
-
-        <!-- SET NOTIFICATION -->
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".createEditRoute"
             android:label="@string/title_activity_create_edit_route"

@@ -26,7 +26,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -69,7 +68,7 @@ public class FragmentTab1_Home extends Fragment {
         //TIMER
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         btnClick = (Button) rootView.findViewById(R.id.clickButton);
-        timerText = (TextView) rootView.findViewById(R.id.timer);
+        timerText = (TextView) rootView.findViewById(R.id.travelText);
         timerText.setText("00:03:00");
 
         final CounterClass timerClass = new CounterClass(180000,1000); //adjust countdown here
@@ -239,7 +238,6 @@ public class FragmentTab1_Home extends Fragment {
 
                     routeD.add(new plotRoute(route, point, stationEng, stationThai));
                 }
-                Log.d("dList size at JSON", String.valueOf(routeD.size()));
 
                 /*JSONObject objPlot = new JSONObject(contentRoute);
                 JSONArray plot = objPlot.getJSONArray("station");
