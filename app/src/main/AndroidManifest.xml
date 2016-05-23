@@ -12,8 +12,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.arshad.map.permission.MAPS_RECEIVE" />
 
-    <!-- for call function -->
+    <!--for call function -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
 
     <application
         android:allowBackup="true"
@@ -61,7 +62,9 @@
         <activity
             android:name=".signup_page"
             android:label="@string/title_activity_signup_page"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
+
+        <!-- SET NOTIFICATION -->
         <activity
             android:name=".createEditRoute"
             android:label="@string/title_activity_create_edit_route"
@@ -81,6 +84,11 @@
             android:theme="@style/AppTheme">
 
         </activity>
+        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

@@ -33,9 +33,7 @@ public class createEditRoute extends AppCompatActivity {
 
     private static String url2 = "http://bus.atilal.com/route_station.php?";
     TextView outputText;
-    ArrayAdapter <String> adapter_route;
-    ArrayAdapter <String> adapter_station;
-    String time;
+    String time, days="";
     JSONObject info;
     String checkLanguage;
 
@@ -105,7 +103,7 @@ public class createEditRoute extends AppCompatActivity {
             //Do stuff because extra has been added
             resultDay = extras.getStringArray("selectedItems");
             for(int k=0;k<resultDay.length;k++){
-                days = days + resultDay[k];
+                 days = days + resultDay[k];
                 if(k != resultDay.length-1) days = days + ",";
             }
         }

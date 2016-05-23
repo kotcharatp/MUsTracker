@@ -150,11 +150,11 @@ public class schedule_details extends Activity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-        p = new ProgressDialog(schedule_details.this);
-        p.setMessage(getString(R.string.loading));
-        p.setIndeterminate(false);
-        p.setCancelable(true);
-        p.show();
+            p = new ProgressDialog(schedule_details.this);
+            p.setMessage(getString(R.string.loading));
+            p.setIndeterminate(false);
+            p.setCancelable(true);
+            p.show();
         }
 
         @Override
@@ -184,17 +184,17 @@ public class schedule_details extends Activity {
 
                     //dayOfTheWeek.equals(day);
 
-                        if(route.equals(routeGet) && time.equals(timeLeave)){
-                            if(!station.isEmpty()) {
-                                if(day.equals(dayOfTheWeek)) {
-                                    stationList.add(new stationClass(station, day, timeLeave, timeTravel));
-                                }else if(day.equals("Monday")) {
-                                    stationNotday.add(new stationClass(station, day, timeLeave, timeTravel));
-                                }
+                    if(route.equals(routeGet) && time.equals(timeLeave)){
+                        if(!station.isEmpty()) {
+                            if(day.equals(dayOfTheWeek)) {
+                                stationList.add(new stationClass(station, day, timeLeave, timeTravel));
+                            }else if(day.equals("Monday")) {
+                                stationNotday.add(new stationClass(station, day, timeLeave, timeTravel));
                             }
-                            else if(station.isEmpty() && day.equals(dayOfTheWeek)) travelMin = timeTravel + " " + getResources().getString(R.string.minute);
-                            else if(station.isEmpty() && day.equals("Monday")) travelMin = timeTravel + " " + getResources().getString(R.string.minute);
                         }
+                        else if(station.isEmpty() && day.equals(dayOfTheWeek)) travelMin = timeTravel + " " + getResources().getString(R.string.minute);
+                        else if(station.isEmpty() && day.equals("Monday")) travelMin = timeTravel + " " + getResources().getString(R.string.minute);
+                    }
                 }
 
                 return sb.toString();
@@ -208,6 +208,7 @@ public class schedule_details extends Activity {
         protected void onPostExecute(String result) {
             stationClassArrayAdapter.notifyDataSetChanged();
             travelText.setText(travelMin);
+            p.dismiss();
 
         }
     }

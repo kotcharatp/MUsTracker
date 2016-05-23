@@ -6,6 +6,7 @@ package com.bustracker.mustracker;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,13 +14,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,6 +54,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 // Now is bus schedule
 public class FragmentTab3_Bus extends Fragment {
@@ -69,6 +75,8 @@ public class FragmentTab3_Bus extends Fragment {
     ArrayList<LatLng> mMarkerPoints;
     private GoogleApiClient client;
     TextView outputText, totalRoute;
+    Spinner routeSpinner;
+    ListView mylist;
 
     //URL for getting data from server
     private  static  String url = "http://bus.atilal.com/schedule.php?";
@@ -82,10 +90,43 @@ public class FragmentTab3_Bus extends Fragment {
         outputText = (TextView) rootView.findViewById(R.id.textView);
         totalRoute = (TextView) rootView.findViewById(R.id.totalRoute);
 
+        /*
+        //Call setting activity temp
+        Button setting = (Button) rootView.findViewById(R.id.setting);
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.NotificationPreferenceFragment.class.getName());
+                intent.putExtra(SettingsActivity.EXTRA_NO_HEADERS, true);
+
+                startActivity(intent);
+
+                //startActivity(new Intent(getActivity(), SettingsActivity.class));
+            }
+        });*/
+
+        /*
+        Button noti = (Button) rootView.findViewById(R.id.noti);
+        noti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getActivity())
+                                .setSmallIcon(R.drawable.logo)
+                                .setContentTitle("My notification")
+                                .setContentText("Hello World!");
+
+                NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(001, mBuilder.build());
+            }
+        });*/
+
         //GET JSON DATA FROM SERVER
         new JSONParse().execute();
 
-        final Spinner routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
+        routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
 
         /*ArrayList<String> res;
         String lan = getResources().getConfiguration().locale.getLanguage();
@@ -102,7 +143,7 @@ public class FragmentTab3_Bus extends Fragment {
         adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         routeSpinner.setAdapter(adapter_route2);
 
-        final ListView mylist = (ListView) rootView.findViewById(R.id.listView);
+        mylist = (ListView) rootView.findViewById(R.id.listView);
 
         //Initialize route array list, allocate memory
         busSchedule = new ArrayList<routeSchedule>();
@@ -124,7 +165,7 @@ public class FragmentTab3_Bus extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), createEditRoute.class);
                         intent.putExtra("time", busList.get(temp).getTimeNormal());
-                        intent.putExtra("ƒ", busList.get(temp).getBusno());
+                        intent.putExtra("bus_num", busList.get(temp).getBusno());
                         intent.putExtra("driver", busList.get(temp).getDriver());
                         intent.putExtra("phoneNum", busList.get(temp).getTel());
                         intent.putExtra("route_name", busList.get(temp).getRoute());
@@ -278,9 +319,7 @@ public class FragmentTab3_Bus extends Fragment {
                     DownloadTask downloadTask = new DownloadTask();
                     downloadTask.execute(url);
                 }
-
             }
-
         }
     }
 
@@ -619,6 +658,13 @@ public class FragmentTab3_Bus extends Fragment {
             if (mMap != null)
                 setUpMap();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Resume", "sdfdfs");
+
     }
 
 }
