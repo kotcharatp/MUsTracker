@@ -90,6 +90,7 @@ public class FragmentTab3_Bus extends Fragment {
         outputText = (TextView) rootView.findViewById(R.id.textView);
         totalRoute = (TextView) rootView.findViewById(R.id.totalRoute);
 
+        /*
         //Call setting activity temp
         Button setting = (Button) rootView.findViewById(R.id.setting);
         setting.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +105,9 @@ public class FragmentTab3_Bus extends Fragment {
 
                 //startActivity(new Intent(getActivity(), SettingsActivity.class));
             }
-        });
+        });*/
+
+        /*
         Button noti = (Button) rootView.findViewById(R.id.noti);
         noti.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +121,7 @@ public class FragmentTab3_Bus extends Fragment {
                 NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(001, mBuilder.build());
             }
-        });
+        });*/
 
         //GET JSON DATA FROM SERVER
         new JSONParse().execute();

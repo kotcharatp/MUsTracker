@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Your route and station"
+            android:text="List of Your route and station"
             android:id="@+id/routeStation"
             android:layout_marginTop="20dp"
             android:textColor="#06365a"

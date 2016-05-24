@@ -107,14 +107,21 @@ public class routeSchedule {
         //        "Tel: " + tel;
 
         // To get be able to call value from R.string.
-        busnoText = MainActivity.getContext().getResources().getString(R.string.busno);
-        driverText = MainActivity.getContext().getResources().getString(R.string.driver);
-        telText = MainActivity.getContext().getResources().getString(R.string.tel);
+        busnoText = NavigationSetting.getContext().getResources().getString(R.string.busno);
+        driverText = NavigationSetting.getContext().getResources().getString(R.string.driver);
+        telText = NavigationSetting.getContext().getResources().getString(R.string.tel);
 
         String driverLanguage = new String();
 
         //Log.d("Language ", MainActivity.getContext().getResources().getConfiguration().locale.getLanguage());
-        String language = MainActivity.getContext().getResources().getConfiguration().locale.getLanguage();
+        String language = NavigationSetting.getContext().getResources().getConfiguration().locale.getLanguage();
+        //For make driver name Thai in case the user choose thai language
+        if(language.contains("en")){
+            driverLanguage = driver;
+        } else{
+            driverLanguage = driverThai;
+        }
+
         //For make driver name Thai in case the user choose thai language
         if(language.contains("en")){
             driverLanguage = driver;

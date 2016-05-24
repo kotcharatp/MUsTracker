@@ -54,16 +54,43 @@
 
         </FrameLayout>
 
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Route"
+            android:id="@+id/route"
+            android:layout_marginTop="20dp"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/rounded_info"
+            android:autoText="false"
+            android:gravity="center" />
+
         <Spinner
             android:id="@+id/spinner_route"
             android:layout_width="320dp"
             android:layout_height="40dp"
             android:background="@drawable/signup_text_border"
-            android:layout_marginTop="31dp"
+            android:layout_marginTop="0dp"
             android:layout_below="@+id/routeStation"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"></Spinner>
+
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Station"
+            android:id="@+id/station"
+            android:layout_marginTop="20dp"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
             android:layout_marginLeft="20dp"
-            android:text = "fuck"></Spinner>
+            android:background="@drawable/rounded_info"
+            android:autoText="false"
+            android:gravity="center" />
 
         <Spinner
             android:id="@+id/spinner_station"
@@ -72,60 +99,67 @@
             android:background="@drawable/signup_text_border"
             android:layout_below="@+id/spinner_route"
             android:layout_alignStart="@+id/spinner_route"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"></Spinner>
 
-        <Spinner
-            android:id="@+id/spinner_day"
+        <TextView
             android:layout_width="320dp"
-            android:layout_height="40dp"
-            android:background="@drawable/signup_text_border"
-            android:layout_below="@+id/spinner_route"
-            android:layout_alignStart="@+id/spinner_route"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"></Spinner>
-
-
-        <FrameLayout
-            android:layout_width="311dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp">
-            <TextView
-            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="The bus will approximately come to the station at"
+            android:text="Day"
+            android:id="@+id/day"
+            android:layout_marginTop="20dp"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/rounded_info"
+            android:autoText="false"
+            android:gravity="center" />
+
+
+        <ImageButton
+            android:layout_width="320dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageButton"
+            android:layout_marginLeft="20dp"
+            android:onClick="gotoAddDate" />
+
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Time Table"
             android:id="@+id/timeRob"
             android:layout_marginTop="20dp"
-            android:textColor="#06365a"
+            android:textColor="#FFFFFF"
             android:textSize="15dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+                android:background="@drawable/rounded_info"
+                android:gravity="center_horizontal" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
+                android:layout_width="320dp"
+                android:layout_height="32dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
                 android:id="@+id/outputText"
-                android:background="#e1dede"
                 android:textSize="14dp"
                 android:layout_marginLeft="20dp"
-                android:layout_gravity="right|top" />
-        </FrameLayout>
-
-
+                android:gravity="center_horizontal"
+                android:textColor="#06365a" />
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Set your notification time"
             android:id="@+id/time"
-            android:layout_marginTop="20dp"
-            android:textColor="#06365a"
+            android:layout_marginTop="15dp"
             android:textSize="15dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/rounded_info"
+            android:textColor="#FFFFFF"
+            android:gravity="center_horizontal" />
 
         <TimePicker
             android:layout_width="wrap_content"
@@ -133,39 +167,64 @@
             android:id="@+id/timePicker"
             android:layout_gravity="center_horizontal" />
 
-        <Button
-            android:layout_width="266dp"
-            android:layout_height="45dp"
-            android:text="ADD ROUTE"
-            android:id="@+id/addButton"
-            android:layout_below="@+id/button2"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/rounded_button"
-            android:layout_marginTop="15dp"
-            android:textColor="#ffffff"
-            android:gravity="center"
-            android:layout_gravity="center" />
+        <FrameLayout
+            android:layout_width="322dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:text="ADD ROUTE"
+                android:id="@+id/addButton"
+                android:layout_below="@+id/button2"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/rounded_button"
+                android:layout_marginTop="15dp"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:layout_gravity="left|bottom"
+                android:onClick="addRouteStation" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:text="DELETE ROUTE"
+                android:id="@+id/deleteButton"
+                android:layout_below="@+id/button2"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/rounded_button"
+                android:layout_marginTop="15dp"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:layout_gravity="right|top"
+                android:onClick="deleteRouteStation"
+                android:layout_marginRight="0dp" />
+
+        </FrameLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Your route and station"
+            android:text="List of Your route and station"
             android:id="@+id/routeStation"
             android:layout_marginTop="20dp"
-            android:textColor="#06365a"
             android:textSize="15dp"
-            android:layout_marginLeft="30dp" />
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/rounded_info"
+            android:textColor="#FFFFFF"
+            android:gravity="center_horizontal" />
 
         <ListView
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_width="320dp"
+            android:layout_height="120dp"
             android:id="@+id/listRoute"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.69" />
+            android:layout_weight="0.78" />
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="320dp"
             android:layout_height="45dp"
             android:text="FINISH, LET'S START THE MUST BUS"
             android:id="@+id/finishButton"
@@ -175,7 +234,8 @@
             android:layout_marginTop="15dp"
             android:textColor="#ffffff"
             android:onClick="gotoMainActivityFromRoute"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center" />
 
 
     </LinearLayout>

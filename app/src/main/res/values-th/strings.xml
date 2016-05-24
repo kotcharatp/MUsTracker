@@ -34,15 +34,12 @@
     <string name="pinkloades">สถานีปิ่นเกล้าหน้าร้านก๊วยเตี๋ยวหมู</string>
     <string name="start">จุดเริ่มต้น</string>
     <string name="destination">จุดหมายปลายทาง</string>
-    <string name="travelTime">รถจะใช้เวลาเดินทางประมาณ</string>
 
     <string name="SetNotification">ตั้งค่าการแจ้งเตือน</string>
     <string name="TheBus">รถประจำทางจะมาถึงประมาณ</string>
     <string name="SetNotiTime">ตั้งเวลาการแจ้งเตือน</string>
     <string name="yourRouteStation">เส้นทางและสถานีสำหรับแจ้งเตือน</string>
-    <string name="tapanywhere">กดที่ไหนก็ได้เพื่อปิด</string>
-    <string name="minute">นาที</string>
-    <string name="numberroute">จำนวนรอบทั้งหมด</string>
+
 
 
 </resources>

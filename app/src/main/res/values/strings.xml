@@ -59,12 +59,12 @@
     <string name="busno">Bus number:</string>
     <string name="driver">Driver:</string>
     <string name="tel">Tel:</string>
-    <string name="numberroute">Total round</string>
 
     <!-- For schedule detail page-->
     <string name="travelTime">Approximate travel time</string>
     <string name="tapanywhere">Tap anywhere to dismiss</string>
     <string name="minute">minutes</string>
+    <string name="numberroute">Total round</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -75,9 +75,27 @@
     <string name="title_activity_choose_language">chooseLanguage</string>
     <string name="title_activity_create_edit_route">createEditRoute</string>
     <string name="SetNotification">Set Notification</string>
-    <string name="TheBus">The bus will approximately come to the station at</string>
+    <string name="TheBus">Time Table</string>
     <string name="SetNotiTime">Set your notification time</string>
-    <string name="yourRouteStation">Your route and station</string>
+    <string name="yourRouteStation">List of your route and station</string>
+
+    <string-array name="eng_days_array">
+        <item>Every Monday</item>
+        <item>Every Tuesday</item>
+        <item>Every Wednesday</item>
+        <item>Every Thursday</item>
+        <item>Every Friday</item>
+    </string-array>
+
+    <string-array name="thai_days_array">
+        <item>ทุกวันจันทร์</item>
+        <item>ทุกวันอังคาร</item>
+        <item>ทุกวันพุธ</item>
+        <item>ทุกวันพฤหัสบดี</item>
+        <item>ทุกวันศุกร์</item>
+    </string-array>
+    <string name="title_activity_choose_day">chooseDay</string>
+    <string name="setDay">Set Days</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -131,11 +149,14 @@
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
 
-    <string name="pref_title_new_message_notifications">New notifications</string>
+    <string name="pref_title_new_message_notifications">New message notifications</string>
 
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="title_activity_navigation_setting">NavigationSetting</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
