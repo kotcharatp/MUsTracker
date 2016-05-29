@@ -122,13 +122,6 @@ public class routeSchedule {
             driverLanguage = driverThai;
         }
 
-        //For make driver name Thai in case the user choose thai language
-        if(language.contains("en")){
-            driverLanguage = driver;
-        } else{
-            driverLanguage = driverThai;
-        }
-
         return busnoText +" "+ busno + "\n" +
                 driverText +" "+ driverLanguage + "\n" +
                 telText +" "+ tel;

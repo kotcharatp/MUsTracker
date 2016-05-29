@@ -6,14 +6,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +66,6 @@ public class schedule_details extends Activity {
 
         ImageView busImg = (ImageView) findViewById(R.id.busImg);
         String uri = "@drawable/" + "no_" + String.valueOf(busno);
-        Log.d("Bus no", String.valueOf(busno));
         int imageResource = getResources().getIdentifier(uri, null, getPackageName());
         Drawable res = getResources().getDrawable(imageResource);
         busImg.setImageDrawable(res);
@@ -106,8 +101,11 @@ public class schedule_details extends Activity {
         });
 
         final ListView mylist = (ListView) findViewById(R.id.myList);
+
+        String listRes = "stationList";
         if(stationList.size()==0){
             stationClassArrayAdapter = new StationArrayAdapter(this, 0, stationNotday);
+            listRes = "stationNotday";
         } else stationClassArrayAdapter = new StationArrayAdapter(this, 0, stationList);
 
         stationClassArrayAdapter.notifyDataSetChanged();
@@ -115,7 +113,7 @@ public class schedule_details extends Activity {
 
         mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(schedule_details.this);
                 alertDialogBuilder.setCancelable(true);
                 alertDialogBuilder.setMessage("Are you sure you want to add this station in your notification list?");
@@ -123,6 +121,10 @@ public class schedule_details extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(schedule_details.this, createEditRoute.class);
+
+                        intent.putExtra("time", stationClassArrayAdapter.getItem(position).getTime_leave());
+                        intent.putExtra("route_name", stationClassArrayAdapter.getItem(position).getRoute());
+                        intent.putExtra("station", stationClassArrayAdapter.getItem(position).getStation());
 
                         startActivity(intent);
                     }
@@ -231,10 +233,10 @@ public class schedule_details extends Activity {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.station_list_layout, null);
 
-            TextView timeText = (TextView) view.findViewById(R.id.stationText);
+            TextView timeText = (TextView) view.findViewById(R.id.routeText);
             timeText.setText(d.getStation());
 
-            TextView arriveText = (TextView) view.findViewById(R.id.arriveText);
+            TextView arriveText = (TextView) view.findViewById(R.id.textView58);
             arriveText.setText(d.getTime_travel());
 
             return view;

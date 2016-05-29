@@ -27,7 +27,7 @@ public class languageAdapter extends ArrayAdapter<itemData> {
         View itemView=inflater.inflate(groupid,parent,false);
         ImageView imageView=(ImageView)itemView.findViewById(R.id.flag);
         imageView.setImageResource(list.get(position).getImageId());
-        TextView textView=(TextView)itemView.findViewById(R.id.arriveText);
+        TextView textView=(TextView)itemView.findViewById(R.id.textView58);
         textView.setText(list.get(position).getText());
         return itemView;
     }

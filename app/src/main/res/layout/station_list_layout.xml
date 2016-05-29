@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="220dp"
         android:layout_height="50dp"
-        android:id="@+id/stationText"
+        android:id="@+id/routeText"
         android:minHeight="50dp"
         android:minWidth="50dp"
         android:textSize="20dp"
@@ -18,9 +18,9 @@
     <TextView
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:id="@+id/arriveText"
-        android:layout_alignTop="@+id/stationText"
-        android:layout_toEndOf="@+id/stationText"
+        android:id="@+id/textView58"
+        android:layout_alignTop="@+id/routeText"
+        android:layout_toEndOf="@+id/routeText"
         android:minHeight="50dp"
         android:textSize="30dp"
         android:layout_marginLeft="20dp"

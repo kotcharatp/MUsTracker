@@ -21,7 +21,7 @@
 <string name="salaya">ศาลายา</string>
 <string name="siriraj">ศิริราช</string>
 <string name="outputText">กำลังโหลดข้อมูล กรุณารอ...</string>
-<string name="busno">หมายเลขรถ: </string>
+<string name="busno">หมายเลขรถ</string>
 <string name="driver">คนขับ: </string>
 <string name="tel">เบอร์โทร: </string>
 

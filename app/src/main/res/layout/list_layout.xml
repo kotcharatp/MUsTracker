@@ -6,38 +6,82 @@
     <TextView
         android:layout_width="70dp"
         android:layout_height="50dp"
-        android:id="@+id/stationText"
+        android:id="@+id/routeText"
         android:minHeight="50dp"
         android:minWidth="50dp"
         android:textAlignment="center"
+        android:gravity="center"
         android:textSize="27dp"
         android:textStyle="bold"
         android:textColor="#06365a" />
 
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:id="@+id/busnoImg"
+        android:layout_alignTop="@+id/driverText"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/driverText"
+        android:foregroundGravity="center"
+        android:layout_marginLeft="5dp" />
+
     <TextView
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/arriveText"
-        android:layout_alignTop="@+id/stationText"
-        android:layout_toEndOf="@+id/stationText"
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:id="@+id/driverText"
         android:minHeight="50dp"
-        android:layout_marginLeft="20dp"
         android:textColor="#0b5c94"
-        android:textAlignment="gravity" />
+        android:textAlignment="gravity"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView6" />
+
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:id="@+id/textView8"
+        android:minHeight="50dp"
+        android:textColor="#0b5c94"
+        android:textAlignment="gravity"
+        android:text="@string/tel"
+        android:textStyle="bold"
+        android:layout_below="@+id/driverText"
+        android:layout_toEndOf="@+id/routeText"
+        android:layout_marginLeft="40dp" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:id="@+id/telText"
+        android:minHeight="50dp"
+        android:textColor="#0b5c94"
+        android:textAlignment="gravity"
+        android:layout_below="@+id/driverText"
+        android:layout_toEndOf="@+id/textView8" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:id="@+id/textView6"
+        android:minHeight="50dp"
+        android:textColor="#0b5c94"
+        android:textAlignment="gravity"
+        android:text="@string/driver"
+        android:textStyle="bold"
+        android:layout_alignTop="@+id/driverText"
+        android:layout_toEndOf="@+id/routeText"
+        android:layout_marginLeft="40dp" />
 
     <TextView
         android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:id="@+id/travelText"
-        android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/arriveText"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/arriveText"
+        android:layout_height="20dp"
+        android:id="@+id/textView9"
+        android:textSize="10dp"
         android:minHeight="50dp"
-        android:minWidth="50dp"
+        android:textColor="#0b5c94"
         android:textAlignment="center"
-        android:textSize="27dp"
+        android:text="@string/busno"
         android:textStyle="bold"
-        android:textColor="#06365a"/>
+        android:layout_below="@+id/busnoImg"
+        android:layout_alignEnd="@+id/busnoImg" />
 </RelativeLayout>

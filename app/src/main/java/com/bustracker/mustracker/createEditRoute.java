@@ -1,5 +1,9 @@
 package com.bustracker.mustracker;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,7 +11,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,12 +25,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bustracker.mustracker.Database.Comment;
+import com.bustracker.mustracker.Database.CommentDataSource;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 //Nothing Selected Spinner Adapter
@@ -34,7 +43,7 @@ public class createEditRoute extends AppCompatActivity {
 
     private static String url2 = "http://bus.atilal.com/route_station.php?";
     TextView outputText;
-    String time,days="";
+    String time, days="";
     JSONObject info;
     String checkLanguage;
 
@@ -56,6 +65,8 @@ public class createEditRoute extends AppCompatActivity {
     CommentDataSource dataSource;
     ListView list;
     ArrayAdapter<Comment> adapter;
+    ArrayAdapter<Comment> NotiArrayAdapter;
+
     Comment comment;
 
     //timepicker
@@ -68,6 +79,14 @@ public class createEditRoute extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_route);
+
+        //Get intent value from FragmentTab_bus and schedule_details
+        final Intent intent = getIntent();
+        String fromActivity = intent.getStringExtra("sendFrom");
+        String routeIntent = intent.getStringExtra("route_name");
+        String timeIntent = intent.getStringExtra("time");
+        final String stationIntent = intent.getStringExtra("station");
+
 
         outputText = (TextView) findViewById(R.id.outputText);
         TextView header = (TextView)findViewById(R.id.createEdit);
@@ -90,26 +109,53 @@ public class createEditRoute extends AppCompatActivity {
         dataSource = new CommentDataSource(this);
         dataSource.open();
         List<Comment> values = dataSource.getAllComments();
-        adapter = new ArrayAdapter<Comment>(this, android.R.layout.simple_list_item_1,values);
+        NotiArrayAdapter = new NotiArrayAdapter(this, android.R.layout.simple_list_item_1,values);
         list = (ListView) findViewById(R.id.listRoute);
-        list.setAdapter(adapter);
+        list.setAdapter(NotiArrayAdapter);
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int position1 = position;
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(createEditRoute.this);
+                alertDialogBuilder.setCancelable(true);
+                alertDialogBuilder.setMessage("Are you sure you want to delete this notification?");
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Comment comment = NotiArrayAdapter.getItem(position1);
+                        dataSource.deleteComment(comment); //delete on the database
+                        NotiArrayAdapter.remove(comment); //delete from the list view
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialogBuilder.setCancelable(true);
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
 
         //GET INTENT FROM CHOOSELANGUAGE ACTIVITY
         Intent i = getIntent();
+        checkLanguage = getResources().getConfiguration().locale.getLanguage();
 
         //GET INTENT FROM CHOOSEDAY
         Bundle extras = i.getExtras();
-        if(extras.containsKey("selectedItems")) {
-            //Do stuff because extra has been added
-            resultDay = extras.getStringArray("selectedItems");
-            for(int k=0;k<resultDay.length;k++){
-                days = days + resultDay[k];
-                if(k != resultDay.length-1) days = days + ",";
-            }
-        }
-        if(extras.containsKey("language")){
-            checkLanguage = extras.getString("language");
-        }
+        if(extras != null){
+            if(extras.containsKey("selectedItems")) {
+                //Do stuff because extra has been added
+                resultDay = extras.getStringArray("selectedItems");
+                for(int k=0;k<resultDay.length;k++){
+                    days = days + resultDay[k];
+                    if(k != resultDay.length-1) days = days + "\n";
+                }
+        }}
         checkLanguage = getResources().getConfiguration().locale.getLanguage();
 
         //SPINNER 1
@@ -126,11 +172,16 @@ public class createEditRoute extends AppCompatActivity {
         //sp_route.setAdapter(new NothingSelectedSpinnerAdapter(adapter_route, R.layout.contact_spinner_row_nothing_selected, this));
         sp_route.setAdapter(adapter_route);
 
+        //Set spinner based on the value from chosen schedule object from FragmentTab3_Bus
+        if(intent.hasExtra("route_name")) {
+            sp_route.setSelection(adapter_route.getPosition(routeIntent));
+        }
+
         //SPINNER 2
         sp_station = (Spinner) findViewById(R.id.spinner_station);
 
         //SPINNER 3
-        sp_stationTime = (Spinner) findViewById(R.id.spinner_day);
+        final Spinner sp_stationTime = (Spinner) findViewById(R.id.spinner_day);
 
         sp_route.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -138,8 +189,7 @@ public class createEditRoute extends AppCompatActivity {
                 if(checkLanguage.contains("en")){
                     for(int i=0;i<allRouteEng.size();i++){
                         if(parent.getSelectedItem().equals(allRouteEng.get(i).getRouteEng())){
-                            adapter_station = new ArrayAdapter(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteEng.get(i).getStationEng());
-                            adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                            adapter_station = new ArrayAdapter<String>(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteEng.get(i).getStationEng());                            adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
                             //sp_station.setAdapter(new NothingSelectedSpinnerAdapter(adapter_station,R.layout.contact_spinner_row_station,createEditRoute.this));
                             sp_station.setAdapter(adapter_station);
                         }
@@ -147,14 +197,16 @@ public class createEditRoute extends AppCompatActivity {
                 }else{
                     for(int i=0;i<allRouteThai.size();i++){
                         if(parent.getSelectedItem().equals(allRouteThai.get(i).getRouteEng())){
-                            adapter_station = new ArrayAdapter(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteThai.get(i).getStationEng());
-                            adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-                            //sp_station.setAdapter(new NothingSelectedSpinnerAdapter(adapter_station,R.layout.contact_spinner_row_station,createEditRoute.this));
+                            adapter_station = new ArrayAdapter<String>(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteThai.get(i).getStationEng());                            adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
                             sp_station.setAdapter(adapter_station);
                         }
                     }
                 }
-
+                //Set spinner based on the value from chosen schedule object from FragmentTab3_Bus
+                if(intent.hasExtra("station")){
+                    Log.d("sttion", adapter_station.getItem(0));
+                    sp_station.setSelection(adapter_station.getPosition(stationIntent));
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -163,8 +215,6 @@ public class createEditRoute extends AppCompatActivity {
         sp_station.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<String> t = new ArrayList<String>();
-                StringBuilder sb = new StringBuilder();
                 if(checkLanguage.contains("en")){
                     for(int i=0;i<allRouteEng.size();i++) {
                         if(allRouteEng.get(i).getRouteEng().equals(sp_route.getSelectedItem().toString())){
@@ -291,6 +341,7 @@ public class createEditRoute extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            outputText.setText("hello it's judy");
             adapter_route.notifyDataSetChanged();
         }
     }
@@ -327,17 +378,70 @@ public class createEditRoute extends AppCompatActivity {
 
         if(days == "") days = "Every Monday";
         comment = null;
-        comment = dataSource.createComment(sp_route.getSelectedItem().toString() + "(" + outputText.getText().toString() + ")" + "\n"
+        /*comment = dataSource.createComment(sp_route.getSelectedItem().toString() + "(" + outputText.getText().toString() + ")" + "\n"
                 + sp_station.getSelectedItem().toString() + "\n" + days + "\n" + h + ":"+ m);
-        adapter.add(comment);
-        adapter.notifyDataSetChanged();
+
+        public Comment createComment(String route, String station, String time, String notifyday, String notifytime) {*/
+        //Log.d("Imhere", comment.toString());
+        Log.d("Hello", sp_station.toString() );
+        comment = dataSource.createComment(
+                sp_route.getSelectedItem().toString(),
+                sp_station.getSelectedItem().toString(),
+                outputText.getText().toString(),
+                days,
+                h+":"+m);
+        NotiArrayAdapter.add(comment);
+        NotiArrayAdapter.notifyDataSetChanged();
     }
 
     public void deleteRouteStation(View v){
-        if(adapter.getCount() > 0){
-            comment = (Comment)adapter.getItem(0);
+        if(NotiArrayAdapter.getCount() > 0){
+            List<Comment> temp = dataSource.getAllComments();
+            comment = (Comment)NotiArrayAdapter.getItem(temp.size()-1);
             dataSource.deleteComment(comment); //delete on the database
-            adapter.remove(comment); //delete from the list view
+            NotiArrayAdapter.remove(comment); //delete from the list view
+        }
+    }
+
+    //custom adapter
+    class NotiArrayAdapter extends ArrayAdapter<Comment> {
+
+        Context context;
+        List<Comment> objects;
+        public NotiArrayAdapter(Context context, int resource, List<Comment> objects) {
+            super(context, resource, objects);
+            this.context = context;
+            this.objects = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Comment d = objects.get(position);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.comment_list_layout, null);
+
+            /*(sp_route.getSelectedItem().toString() + "(" + outputText.getText().toString() + ")" + "\n"
+                    + sp_station.getSelectedItem().toString() + "\n"
+                     + days + "\n"
+                     + h + ":"+ m);*/
+
+            //String data = d.toString();
+            //String[] separated = data.split("\n");
+            //Log.d("test", separated[0]);
+
+            TextView routeText = (TextView) view.findViewById(R.id.routeText);
+            routeText.setText(d.getRoute());
+
+            TextView stationText = (TextView) view.findViewById(R.id.stationText);
+            stationText.setText(d.getStation());
+
+            TextView notifyText = (TextView) view.findViewById(R.id.notifydayText);
+            notifyText.setText(d.getNotifyday());
+
+            TextView notifyTimeText = (TextView) view.findViewById(R.id.notifyTimeText);
+            notifyTimeText.setText(d.getNotifyTime());
+
+            return view;
         }
     }
 }

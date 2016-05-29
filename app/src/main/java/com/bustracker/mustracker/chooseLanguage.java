@@ -29,7 +29,7 @@ public class chooseLanguage extends AppCompatActivity {
         list.add(new itemData("English",R.drawable.us_flag));
         list.add(new itemData("Thai",R.drawable.thai_flag));
         Spinner sp = (Spinner)findViewById(R.id.spinner_language);
-        final languageAdapter adapter=new languageAdapter(this,R.layout.language_layout,R.id.arriveText,list);
+        final languageAdapter adapter=new languageAdapter(this,R.layout.language_layout,R.id.textView58,list);
         sp.setAdapter(adapter);
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

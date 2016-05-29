@@ -12,10 +12,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -54,7 +55,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 // Now is bus schedule
 public class FragmentTab3_Bus extends Fragment {
@@ -84,30 +84,21 @@ public class FragmentTab3_Bus extends Fragment {
 
     ArrayList<plotRoute> routeD = new ArrayList<plotRoute>();
 
+    View rootView;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
+        rootView = inflater.inflate(R.layout.fragment_bus, container, false);
         outputText = (TextView) rootView.findViewById(R.id.textView);
         totalRoute = (TextView) rootView.findViewById(R.id.totalRoute);
 
-        /*
-        //Call setting activity temp
-        Button setting = (Button) rootView.findViewById(R.id.setting);
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
-                intent.putExtra(SettingsActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.NotificationPreferenceFragment.class.getName());
-                intent.putExtra(SettingsActivity.EXTRA_NO_HEADERS, true);
+        //Get preference from SettingActivity
+        final boolean notiNoOff = SettingsActivity.NotificationPreferenceFragment.getOnOffNotificationStatus(getContext());
+        final String notiRingtone = SettingsActivity.NotificationPreferenceFragment.getSelectRingtone(getContext());
+        final boolean notiVibrate = SettingsActivity.NotificationPreferenceFragment.getNotiVibration(getContext());
 
-                startActivity(intent);
-
-                //startActivity(new Intent(getActivity(), SettingsActivity.class));
-            }
-        });*/
-
-        /*
+        //Test notification button --> Remove when done
         Button noti = (Button) rootView.findViewById(R.id.noti);
         noti.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,32 +107,41 @@ public class FragmentTab3_Bus extends Fragment {
                         new NotificationCompat.Builder(getActivity())
                                 .setSmallIcon(R.drawable.logo)
                                 .setContentTitle("My notification")
-                                .setContentText("Hello World!");
+                                .setContentText("Hello World!")
+                                .setSound(Uri.parse(notiRingtone));
+
+                if(notiVibrate) {
+                    mBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+                }
 
                 NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(001, mBuilder.build());
+
+                if(notiNoOff){
+                    notificationManager.notify(001, mBuilder.build());
+                }
+
             }
-        });*/
+        });
 
         //GET JSON DATA FROM SERVER
         new JSONParse().execute();
 
         routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
 
-        /*ArrayList<String> res;
-        String lan = getResources().getConfiguration().locale.getLanguage();
+        ArrayList<String> res;
+        final String lan = getResources().getConfiguration().locale.getLanguage();
         //Change language according to the language setting
         Log.d("Language at bus", getResources().getConfiguration().locale.getLanguage());
-        if(lan.equals("en")){
-            res = MainActivity.routeEnglish;
-        } else {
-            res = MainActivity.routeThai;
-        }
 
-        adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, res);*/
-        adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
-        adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        routeSpinner.setAdapter(adapter_route2);
+        if(lan.equals("en")){
+            adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
+            adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            routeSpinner.setAdapter(adapter_route2);
+        } else {
+            adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeThai);
+            adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            routeSpinner.setAdapter(adapter_route2);
+        }
 
         mylist = (ListView) rootView.findViewById(R.id.listView);
 
@@ -165,10 +165,8 @@ public class FragmentTab3_Bus extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), createEditRoute.class);
                         intent.putExtra("time", busList.get(temp).getTimeNormal());
-                        intent.putExtra("bus_num", busList.get(temp).getBusno());
-                        intent.putExtra("driver", busList.get(temp).getDriver());
-                        intent.putExtra("phoneNum", busList.get(temp).getTel());
                         intent.putExtra("route_name", busList.get(temp).getRoute());
+                        intent.putExtra("sendFrom", "FragmentTab3_bus");
 
                         startActivity(intent);
                     }
@@ -202,20 +200,23 @@ public class FragmentTab3_Bus extends Fragment {
                 busList.clear();
                 dList.clear();
 
+                //routeSpinner.getSelectedItem().toString().equals(MainActivity.routeThai.get(i)
+
                 for (int i = 0; i < MainActivity.routeEnglish.size(); i++) {
-                    if (routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i)) || routeSpinner.getSelectedItem().toString().equals(MainActivity.routeThai.get(i))) {
+                    //if (routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i))) {
+                    if (position == i) {
                         for (int j = 0; j < routeD.size(); j++) {
-                            if (routeD.get(j).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
+                            if (routeD.get(j).getRoute().equals(MainActivity.routeEnglish.get(i))) {
                                 dList.add(routeD.get(j));
                             }
                         }
 
                         for (int k = 0; k < busSchedule.size(); k++) {
-                            if (busSchedule.get(k).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
+                            if (busSchedule.get(k).getRoute().equals(MainActivity.routeEnglish.get(i))) {
                                 busList.add(busSchedule.get(k));
                             }
                         }
-                        /*
+                        /* On clicklistener for snipper in google map
                         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                             @Override
                             public void onInfoWindowClick(Marker marker) {
@@ -248,48 +249,6 @@ public class FragmentTab3_Bus extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-
-/*
-        mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final int temp = position;
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setPositiveButton("Add to notify route", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), createEditRoute.class);
-                        intent.putExtra("time", busList.get(temp).getTime());
-                        intent.putExtra("bus_num", busList.get(temp).getBusno());
-                        intent.putExtra("driver", busList.get(temp).getDriver());
-                        intent.putExtra("phoneNum", busList.get(temp).getTel());
-                        intent.putExtra("route_name", busList.get(temp).getRoute());
-                        startActivity(intent);
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("View schedule details", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        Intent intent = new Intent(getActivity(), schedule_details.class);
-                        intent.putExtra("time", busList.get(temp).getTime());
-                        intent.putExtra("driver", busList.get(temp).getDriver());
-                        intent.putExtra("bus_num", busList.get(temp).getBusno());
-                        intent.putExtra("phoneNum", busList.get(temp).getTel());
-
-                        intent.putExtra("route_name", busList.get(temp).getRoute());
-                        startActivity(intent);
-                    }
-                });
-                alertDialogBuilder.setCancelable(true);
-                alertDialogBuilder.setMessage("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
-                        "Aenean commodo ligula eget dolor. Aenean massa. ");
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-            }
-        });*/
 
         return rootView;
     }
@@ -341,8 +300,9 @@ public class FragmentTab3_Bus extends Fragment {
         @Override
         protected String doInBackground(String... args) {
             StringBuilder sb = new StringBuilder();
+
+            //Get data from schedule
             String content = MyHttpURL.getData(url);
-            String contentRoute = MyHttpURL.getData(url2);
 
             try {
                 JSONObject obj = new JSONObject(content);
@@ -360,24 +320,10 @@ public class FragmentTab3_Bus extends Fragment {
 
                     busSchedule.add(new routeSchedule(routeS, driver, driver_thai, time, phone, busnum));
 
-                    /*
-
-                    if (routeS.equals("Salaya-Phayathai")) {
-                        satopaList.add(new routeSchedule(routeS, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(routeS.equals("Salaya-Siriraj")) {
-                        satosiList.add(new routeSchedule(routeS, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(routeS.equals("Phayathai-Salaya")) {
-                        phatosaList.add(new routeSchedule(routeS, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(routeS.equals("Siriraj-Salaya")) {
-                        sitosaList.add(new routeSchedule(routeS, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    }*/
                 }
 
                 //For getting route and station lat long from phpmyadmin
+                String contentRoute = MyHttpURL.getData(url2);
                 JSONObject objRoute = new JSONObject(contentRoute);
                 JSONArray routeDrop = objRoute.getJSONArray("station");
 
@@ -603,14 +549,6 @@ public class FragmentTab3_Bus extends Fragment {
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setTrafficEnabled(true);
 
-        // For dropping a marker at a point on the Map
-        /*
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                .title(MainActivity.getContext().getResources().getString(R.string.mahidol))
-                .snippet(MainActivity.getContext().getResources().getString(R.string.start))
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-        */
-
         // For zooming automatically to the Dropped PIN Location
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(13.791393, 100.349620), 13.0f));
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -634,12 +572,18 @@ public class FragmentTab3_Bus extends Fragment {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.list_layout, null);
 
-            TextView txt = (TextView) view.findViewById(R.id.arriveText);
-            txt.setText(d.toString());
-            TextView timeText = (TextView) view.findViewById(R.id.stationText);
+            TextView driverText = (TextView) view.findViewById(R.id.driverText);
+            driverText.setText(d.getDriver());
+            TextView telText = (TextView) view.findViewById(R.id.telText);
+            telText.setText(d.getTel());
+            TextView timeText = (TextView) view.findViewById(R.id.routeText);
             timeText.setText(d.getTimeNormal());
-            TextView travelText = (TextView) view.findViewById(R.id.travelText);
-            travelText.setText(String.valueOf(d.getBusno()));
+
+            ImageView busImg = (ImageView) view.findViewById(R.id.busnoImg);
+            String uri = "@drawable/" + "busno_" + String.valueOf(d.getBusno());
+            int imageResource = getResources().getIdentifier(uri, null, getActivity().getPackageName());
+            Drawable res = getResources().getDrawable(imageResource);
+            busImg.setImageDrawable(res);
 
             return view;
         }
@@ -663,8 +607,38 @@ public class FragmentTab3_Bus extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("Resume", "sdfdfs");
 
+        mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.location_map)).getMap();
+
+        //Get preference from SettingActivity
+        final boolean notiNoOff = SettingsActivity.NotificationPreferenceFragment.getOnOffNotificationStatus(getContext());
+        final String notiRingtone = SettingsActivity.NotificationPreferenceFragment.getSelectRingtone(getContext());
+        final boolean notiVibrate = SettingsActivity.NotificationPreferenceFragment.getNotiVibration(getContext());
+
+        //Test notification button --> Remove when done
+        Button noti = (Button) rootView.findViewById(R.id.noti);
+        noti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getActivity())
+                                .setSmallIcon(R.drawable.logo)
+                                .setContentTitle("My notification")
+                                .setContentText("Hello World!")
+                                .setSound(Uri.parse(notiRingtone));
+
+                if (notiVibrate) {
+                    mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+                }
+
+                NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+                if (notiNoOff) {
+                    notificationManager.notify(001, mBuilder.build());
+                }
+
+            }
+        });
     }
 
 }

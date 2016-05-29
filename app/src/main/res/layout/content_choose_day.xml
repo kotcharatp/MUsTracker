@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <FrameLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/frameLayout">
+
+        <ImageView
+            android:layout_width="390dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageView"
+            android:background="#06365a"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.46" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Set Day"
+            android:id="@+id/setDay"
+            android:layout_below="@+id/backButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="34dp"
+            android:contextClickable="false"
+            android:textColor="#ffffff"
+            android:textSize="25dp"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/testbutton"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:background="@drawable/rounded_button"
+        android:textColor="#ffffff"
+        android:onClick="gotoCreateEditRoute"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="320dp"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/testbutton"
+        android:layout_alignStart="@+id/testbutton"
+        android:layout_below="@+id/frameLayout" />
+</RelativeLayout>

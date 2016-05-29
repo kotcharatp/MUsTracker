@@ -26,6 +26,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bustracker.mustracker.Database.Comment;
+import com.bustracker.mustracker.Database.CommentDataSource;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -64,9 +66,7 @@ public class FragmentTab1_Home extends Fragment{
     boolean check_time = false;
 
     //GOOGLE MAP
-    //static final LatLng MAHIDOL = new LatLng(13.792686, 100.326425);
     static final LatLng STATION1 = new LatLng(13.782057, 100.417540);
-    //static final LatLng PHAYATHAI = new LatLng(13.764905, 100.526270);
     private GoogleMap map;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -148,6 +148,7 @@ public class FragmentTab1_Home extends Fragment{
     //JSON CLASS
     private class JSONParse extends AsyncTask<String, Void, String> {
         private ProgressDialog pDialog;
+        String duText;
 
         @Override
         protected void onPreExecute() {
@@ -158,7 +159,7 @@ public class FragmentTab1_Home extends Fragment{
             pDialog.setMessage(getString(R.string.loading));
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
-            pDialog.show();
+            //pDialog.show();
             outputText.setText(R.string.outputText);
         }
 
@@ -173,11 +174,22 @@ public class FragmentTab1_Home extends Fragment{
                 JSONArray location = obj.getJSONArray("Location");
                 for (int i = 0; i < location.length(); i++) {
                     JSONObject info = (JSONObject) location.get(i);
-                    sb.append("Latitude = " + info.getString("latitude") + "\n");
-                    sb.append("Longitude = " + info.getString("longitude") + "\n");
-                    sb.append("Bus Number = " + info.getString("bus_num") + "\n");
-                    sb.append("\n");
+                    //sb.append("Latitude = " + info.getString("latitude") + "\n");
+                    //sb.append("Longitude = " + info.getString("longitude") + "\n");
+                    //sb.append("Bus Number = " + info.getString("bus_num") + "\n");
+                    //sb.append("\n");
                 }
+
+                String durationUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=13.792686,100.326425&destination=13.751067,%20100.445456&sensor=false";
+                JSONObject objTest = new JSONObject(MyHttpURL.getData(durationUrl));
+                JSONArray routes = objTest.getJSONArray("routes");
+                JSONObject inRoutes = (JSONObject) routes.get(0);
+                JSONArray legs = inRoutes.getJSONArray("legs");
+                JSONObject inLegs = (JSONObject) legs.get(0);
+                JSONObject duration = inLegs.getJSONObject("duration");
+                Log.d("printtt", duration.getString("text"));
+                sb.append(duration.getString("text"));
+
 
                 //For getting route and station dropdown from phpmyadmin
                 JSONObject objRoute = new JSONObject(contentRoute);
@@ -235,6 +247,7 @@ public class FragmentTab1_Home extends Fragment{
     private void setupMap(){
         map = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_home)).getMap();
         map.getUiSettings().setZoomControlsEnabled(true);
+
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;

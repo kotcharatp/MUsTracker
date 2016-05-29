@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <TextView
+        android:layout_width="210dp"
+        android:layout_height="20dp"
+        android:id="@+id/routeText"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:textColor="#06365a"
+        android:text="Sayala to Phayathai"
+        android:layout_alignParentLeft="true"
+        android:textAlignment="gravity"
+        android:layout_marginLeft="7dp" />
+
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="10dp"
+        android:id="@+id/textView58"
+        android:layout_alignTop="@+id/routeText"
+        android:layout_toEndOf="@+id/textView4"
+        android:minHeight="50dp"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:textColor="#06365a"
+        android:textAlignment="center"
+        android:text="at"
+        android:layout_above="@+id/notifydayText" />
+
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+        android:id="@+id/textView5"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:textAlignment="center"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:textColor="#06365a"
+        android:layout_below="@+id/routeText"
+        android:layout_alignParentStart="true"
+        android:text="Station: "
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="18dp"
+        android:id="@+id/stationText"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:textSize="12dp"
+        android:textColor="#06365a"
+        android:text="Faculty of Science Building"
+        android:layout_below="@+id/routeText"
+        android:layout_alignEnd="@+id/routeText"
+        android:layout_toEndOf="@+id/textView5"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+        android:id="@+id/textView4"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:textAlignment="center"
+        android:textSize="11dp"
+        android:textStyle="bold"
+        android:textColor="#06365a"
+        android:text="Notify"
+        android:gravity="center"
+        android:layout_alignTop="@+id/routeText"
+        android:layout_toEndOf="@+id/routeText" />
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/notifydayText"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:textAlignment="gravity"
+        android:textSize="9dp"
+        android:textColor="#06365a"
+        android:text="Every Monday\nEvery Tuesday"
+        android:layout_alignTop="@+id/stationText"
+        android:layout_toEndOf="@+id/stationText" />
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:id="@+id/roundText"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:textAlignment="gravity"
+        android:textSize="12dp"
+        android:textColor="#06365a"
+        android:layout_gravity="left"
+        android:text="6:40"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/textView5"
+        android:layout_alignStart="@+id/stationText" />
+
+    <TextView
+        android:layout_width="62dp"
+        android:layout_height="18dp"
+        android:id="@+id/textView7"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:textAlignment="gravity"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:textColor="#06365a"
+        android:text="Round:"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:id="@+id/notifyTimeText"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="15dp"
+        android:textColor="#06365a"
+        android:text="5:10"
+        android:layout_alignTop="@+id/notifydayText"
+        android:layout_toEndOf="@+id/notifydayText" />
+
+</RelativeLayout>

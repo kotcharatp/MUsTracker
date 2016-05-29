@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.arshad.map.permission.MAPS_RECEIVE" />
 
+    <!-- Permission to Vibrate -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <!-- for call function -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
@@ -69,28 +72,29 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".schedule_details" />
 
-        <!-- CHOOSE DAY SUB OF SET NOTIFICATION-->
+        <!-- CHOOSE DAY SUB OF SET NOTIFICATION -->
         <activity
             android:name=".chooseDay"
             android:label="@string/title_activity_choose_day"
             android:theme="@style/AppTheme" />
 
-        <!-- NAVIGATION SETTING: SLIDE BAR-->
+        <!-- NAVIGATION SETTING: SLIDE BAR -->
         <activity
             android:name=".NavigationSetting"
             android:label="@string/title_activity_navigation_setting"
-            android:theme="@style/AppTheme">
-
-        </activity>
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:theme="@style/AppTheme"></activity>
+        <!--
+             ATTENTION: This was auto-generated to add Google Play services to your project for
+             App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity android:name=".schedule_details"></activity>
+
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".notifyDetail"></activity>
     </application>
 
 </manifest>

@@ -57,20 +57,11 @@
         android:gravity="center" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Setting"
-        android:id="@+id/setting"
-        android:layout_below="@+id/spinner_language"
-        android:layout_toEndOf="@+id/totalRoute"
-        android:layout_alignBottom="@+id/totalRoute" />
-
-    <Button
         android:layout_width="40dp"
         android:layout_height="60dp"
         android:text="Noti"
         android:id="@+id/noti"
         android:layout_alignBottom="@+id/totalRoute"
-        android:layout_toStartOf="@+id/setting" />
+        android:layout_alignEnd="@+id/totalRoute" />
 
 </RelativeLayout>
