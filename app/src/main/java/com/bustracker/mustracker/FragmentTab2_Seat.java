@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
@@ -39,6 +40,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,327 +49,229 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 // Now is bus schedule
 public class FragmentTab2_Seat extends Fragment {
+    private static String url2 = "http://bus.atilal.com/route_station.php?";
+    String time;
+    JSONObject info;
+    String checkLanguage;
 
-    ArrayAdapter<String> adapter_route2;
+    public static ArrayList<String> routeEnglish1 = new ArrayList<String>();
+    public static ArrayList<String> routeThai1 = new ArrayList<String>();
+    public static ArrayList<String> stationEnglish1 = new ArrayList<String>();
+    public static ArrayList<String> stationThai1 = new ArrayList<String>();
+    public static ArrayList<String> stationTime1 = new ArrayList<String>();
 
-    private static GoogleMap mMap;
-    ArrayAdapter<routeSchedule> routeArrayAdapter;
+    //all data from route_station database
+    ArrayList<routeSchedule> allRouteEng = new ArrayList<routeSchedule>();
+    ArrayList<routeSchedule> allRouteThai = new ArrayList<routeSchedule>();
 
-    //Array list for each route
-    /*public List<routeSchedule> satopaList;
-    public List<routeSchedule> satosiList;
-    public List<routeSchedule> phatosaList;
-    public List<routeSchedule> sitosaList;*/
-    public List<routeSchedule> busSchedule;
-    public List<routeSchedule> busList;
-    public List<plotRoute> dList;
+    //spinner
+    Spinner sp_route, sp_station,sp_stationTime;
+    ArrayAdapter <String> adapter_route, adapter_station;
 
-    ArrayList<LatLng> mMarkerPoints;
-    private GoogleApiClient client;
-    TextView outputText;
-
-    //URL for getting data from server
-    private  static  String url = "http://bus.atilal.com/schedule.php?";
-    private static String url2 = "http://bus.atilal.com/plot_routestation.php?";
-
-    ArrayList<plotRoute> routeD = new ArrayList<plotRoute>();
+    //timepicker
+    TimePicker notifyTime;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_bus, container, false);
-        outputText = (TextView) rootView.findViewById(R.id.textView);
+        final View rootView = inflater.inflate(R.layout.fragment_seat, container, false);
+        final TextView stationTime = (TextView) rootView.findViewById(R.id.stationTime);
 
+        //TIME PICKER
+        notifyTime = (TimePicker)rootView.findViewById(R.id.timePicker);
+        notifyTime.setIs24HourView(true);
 
-        final Spinner routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
+        //CHECK DAY
+        TextView dayText = (TextView) rootView.findViewById(R.id.day);
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (day) {
+            case Calendar.SATURDAY:
+                dayText.setText("MONDAY"); break;
+            case Calendar.SUNDAY:
+                dayText.setText("MONDAY"); break;
+            case Calendar.MONDAY:
+                dayText.setText("MONDAY"); break;
+            case Calendar.TUESDAY:
+                dayText.setText("TUESDAY"); break;
+            case Calendar.WEDNESDAY:
+                dayText.setText("WEDNESDAY"); break;
+            case Calendar.THURSDAY:
+                dayText.setText("THURSDAY"); break;
+            case Calendar.FRIDAY:
+                dayText.setText("FRIDAY"); break;
+        }
 
-        if(Locale.getDefault().getLanguage().contains("en")){
-            adapter_route2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
+        //SPINNER 1
+        sp_route = (Spinner) rootView.findViewById(R.id.spinner_route);
 
+        if(NavigationSetting.checkLanguage.contains("en")){
+            adapter_route = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,routeEnglish1);
         }else{
-            adapter_route2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeThai);
-
+            adapter_route = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,routeThai1);
         }
-        adapter_route2 = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
-        adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        routeSpinner.setAdapter(adapter_route2);
+        adapter_route.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        //sp_route.setAdapter(new NothingSelectedSpinnerAdapter(adapter_route, R.layout.contact_spinner_row_nothing_selected, this));
+        sp_route.setAdapter(adapter_route);
 
-        final ListView mylist = (ListView) rootView.findViewById(R.id.listView);
+        //SPINNER 2
+        sp_station = (Spinner) rootView.findViewById(R.id.spinner_station);
 
-        //Initialize route array list, allocate memory
-        busSchedule = new ArrayList<routeSchedule>();
-        busList = new ArrayList<routeSchedule>();
-        dList = new ArrayList<plotRoute>();
-        /*satopaList = new ArrayList<routeSchedule>();
-        satosiList = new ArrayList<routeSchedule>();
-        phatosaList = new ArrayList<routeSchedule>();
-        sitosaList = new ArrayList<routeSchedule>();*/
+        //SPINNER 3
+        sp_stationTime = (Spinner) rootView.findViewById(R.id.spinner_day);
 
-        //GET JSON DATA FROM SERVER
-        new JSONParse().execute();
-
-
-        /*for (int j = 0; j < routeD.size(); j++) {
-            if (routeD.get(j).getRoute().equals("Salaya to Phayathai")) {
-                dList.add(routeD.get(j));
-                Log.d("listsize", String.valueOf(dList.size()));
-            }
-        }
-        int k;
-        for (k = 0; k < busSchedule.size(); k++) {
-            if (busSchedule.get(k).getRoute().equals("Salaya to Phayathai")) {
-                busList.add(busSchedule.get(k));
-            }
-        }
-
-        plotRouteStation(dList);*/
-
-        routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
-        routeArrayAdapter.notifyDataSetChanged();
-        mylist.setAdapter(routeArrayAdapter);
-
-        mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final int temp = position;
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setPositiveButton("Add to notify route", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), createEditRoute.class);
-                        intent.putExtra("time", busList.get(temp).getTime());
-                        intent.putExtra("bus_num", busList.get(temp).getBusno());
-                        intent.putExtra("driver", busList.get(temp).getDriver());
-                        intent.putExtra("phoneNum", busList.get(temp).getTel());
-                        intent.putExtra("route_name", busList.get(temp).getRoute());
-
-                        startActivity(intent);
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("View schedule details", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        Intent intent = new Intent(getActivity(), schedule_details.class);
-                        intent.putExtra("time", busList.get(temp).getTime());
-                        intent.putExtra("driver", busList.get(temp).getDriver());
-                        intent.putExtra("bus_num", busList.get(temp).getBusno());
-                        intent.putExtra("phoneNum", busList.get(temp).getTel());
-                        intent.putExtra("route_name", busList.get(temp).getRoute());
-
-                        startActivity(intent);
-                    }
-                });
-                alertDialogBuilder.setCancelable(true);
-                alertDialogBuilder.setMessage("Do you want to view the bus schedule details or add notification to this route?");
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-            }
-        });
-
-        routeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sp_route.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                busList.clear();
-                dList.clear();
-
-                for (int i = 0; i < MainActivity.routeEnglish.size(); i++) {
-                    if (routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i))) {
-                        for (int j = 0; j < routeD.size(); j++) {
-                            if (routeD.get(j).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
-                                dList.add(routeD.get(j));
-                            }
+                if(NavigationSetting.checkLanguage.contains("en")){
+                    for(int i=0;i<allRouteEng.size();i++){
+                        if(parent.getSelectedItem().equals(allRouteEng.get(i).getRouteEng())){
+                            adapter_station = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,allRouteEng.get(i).getStationEng());
+                            adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                            sp_station.setAdapter(adapter_station);
                         }
-
-                        for (int k = 0; k < busSchedule.size(); k++) {
-                            if (busSchedule.get(k).getRoute().equals(routeSpinner.getSelectedItem().toString())) {
-                                busList.add(busSchedule.get(k));
-                            }
-                        }
-                        /*
-                        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                            @Override
-                            public void onInfoWindowClick(Marker marker) {
-                                for (int k = 0; k < busList.size(); k++) {
-                                    startActivity(new Intent(getActivity(), schedule_details.class));
-                                    Intent intent = new Intent(getActivity(), schedule_details.class);
-                                    intent.putExtra("time", busSchedule.get(k).getTime());
-                                    intent.putExtra("bus_num", busSchedule.get(k).getBusno());
-                                    intent.putExtra("phoneNum", busSchedule.get(k).getTel());
-                                    intent.putExtra("route_name", busSchedule.get(k).getRoute());
-                                }
-                            }
-                        });*/
-
-                        mMap.clear();
-                        setUpMap();
-                        plotRouteStation(dList);
-                        routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
-                        routeArrayAdapter.notifyDataSetChanged();
                     }
-                    dList.clear();
+                }else{
+                    for(int i=0;i<allRouteThai.size();i++){
+                        if(parent.getSelectedItem().equals(allRouteThai.get(i).getRouteEng())){
+                            adapter_station = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,allRouteThai.get(i).getStationEng());
+                            adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                            sp_station.setAdapter(adapter_station);
+                        }
+                    }
                 }
-                mylist.setAdapter(routeArrayAdapter);
 
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
 
+        sp_station.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(NavigationSetting.checkLanguage.contains("en")){
+                    for(int i=0;i<allRouteEng.size();i++) {
+                        if(allRouteEng.get(i).getRouteEng().equals(sp_route.getSelectedItem().toString())){
+                            stationTime.setText(allRouteEng.get(i).getStationTime().get(position));
+                            String [] a = stationTime.getText().toString().split("\\.");
+                            /*notifyTime.setCurrentHour(Integer.valueOf(a[0]));
+                            notifyTime.setCurrentMinute(Integer.valueOf(a[1]));*/
+                        }
+                    }
+                }else{
+                    for(int i=0;i<allRouteThai.size();i++) {
+                        if(allRouteThai.get(i).getRouteEng().equals(sp_route.getSelectedItem().toString())){
+                            stationTime.setText(allRouteThai.get(i).getStationTime().get(position));
+                            String [] a = stationTime.getText().toString().split("\\.");
+                            /*notifyTime.setCurrentHour(Integer.valueOf(a[0]));
+                            notifyTime.setCurrentMinute(Integer.valueOf(a[1]));*/
+                        }
+                    }
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-/*
-        mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final int temp = position;
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setPositiveButton("Add to notify route", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(getActivity(), createEditRoute.class);
-                        intent.putExtra("time", busList.get(temp).getTime());
-                        intent.putExtra("bus_num", busList.get(temp).getBusno());
-                        intent.putExtra("driver", busList.get(temp).getDriver());
-                        intent.putExtra("phoneNum", busList.get(temp).getTel());
-                        intent.putExtra("route_name", busList.get(temp).getRoute());
-                        startActivity(intent);
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("View schedule details", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        Intent intent = new Intent(getActivity(), schedule_details.class);
-                        intent.putExtra("time", busList.get(temp).getTime());
-                        intent.putExtra("driver", busList.get(temp).getDriver());
-                        intent.putExtra("bus_num", busList.get(temp).getBusno());
-                        intent.putExtra("phoneNum", busList.get(temp).getTel());
-
-                        intent.putExtra("route_name", busList.get(temp).getRoute());
-                        startActivity(intent);
-                    }
-                });
-                alertDialogBuilder.setCancelable(true);
-                alertDialogBuilder.setMessage("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
-                        "Aenean commodo ligula eget dolor. Aenean massa. ");
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-            }
-        });*/
-
+        //START JSON
+        new JSONParse().execute();
         return rootView;
-    }
-
-    private void plotRouteStation(List<plotRoute> data){
-        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
-
-        if (status != ConnectionResult.SUCCESS) { // Google Play Services are not available
-            int requestCode = 10;
-            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, this.getActivity(), requestCode);
-            dialog.show();
-
-        } else { // Google Play Services are available
-            // Initializing
-            mMarkerPoints = new ArrayList<LatLng>();
-
-            client = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.API).build();
-
-            for(int i=0; i<data.size(); i++){
-
-                drawMarker(data.get(i).getPosition(), data.get(i).getTitle(), data.get(i).getSnip());
-
-                if(i!=data.size()-1) {
-                    LatLng startPoint = data.get(i).getPosition();
-                    LatLng endPoint = data.get(i + 1).getPosition();
-                    String url = getDirectionsUrl(startPoint, endPoint);
-                    DownloadTask downloadTask = new DownloadTask();
-                    downloadTask.execute(url);
-                }
-
-            }
-
-        }
     }
 
     //JSON CLASS
     private class JSONParse extends AsyncTask<String, Void, String> {
-        private ProgressDialog p;
+        private ProgressDialog pDialog;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
-            p = new ProgressDialog(getActivity());
-            p.setMessage(getString(R.string.loading));
-            p.setIndeterminate(false);
-            p.setCancelable(true);
-            p.show();
         }
 
         @Override
         protected String doInBackground(String... args) {
             StringBuilder sb = new StringBuilder();
-            String content = MyHttpURL.getData(url);
             String contentRoute = MyHttpURL.getData(url2);
-
             try {
-                JSONObject obj = new JSONObject(content);
-                JSONArray station = obj.getJSONArray("station");
-
-                for (int i = 0; i < station.length(); i++) {
-                    JSONObject info = (JSONObject) station.get(i);
-
-                    String routeS = info.getString("route_name");
-                    String driver = info.getString("driver_name");
-                    String driver_thai = info.getString("driver_Thai");
-                    String phone = info.getString("phoneNum");
-                    String time = info.getString("time");
-                    int busnum = info.getInt("bus_num");
-
-                    busSchedule.add(new routeSchedule(routeS, driver, driver_thai, time, phone, busnum));
-
-                    /*
-
-                    if (routeS.equals("Salaya-Phayathai")) {
-                        satopaList.add(new routeSchedule(routeS, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(routeS.equals("Salaya-Siriraj")) {
-                        satosiList.add(new routeSchedule(routeS, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(routeS.equals("Phayathai-Salaya")) {
-                        phatosaList.add(new routeSchedule(routeS, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    } else if(routeS.equals("Siriraj-Salaya")) {
-                        sitosaList.add(new routeSchedule(routeS, info.getString("driver_name"),
-                                info.getString("time"), info.getString("phoneNum"),info.getInt("bus_num")));
-                    }*/
+                //For getting route and station dropdown from phpmyadmin
+                JSONObject objRoute = new JSONObject(contentRoute);
+                JSONArray routeDrop = objRoute.getJSONArray("route_station");
+                for (int i=0;i<routeDrop.length();i++){
+                    info = (JSONObject) routeDrop.get(i);
+                    if(NavigationSetting.checkLanguage.contains("en")){
+                        if(!routeEnglish1.contains(info.getString("route"))) routeEnglish1.add(info.getString("route"));
+                    }else{
+                        if(!routeThai1.contains(info.getString("route_thai"))) routeThai1.add(info.getString("route_thai"));
+                    }
                 }
 
-                //For getting route and station lat long from phpmyadmin
-                JSONObject objRoute = new JSONObject(contentRoute);
-                JSONArray routeDrop = objRoute.getJSONArray("station");
+                ArrayList<String> value = new ArrayList<String>();
+                if(NavigationSetting.checkLanguage.contains("en")){
+                    value = routeEnglish1;
+                }else{
+                    value = routeThai1;
+                }
+                for(int j=0;j<value.size();j++) {
+                    //STATIONS
+                    for (int k = 0; k < routeDrop.length(); k++) {
+                        info = (JSONObject) routeDrop.get(k);
+                        if(NavigationSetting.checkLanguage.contains("en")){
+                            //eng
+                            if (routeEnglish1.get(j).equals(info.getString("route"))) {
+                                time = info.getString("time");
+                                if (!stationEnglish1.contains(info.getString("station"))) {
+                                    stationEnglish1.add(info.getString("station"));
+                                    stationTime1.add(info.getString("stationTime"));
+                                }
+                            }
+                        }
+                        else{
+                            //thai
+                            if (routeThai1.get(j).equals(info.getString("route_thai"))) {
+                                time = info.getString("time");
+                                if (!stationThai1.contains(info.getString("station_thai"))) {
+                                    stationThai1.add(info.getString("station_thai"));
+                                    stationTime1.add(info.getString("stationTime"));
+                                }
+                            }
+                        }
+                    }
 
-                for (int i = 0; i < routeDrop.length(); i++){
-                    JSONObject info = (JSONObject) routeDrop.get(i);
+                    //STATIONS TEMP
+                    ArrayList<String> a = new ArrayList<String>();
+                    if(NavigationSetting.checkLanguage.contains("en")){
+                        for(int c=0;c<stationEnglish1.size();c++) {
+                            a.add(stationEnglish1.get(c));
+                        }
+                    }else{
+                        for(int c=0;c<stationThai1.size();c++) {
+                            a.add(stationThai1.get(c));
+                        }
+                    }
 
-                    String route = info.getString("route");
-                    LatLng point = new LatLng(info.getDouble("latitude"), info.getDouble("longitude"));
-                    String title = info.getString("station");
-                    String snip = info.getString("station_thai");
 
-                    MainActivity.plotData.add(new plotRoute(route, point, title, snip));
-                    routeD.add(new plotRoute(route, point, title, snip));
+                    //STATIONS TIME
+                    ArrayList<String> b = new ArrayList<String>();
+                    for(int c=0;c<stationTime1.size();c++) {
+                        b.add(stationTime1.get(c));
+                    }
+
+                    if(NavigationSetting.checkLanguage.contains("en")){
+                        allRouteEng.add(new routeSchedule(routeEnglish1.get(j), a, b, time));
+                    }else{
+                        allRouteThai.add(new routeSchedule(routeThai1.get(j), a, b, time));
+                    }
+
+                    stationEnglish1.clear();
+                    stationThai1.clear();
+                    stationTime1.clear();
                 }
 
                 return sb.toString();
@@ -379,272 +283,11 @@ public class FragmentTab2_Seat extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            p.dismiss();
-            outputText.setText(result);
-            adapter_route2.notifyDataSetChanged();
-            routeArrayAdapter.notifyDataSetChanged();
-
+            adapter_route.notifyDataSetChanged();
         }
     }
 
-    private String getDirectionsUrl(LatLng origin,LatLng dest){
-
-        // Origin of route
-        String str_origin = "origin="+origin.latitude+","+origin.longitude;
-
-        // Destination of route
-        String str_dest = "destination="+dest.latitude+","+dest.longitude;
-
-        // Sensor enabled
-        String sensor = "sensor=false";
-
-        // Building the parameters to the web service
-        String parameters = str_origin+"&"+str_dest+"&"+sensor;
-
-        // Output format
-        String output = "json";
-
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
-
-        return url;
-    }
-
-    /** A method to download json data from url */
-    private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try{
-            URL url = new URL(strUrl);
-
-            // Creating an http connection to communicate with url
-            urlConnection = (HttpURLConnection) url.openConnection();
-
-            // Connecting to url
-            urlConnection.connect();
-
-            // Reading data from url
-            iStream = urlConnection.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-            StringBuffer sb  = new StringBuffer();
-
-            String line = "";
-            while( ( line = br.readLine())  != null){
-                sb.append(line);
-            }
-
-            data = sb.toString();
-
-            br.close();
-
-        }catch(Exception e){
-            //Log.d("Exception while downloading url", e.toString());
-        }finally{
-            iStream.close();
-            urlConnection.disconnect();
-        }
-        return data;
-    }
-
-    /** A class to download data from Google Directions URL */
-    private class DownloadTask extends AsyncTask<String, Void, String> {
-
-        // Downloading data in non-ui thread
-        @Override
-        protected String doInBackground(String... url) {
-
-            // For storing data from web service
-            String data = "";
-
-            try{
-                // Fetching the data from web service
-                data = downloadUrl(url[0]);
-            }catch(Exception e){
-                Log.d("Background Task",e.toString());
-            }
-            return data;
-        }
-
-        // Executes in UI thread, after the execution of
-        // doInBackground()
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            ParserTask parserTask = new ParserTask();
-
-            // Invokes the thread for parsing the JSON data
-            parserTask.execute(result);
-        }
-    }
-
-    /** A class to parse the Google Directions in JSON format */
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String,String>>> >{
-
-        // Parsing the data in non-ui thread
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
-            JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
-
-            try{
-                jObject = new JSONObject(jsonData[0]);
-                DirectionsJSONParser parser = new DirectionsJSONParser();
-
-                // Starts parsing data
-                routes = parser.parse(jObject);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            return routes;
-        }
-
-        // Executes in UI thread, after the parsing process
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            ArrayList<LatLng> points = null;
-            PolylineOptions lineOptions = null;
-
-            // Traversing through all the routes
-            for(int i=0;i<result.size();i++){
-                points = new ArrayList<LatLng>();
-                lineOptions = new PolylineOptions();
-
-                // Fetching i-th route
-                List<HashMap<String, String>> path = result.get(i);
-
-                // Fetching all the points in i-th route
-                for(int j=0;j<path.size();j++){
-                    HashMap<String,String> point = path.get(j);
-
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-
-                    points.add(position);
-                }
-
-                // Adding all the points in the route to LineOptions
-                lineOptions.addAll(points);
-                lineOptions.width(10);
-                lineOptions.color(Color.GREEN);
-            }
-
-            // Drawing polyline in the Google Map for the i-th route
-            mMap.addPolyline(lineOptions);
-        }
-    }
-
-    private void drawMarker(LatLng point, String title, String snip) {
-        mMarkerPoints.add(point);
-
-        // Creating MarkerOptions
-        MarkerOptions options = new MarkerOptions();
-
-        // Setting the position of the marker
-        options.position(point);
-
-        /**
-         * For the start location, the color of marker is GREEN and
-         * for the end location, the color of marker is RED.
-         */
-        if (mMarkerPoints.size() == 1) {
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        } else {
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
-        }
-
-        // Add new marker to the Google Map Android API V2
-        options.title(title).snippet(snip);
-
-        mMap.addMarker(options);
-    }
-
-    public void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.location_map)).getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null)
-                setUpMap();
-        }
-    }
-
-    private static void setUpMap() {
-        // For showing a move to my loction button
-
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setTrafficEnabled(true);
-
-        // For dropping a marker at a point on the Map
-        /*
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                .title(MainActivity.getContext().getResources().getString(R.string.mahidol))
-                .snippet(MainActivity.getContext().getResources().getString(R.string.start))
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-        */
-
-        // For zooming automatically to the Dropped PIN Location
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(13.791393, 100.349620), 13.0f));
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-
-    }
-
-    //custom adapter
-    class RouteArrayAdapter extends ArrayAdapter<routeSchedule> {
-
-        Context context;
-        List<routeSchedule> objects;
-        public RouteArrayAdapter(Context context, int resource, List<routeSchedule> objects) {
-            super(context, resource, objects);
-            this.context = context;
-            this.objects = objects;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            routeSchedule d = objects.get(position);
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.list_layout, null);
-
-            TextView txt = (TextView) view.findViewById(R.id.arriveText);
-            txt.setText(d.toString());
-            TextView timeText = (TextView) view.findViewById(R.id.stationText);
-            timeText.setText(d.getTimeNormal());
-            TextView travelText = (TextView) view.findViewById(R.id.travelText);
-            travelText.setText(String.valueOf(d.getBusno()));
-
-            return view;
-        }
-    }
-
-    @Override
-    public void onResume()
-    {   super.onResume();
-        setUpMapIfNeeded();
-        setUpMap();
 
 
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        if (mMap != null)
-            setUpMap();
-
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.location_map)).getMap(); // getMap is deprecated
-            // Check if we were successful in obtaining the map.
-            if (mMap != null)
-                setUpMap();
-        }
-    }
 
 }

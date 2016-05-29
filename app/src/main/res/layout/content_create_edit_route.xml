@@ -138,7 +138,7 @@
             android:background="@drawable/rounded_button"
             android:layout_marginTop="15dp"
             android:textColor="#ffffff"
-            android:onClick="gotoMainActivityFromRoute"
+            android:onClick="gotoNavigationSettingFromRoute"
             android:layout_marginLeft="20dp" />
 
 

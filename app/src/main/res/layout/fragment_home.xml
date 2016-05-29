@@ -11,7 +11,7 @@
         android:id="@+id/map_home"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="400dp"
-        android:layout_height="280dp"
+        android:layout_height="290dp"
         tools:context="com.bustracker.mustracker.MapsActivity"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
@@ -27,50 +27,120 @@
         android:layout_alignParentTop="true"
         android:textColor="#ffffff" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click"
-        android:id="@+id/clickButton"
-        android:layout_below="@+id/spinner_station"
-        android:layout_centerHorizontal="true" />
-
-    <Spinner
-        android:id="@+id/spinner_route"
-        android:layout_width="330dp"
-        android:layout_height="40dp"
-        android:background="@drawable/signup_text_border"
-        android:layout_above="@+id/spinner_station"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"></Spinner>
-
-    <Spinner
-        android:id="@+id/spinner_station"
-        android:layout_width="330dp"
-        android:layout_height="40dp"
-        android:background="@drawable/signup_text_border"
-        android:layout_above="@+id/map_home"
-        android:layout_alignStart="@+id/spinner_route"
-        android:layout_marginBottom="10dp"></Spinner>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/textTest"
-        android:layout_below="@+id/clickButton"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignTop="@+id/map_home"
+        android:layout_alignStart="@+id/time_logo" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/buswill"
-        android:id="@+id/textView3"
+        android:id="@+id/day"
         android:textColor="#ffffff"
         android:textSize="20dp"
         android:contextClickable="false"
         android:layout_below="@+id/travelText"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/arrive_logo"
+        android:src="@drawable/bus2_icon1"
+        android:layout_below="@+id/day"
+        android:layout_alignEnd="@+id/arrive_text"
+        android:layout_marginTop="10dp"
+        android:layout_alignStart="@+id/arrive_text" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/time_logo"
+        android:layout_alignBottom="@+id/arrive_logo"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/time_spend1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/route_logo"
+        android:src="@drawable/bus_go1"
+        android:layout_alignTop="@+id/time_logo"
+        android:layout_alignEnd="@+id/route_info"
+        android:layout_toEndOf="@+id/time_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/arrive_info"
+        android:textColor="#0b5c94"
+        android:textSize="20dp"
+        android:text="60"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_marginLeft="45dp"
+        android:layout_below="@+id/arrive_logo"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/time_info"
+        android:layout_below="@+id/time_logo"
+        android:layout_centerHorizontal="true"
+        android:textColor="#0b5c94"
+        android:textSize="20dp"
+        android:text="60" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/route_info"
+        android:textColor="#0b5c94"
+        android:textSize="14dp"
+        android:text="Salaya to Phayathai"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/route_text"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="KM Arrive in"
+        android:id="@+id/arrive_text"
+        android:textColor="#0b5c94"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/arrive_info"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Minutes Spend"
+        android:id="@+id/time_text"
+        android:textColor="#0b5c94"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/time_info"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/route_text"
+        android:text="Route"
+        android:textColor="#0b5c94"
+        android:layout_above="@+id/time_text"
+        android:layout_alignEnd="@+id/route_logo"
+        android:layout_marginRight="40dp" />
 
 </RelativeLayout>
