@@ -6,23 +6,29 @@ package com.bustracker.mustracker;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -31,6 +37,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressLint("NewApi")
 
 //LINK WITH MYHTTPHRL
-public class FragmentTab1_Home extends Fragment {
+public class FragmentTab1_Home extends Fragment{
     private  static  String url = "http://bus.atilal.com/location_an.php?";
     private static String url2 = "http://bus.atilal.com/plot_routestation.php?";
 
@@ -47,12 +54,14 @@ public class FragmentTab1_Home extends Fragment {
     String defaultRoute;
     ArrayList<plotRoute> routeD = new ArrayList<plotRoute>();
 
-    ArrayAdapter<String> adapter_route;
-    ArrayAdapter<String> adapter_station;
     String name, version;
     Button btnClick;
     TextView timerText, outputText;
     View rootView;
+
+    CommentDataSource dataSource;
+    int allseconds;
+    boolean check_time = false;
 
     //GOOGLE MAP
     //static final LatLng MAHIDOL = new LatLng(13.792686, 100.326425);
@@ -63,38 +72,44 @@ public class FragmentTab1_Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar();
         ((AppCompatActivity) getActivity()).setTitle("MUST BUS");
-        //for crate home button
-
-        //TIMER
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        btnClick = (Button) rootView.findViewById(R.id.clickButton);
-        timerText = (TextView) rootView.findViewById(R.id.travelText);
-        timerText.setText("00:03:00");
 
-        final CounterClass timerClass = new CounterClass(180000,1000); //adjust countdown here
-        /* EXPLAIN TIMER PROCESS
-        1 sec = 1000 millisec
-        this countdowntimer must use millisec, so if we want to tick for 1 sec we must input 1000 (millisec)
-        ex. we want 3 mins -> 180 sec (60sec*3)-> 180000 millisec
-        CounterClass(TotalTime in millisec, tick by 1 sec or 1000 millisec)
-        */
-        btnClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timerClass.start();
+        //DATABASE IN PHONE
+        //GET THE STATION TIME FROM DATABASE
+        //CALCULATE ESTIMATED TIME BUS WILL ARRIVE
+        dataSource = new CommentDataSource(getActivity());
+        dataSource.open();
+        List<Comment> values = dataSource.getAllComments();
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+        for (int i=0;i<values.size();i++){
+            String temp = values.get(i).toString();
+            String [] buffer,hourMinute;
+            buffer = temp.split("\n");
+            String time = buffer[0].substring(buffer[0].indexOf("(")+1,buffer[0].indexOf(")"));
+            hourMinute = time.split(":");
+            if(today.hour <= Integer.parseInt(hourMinute[0])){
+                check_time = true;
+                int h = Integer.parseInt(hourMinute[0]) - today.hour -1;
+                int m = 60 - today.minute;
+                allseconds = (h*60*60 + (m + Integer.parseInt(hourMinute[1]))*60 + today.second)*1000;
             }
-        });
+        }
 
-        //SPINNER
-        Spinner sp1 = (Spinner) rootView.findViewById(R.id.spinner_route);
-        adapter_route = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
-        adapter_route.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        sp1.setAdapter(adapter_route);
-
-        Spinner sp2 = (Spinner) rootView.findViewById(R.id.spinner_station);
-        adapter_station = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, MainActivity.stationEnglish);
-        adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        sp2.setAdapter(adapter_station);
+        //SET TIMER
+        timerText = (TextView) rootView.findViewById(R.id.travelText);
+        if(check_time == false){
+            timerText.setText("00:00:00");
+        }else{
+            final CounterClass timerClass = new CounterClass(allseconds,1000); //adjust countdown here
+            timerClass.start();
+            check_time = false;
+            /* EXPLAIN TIMER PROCESS
+            1 sec = 1000 millisec
+            this countdowntimer must use millisec, so if we want to tick for 1 sec we must input 1000 (millisec)
+            ex. we want 3 mins -> 180 sec (60sec*3)-> 180000 millisec
+            CounterClass(TotalTime in millisec, tick by 1 sec or 1000 millisec)*/
+        }
 
         //GET JSON DATA FROM SERVER
         new JSONParse().execute();
@@ -102,59 +117,6 @@ public class FragmentTab1_Home extends Fragment {
         //GOOGLE MAP
         setupMap();
         return rootView;
-    }
-
-    private void setupMap(){
-        map = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_home)).getMap();
-        map.getUiSettings().setZoomControlsEnabled(true);
-
-        //Use for ploting station of the default route set
-        defaultRoute = "Salaya to Phayathai";
-
-        final List<plotRoute> dList = new ArrayList<plotRoute>();
-        Log.d("dList size ", String.valueOf(routeD.size()));
-        for(int j=0; j<routeD.size(); j++){
-            if(routeD.get(j).getRoute().equals(defaultRoute)) {
-                dList.add(routeD.get(j));
-            }
-        }
-        mMarkerPoints = new ArrayList<LatLng>();
-
-        for(int i=0; i<dList.size(); i++) {
-            drawMarker(dList.get(i).getPosition(), dList.get(i).getTitle(), dList.get(i).getSnip());
-        }
-
-        // Zoom in, animating the camera.
-        map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
-        // Move the camera instantly to mahidol with a zoom of 15.
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(STATION1, 11));
-
-    }
-
-    private void drawMarker(LatLng point, String title, String snip) {
-
-        mMarkerPoints.add(point);
-
-        // Creating MarkerOptions
-        MarkerOptions options = new MarkerOptions();
-
-        // Setting the position of the marker
-        options.position(point);
-
-        /**
-         * For the start location, the color of marker is GREEN and
-         * for the end location, the color of marker is RED.
-         */
-        if (mMarkerPoints.size() == 1) {
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        } else {
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
-        }
-
-        // Add new marker to the Google Map Android API V2
-        options.title(title).snippet(snip);
-
-        map.addMarker(options);
     }
 
     //TIMER FUNCTION
@@ -177,7 +139,9 @@ public class FragmentTab1_Home extends Fragment {
 
         @Override
         public void onFinish() {
-            timerText.setText("Completed.");
+            //timerText.setTextSize(60);
+            timerText.setText("Arrived");
+
         }
     }
 
@@ -252,7 +216,6 @@ public class FragmentTab1_Home extends Fragment {
 
                     MainActivity.plotData.add(new plotRoute(route, point, title, snip));
                 }*/
-
                 return sb.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -264,9 +227,59 @@ public class FragmentTab1_Home extends Fragment {
         protected void onPostExecute(String result) {
             pDialog.dismiss();
             outputText.setText(result);
-            adapter_route.notifyDataSetChanged();
-            adapter_station.notifyDataSetChanged();
             setupMap();
         }
+    }
+
+    //map
+    private void setupMap(){
+        map = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_home)).getMap();
+        map.getUiSettings().setZoomControlsEnabled(true);
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
+                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
+        map.setMyLocationEnabled(true);
+
+        //Use for ploting station of the default route set
+        defaultRoute = "Salaya to Phayathai";
+
+        final List<plotRoute> dList = new ArrayList<plotRoute>();
+        Log.d("dList size ", String.valueOf(routeD.size()));
+        for(int j=0; j<routeD.size(); j++){
+            if(routeD.get(j).getRoute().equals(defaultRoute)) {
+                dList.add(routeD.get(j));
+            }
+        }
+        mMarkerPoints = new ArrayList<LatLng>();
+
+        for(int i=0; i<dList.size(); i++) {
+            drawMarker(dList.get(i).getPosition(), dList.get(i).getTitle(), dList.get(i).getSnip());
+        }
+
+        // Zoom in, animating the camera.
+        map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+        // Move the camera instantly to mahidol with a zoom of 15.
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(STATION1, 11));
+
+    }
+
+    private void drawMarker(LatLng point, String title, String snip) {
+        mMarkerPoints.add(point);
+        // Creating MarkerOptions
+        MarkerOptions options = new MarkerOptions();
+        // Setting the position of the marker
+        options.position(point);
+        /**
+         * For the start location, the color of marker is GREEN and
+         * for the end location, the color of marker is RED.
+         */
+        if (mMarkerPoints.size() == 1) {
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        } else {
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
+        }
+        // Add new marker to the Google Map Android API V2
+        options.title(title).snippet(snip);
+        map.addMarker(options);
     }
 }

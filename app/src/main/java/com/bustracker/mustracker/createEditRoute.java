@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-  import android.widget.Spinner;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 //Nothing Selected Spinner Adapter
@@ -33,7 +34,7 @@ public class createEditRoute extends AppCompatActivity {
 
     private static String url2 = "http://bus.atilal.com/route_station.php?";
     TextView outputText;
-    String time, days="";
+    String time,days="";
     JSONObject info;
     String checkLanguage;
 
@@ -95,7 +96,6 @@ public class createEditRoute extends AppCompatActivity {
 
         //GET INTENT FROM CHOOSELANGUAGE ACTIVITY
         Intent i = getIntent();
-        checkLanguage = getResources().getConfiguration().locale.getLanguage();
 
         //GET INTENT FROM CHOOSEDAY
         Bundle extras = i.getExtras();
@@ -103,13 +103,14 @@ public class createEditRoute extends AppCompatActivity {
             //Do stuff because extra has been added
             resultDay = extras.getStringArray("selectedItems");
             for(int k=0;k<resultDay.length;k++){
-                 days = days + resultDay[k];
+                days = days + resultDay[k];
                 if(k != resultDay.length-1) days = days + ",";
             }
         }
         if(extras.containsKey("language")){
             checkLanguage = extras.getString("language");
         }
+        checkLanguage = getResources().getConfiguration().locale.getLanguage();
 
         //SPINNER 1
         sp_route = (Spinner) findViewById(R.id.spinner_route);
@@ -125,12 +126,11 @@ public class createEditRoute extends AppCompatActivity {
         //sp_route.setAdapter(new NothingSelectedSpinnerAdapter(adapter_route, R.layout.contact_spinner_row_nothing_selected, this));
         sp_route.setAdapter(adapter_route);
 
-
         //SPINNER 2
-        final Spinner sp_station = (Spinner) findViewById(R.id.spinner_station);
+        sp_station = (Spinner) findViewById(R.id.spinner_station);
 
         //SPINNER 3
-        final Spinner sp_stationTime = (Spinner) findViewById(R.id.spinner_day);
+        sp_stationTime = (Spinner) findViewById(R.id.spinner_day);
 
         sp_route.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -138,16 +138,18 @@ public class createEditRoute extends AppCompatActivity {
                 if(checkLanguage.contains("en")){
                     for(int i=0;i<allRouteEng.size();i++){
                         if(parent.getSelectedItem().equals(allRouteEng.get(i).getRouteEng())){
-                            adapter_station = new ArrayAdapter<String>(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteEng.get(i).getStationEng());
+                            adapter_station = new ArrayAdapter(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteEng.get(i).getStationEng());
                             adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                            //sp_station.setAdapter(new NothingSelectedSpinnerAdapter(adapter_station,R.layout.contact_spinner_row_station,createEditRoute.this));
                             sp_station.setAdapter(adapter_station);
                         }
                     }
                 }else{
                     for(int i=0;i<allRouteThai.size();i++){
                         if(parent.getSelectedItem().equals(allRouteThai.get(i).getRouteEng())){
-                            adapter_station = new ArrayAdapter<String>(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteThai.get(i).getStationEng());
+                            adapter_station = new ArrayAdapter(createEditRoute.this, android.R.layout.simple_spinner_item,allRouteThai.get(i).getStationEng());
                             adapter_station.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                            //sp_station.setAdapter(new NothingSelectedSpinnerAdapter(adapter_station,R.layout.contact_spinner_row_station,createEditRoute.this));
                             sp_station.setAdapter(adapter_station);
                         }
                     }
@@ -161,11 +163,13 @@ public class createEditRoute extends AppCompatActivity {
         sp_station.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                List<String> t = new ArrayList<String>();
+                StringBuilder sb = new StringBuilder();
                 if(checkLanguage.contains("en")){
                     for(int i=0;i<allRouteEng.size();i++) {
                         if(allRouteEng.get(i).getRouteEng().equals(sp_route.getSelectedItem().toString())){
                             outputText.setText(allRouteEng.get(i).getStationTime().get(position));
-                            String [] a = outputText.getText().toString().split("\\.");
+                            String [] a = outputText.getText().toString().split(":");
                             notifyTime.setCurrentHour(Integer.valueOf(a[0]));
                             notifyTime.setCurrentMinute(Integer.valueOf(a[1]));
                         }
@@ -174,7 +178,7 @@ public class createEditRoute extends AppCompatActivity {
                     for(int i=0;i<allRouteThai.size();i++) {
                         if(allRouteThai.get(i).getRouteEng().equals(sp_route.getSelectedItem().toString())){
                             outputText.setText(allRouteThai.get(i).getStationTime().get(position));
-                            String [] a = outputText.getText().toString().split("\\.");
+                            String [] a = outputText.getText().toString().split(":");
                             notifyTime.setCurrentHour(Integer.valueOf(a[0]));
                             notifyTime.setCurrentMinute(Integer.valueOf(a[1]));
                         }
@@ -249,10 +253,10 @@ public class createEditRoute extends AppCompatActivity {
                     }
 
                     //STATIONS TEMP
-                    ArrayList<String> a = new ArrayList<>();
+                    ArrayList<String> a = new ArrayList<String>();
                     if(checkLanguage.contains("en")){
                         for(int c=0;c<stationEnglish1.size();c++) {
-                                a.add(stationEnglish1.get(c));
+                            a.add(stationEnglish1.get(c));
                         }
                     }else{
                         for(int c=0;c<stationThai1.size();c++) {
@@ -262,7 +266,7 @@ public class createEditRoute extends AppCompatActivity {
 
 
                     //STATIONS TIME
-                    ArrayList<String> b = new ArrayList<>();
+                    ArrayList<String> b = new ArrayList<String>();
                     for(int c=0;c<stationTime1.size();c++) {
                         b.add(stationTime1.get(c));
                     }
@@ -287,7 +291,6 @@ public class createEditRoute extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            outputText.setText("hello it's judy");
             adapter_route.notifyDataSetChanged();
         }
     }
@@ -302,9 +305,13 @@ public class createEditRoute extends AppCompatActivity {
         startActivity(new Intent(createEditRoute.this, chooseLanguage.class));
     }
 
-    public void gotoMainActivityFromRoute(View v){
+    public void gotoNavigationSettingFromRoute(View v){
         //startActivity(new Intent(createEditRoute.this, MainActivity.class));
         startActivity(new Intent(createEditRoute.this, NavigationSetting.class));
+        Intent i = new Intent(createEditRoute.this, NavigationSetting.class);
+        if(checkLanguage.contains("en"))i.putExtra("language","en");
+        else i.putExtra("language","th");
+        startActivity(i);
     }
 
     public void addRouteStation(View v){
@@ -321,7 +328,7 @@ public class createEditRoute extends AppCompatActivity {
         if(days == "") days = "Every Monday";
         comment = null;
         comment = dataSource.createComment(sp_route.getSelectedItem().toString() + "(" + outputText.getText().toString() + ")" + "\n"
-                    + sp_station.getSelectedItem().toString() + "\n" + days + "\n" + h + ":"+ m);
+                + sp_station.getSelectedItem().toString() + "\n" + days + "\n" + h + ":"+ m);
         adapter.add(comment);
         adapter.notifyDataSetChanged();
     }

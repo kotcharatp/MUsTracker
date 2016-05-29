@@ -2,45 +2,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#06365a">
+    android:orientation="vertical"
+    android:background="@drawable/home">
+
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="600dp"
-        android:text="Fragment 3"
-        android:id="@+id/textView"
-        android:layout_below="@+id/location_map"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/travelText"
+        android:textSize="75dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:textColor="#ffffff" />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/route"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        android:background="@drawable/rounded_info"
+        android:autoText="false"
+        android:gravity="center"
+        android:text="Route"
+        android:layout_below="@+id/travelText"
+        android:layout_alignStart="@+id/station"
+        android:layout_marginTop="60dp" />
 
     <Spinner
-        android:layout_width="300dp"
+        android:id="@+id/spinner_route"
+        android:layout_width="320dp"
         android:layout_height="40dp"
-        android:id="@+id/spinner_language"
-        android:background="@drawable/spinner_border"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:spinnerMode="dropdown"
-        android:entries="@array/routes_list"
-        />
+        android:background="@drawable/signup_text_border"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/route"
+        android:layout_centerHorizontal="true"></Spinner>
 
-    <fragment
-        android:layout_width="100dp"
-        android:layout_height="200dp"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/location_map"
-        android:layout_below="@+id/spinner_language"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp" />
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/station"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        android:background="@drawable/rounded_info"
+        android:autoText="false"
+        android:gravity="center"
+        android:layout_below="@+id/spinner_route"
+        android:layout_alignStart="@+id/spinner_route"
+        android:layout_marginTop="20dp"
+        android:text="Station" />
 
-    <ListView
+    <Spinner
+        android:id="@+id/spinner_station"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
+        android:background="@drawable/signup_text_border"
+        android:layout_below="@+id/station"
+        android:layout_alignStart="@+id/station"></Spinner>
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Set your notification time"
+        android:id="@+id/time"
+        android:textSize="15dp"
+        android:background="@drawable/rounded_info"
+        android:textColor="#FFFFFF"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/spinner_station"
+        android:layout_alignStart="@+id/spinner_station" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/location_map"
-        android:background="#ffffff" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/day"
+        android:textColor="#ffffff"
+        android:textSize="50dp"
+        android:contextClickable="false"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/travelText"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="32dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/stationTime"
+        android:textSize="20dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:foregroundGravity="center|center_vertical|center_horizontal"
+        android:background="#0b5c94"
+        android:layout_below="@+id/travelText"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/setNotiButton"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:text="SET NOTIFICATION"
+        android:background="@drawable/rounded_button"
+        android:textColor="#ffffff"
+        android:onClick="gotoCreateEditRoute"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/timePicker"
+        android:layout_alignStart="@+id/time" />
+
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:id="@+id/timePicker"
+        android:layout_below="@+id/time"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

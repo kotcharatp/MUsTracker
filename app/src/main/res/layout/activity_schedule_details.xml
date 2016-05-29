@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/travelTime"
-        android:id="@+id/textView3"
+        android:id="@+id/day"
         android:textColor="@color/colorPrimary"
         android:textSize="22dp"
         android:contextClickable="false"
@@ -48,7 +48,7 @@
         android:id="@+id/call"
         android:src="@drawable/phone"
         android:layout_alignTop="@+id/detail"
-        android:layout_alignEnd="@+id/textView3" />
+        android:layout_alignEnd="@+id/day" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,9 +57,9 @@
         android:id="@+id/detail"
         android:textColor="#0b5c94"
         android:textSize="20dp"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/day"
         android:layout_marginTop="15dp"
-        android:layout_alignStart="@+id/textView3"
+        android:layout_alignStart="@+id/day"
         android:layout_toStartOf="@+id/call" />
 
     <ListView
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText"
         android:layout_below="@+id/imageView"
-        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignEnd="@+id/day"
         android:layout_alignStart="@+id/detail"
         android:text="@string/tapanywhere"
         android:textColor="#A9A9A9"
