@@ -23,9 +23,13 @@ import android.view.MenuItem;
 //LINK WITH PAGER ADAPTER
 public class NavigationSetting extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static Context mContext;
+    public static String checkLanguage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkLanguage = getResources().getConfiguration().locale.getLanguage();
 
         setContentView(R.layout.activity_navigation_setting);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -45,7 +49,7 @@ public class NavigationSetting extends AppCompatActivity implements NavigationVi
         mContext = this;
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("\n" + getResources().getString(R.string.home)));
-        //tabLayout.addTab(tabLayout.newTab().setText("Seat Available"));
+        tabLayout.addTab(tabLayout.newTab().setText("\n" + "Route Today"));
         tabLayout.addTab(tabLayout.newTab().setText("\n"+ getResources().getString(R.string.busschedule)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

@@ -15,8 +15,9 @@
     <!-- Permission to Vibrate -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- for call function -->
+    <!--for call function -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
 
     <application
         android:allowBackup="true"
@@ -44,7 +45,6 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -65,7 +65,9 @@
         <activity
             android:name=".signup_page"
             android:label="@string/title_activity_signup_page"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
+
+        <!-- SET NOTIFICATION -->
         <activity
             android:name=".createEditRoute"
             android:label="@string/title_activity_create_edit_route"
