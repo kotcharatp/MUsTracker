@@ -8,6 +8,8 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,11 +36,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -47,18 +51,13 @@ import java.util.concurrent.TimeUnit;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 
-//LINK WITH MYHTTPHRL
+//LINK WITH MY HTTP HRL
 public class FragmentTab1_Home extends Fragment{
-    private  static  String url = "http://bus.atilal.com/location_an.php?";
-    private static String url2 = "http://bus.atilal.com/plot_routestation.php?";
-
     ArrayList<LatLng> mMarkerPoints;
     String defaultRoute;
     ArrayList<plotRoute> routeD = new ArrayList<plotRoute>();
 
-    String name, version;
-    Button btnClick;
-    TextView timerText, outputText;
+    TextView timerText,arrive_km,outputText;
     View rootView;
 
     CommentDataSource dataSource;
@@ -68,6 +67,13 @@ public class FragmentTab1_Home extends Fragment{
     //GOOGLE MAP
     static final LatLng STATION1 = new LatLng(13.782057, 100.417540);
     private GoogleMap map;
+    //static final LatLng MAHIDOL = new LatLng(13.792686, 100.326425);
+    //static final LatLng PHAYATHAI = new LatLng(13.764905, 100.526270);
+
+    Marker now = null;
+    double lat,lng;
+    int busNo;
+    String duration, distance, route_name;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -84,9 +90,11 @@ public class FragmentTab1_Home extends Fragment{
         today.setToNow();
         for (int i=0;i<values.size();i++){
             String temp = values.get(i).toString();
-            String [] buffer,hourMinute;
+            String [] buffer,hourMinute,routeT;
             buffer = temp.split("\n");
             String time = buffer[0].substring(buffer[0].indexOf("(")+1,buffer[0].indexOf(")"));
+            routeT = buffer[0].split("\\(");
+            route_name = routeT[0];
             hourMinute = time.split(":");
             if(today.hour <= Integer.parseInt(hourMinute[0])){
                 check_time = true;
@@ -95,6 +103,9 @@ public class FragmentTab1_Home extends Fragment{
                 allseconds = (h*60*60 + (m + Integer.parseInt(hourMinute[1]))*60 + today.second)*1000;
             }
         }
+
+        TextView route_c = (TextView) rootView.findViewById(R.id.route_info);
+        route_c.setText(route_name);
 
         //SET TIMER
         timerText = (TextView) rootView.findViewById(R.id.travelText);
@@ -113,9 +124,25 @@ public class FragmentTab1_Home extends Fragment{
 
         //GET JSON DATA FROM SERVER
         new JSONParse().execute();
-
-        //GOOGLE MAP
-        setupMap();
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(30000);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //GET JSON DATA FROM SERVER
+                                new JSONParse().execute();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        t.start();
         return rootView;
     }
 
@@ -141,14 +168,12 @@ public class FragmentTab1_Home extends Fragment{
         public void onFinish() {
             //timerText.setTextSize(60);
             timerText.setText("Arrived");
-
         }
     }
 
     //JSON CLASS
     private class JSONParse extends AsyncTask<String, Void, String> {
         private ProgressDialog pDialog;
-        String duText;
 
         @Override
         protected void onPreExecute() {
@@ -159,40 +184,47 @@ public class FragmentTab1_Home extends Fragment{
             pDialog.setMessage(getString(R.string.loading));
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
-            //pDialog.show();
+            pDialog.show();
             outputText.setText(R.string.outputText);
         }
 
         @Override
         protected String doInBackground(String... args) {
-            StringBuilder sb = new StringBuilder();
-            String content = MyHttpURL.getData(url);
-            String contentRoute = MyHttpURL.getData(url2);
-
             try {
-                JSONObject obj = new JSONObject(content);
-                JSONArray location = obj.getJSONArray("Location");
-                for (int i = 0; i < location.length(); i++) {
-                    JSONObject info = (JSONObject) location.get(i);
-                    //sb.append("Latitude = " + info.getString("latitude") + "\n");
-                    //sb.append("Longitude = " + info.getString("longitude") + "\n");
-                    //sb.append("Bus Number = " + info.getString("bus_num") + "\n");
-                    //sb.append("\n");
+                //GET REAL TIME LOCATION from bus_location_get.php
+                JSONObject objLocation = new JSONObject(MyHttpURL.getData("http://bus.atilal.com/bus_location_get.php"));
+                JSONArray realLocation = objLocation.getJSONArray("realtime_location");
+                for(int i=0;i<realLocation.length();i++) {
+                    JSONObject info = (JSONObject) realLocation.get(i);
+                    lat = info.getDouble("latitude");
+                    lng = info.getDouble("longitude");
+                    busNo = info.getInt("bus_num");
                 }
 
-                String durationUrl = "https://maps.googleapis.com/maps/api/directions/json?origin=13.792686,100.326425&destination=13.751067,%20100.445456&sensor=false";
-                JSONObject objTest = new JSONObject(MyHttpURL.getData(durationUrl));
-                JSONArray routes = objTest.getJSONArray("routes");
-                JSONObject inRoutes = (JSONObject) routes.get(0);
-                JSONArray legs = inRoutes.getJSONArray("legs");
-                JSONObject inLegs = (JSONObject) legs.get(0);
-                JSONObject duration = inLegs.getJSONObject("duration");
-                Log.d("printtt", duration.getString("text"));
-                sb.append(duration.getString("text"));
+                //GET DURATION FROM GOOGLE DIRECTION API
+                JSONObject objDuration = new JSONObject(MyHttpURL.getData("https://maps.googleapis.com/maps/api/directions/json?origin=13.792686,100.326425&destination=13.746655,100.535724&sensor=false"));
+                JSONArray routesDu = objDuration.getJSONArray("routes");
+                JSONObject inRoutesDu = (JSONObject) routesDu.get(0);
+                JSONArray legsDu = inRoutesDu.getJSONArray("legs");
+                JSONObject inLegsDu = (JSONObject) legsDu.get(0);
+                JSONObject durationObj = inLegsDu.getJSONObject("duration");
+                duration = durationObj.getString("text");
 
 
+                //GET DISTANCE FROM GOOGLE DIRECTION API
+                JSONObject objDistance = new JSONObject(MyHttpURL.getData("https://maps.googleapis.com/maps/api/directions/json?origin=13.792686,100.326425&destination=13.746655,100.535724&sensor=false"));
+                JSONArray routesDi = objDistance.getJSONArray("routes");
+                JSONObject inRoutesDi = (JSONObject) routesDi.get(0);
+                JSONArray legsDi = inRoutesDi.getJSONArray("legs");
+                JSONObject inLegsDi = (JSONObject) legsDi.get(0);
+                JSONObject distanceObj = inLegsDi.getJSONObject("distance");
+                distance = distanceObj.getString("text");
+
+
+                //GET LOCATION from LOCATION.PHP
+                //FOR PLOT THE LOCATION OF STATIONS
                 //For getting route and station dropdown from phpmyadmin
-                JSONObject objRoute = new JSONObject(contentRoute);
+                JSONObject objRoute = new JSONObject(MyHttpURL.getData("http://bus.atilal.com/plot_routestation.php?"));
                 JSONArray routeDrop = objRoute.getJSONArray("station");
 
                 for (int i = 0; i < routeDrop.length(); i++){
@@ -228,7 +260,6 @@ public class FragmentTab1_Home extends Fragment{
 
                     MainActivity.plotData.add(new plotRoute(route, point, title, snip));
                 }*/
-                return sb.toString();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -238,7 +269,16 @@ public class FragmentTab1_Home extends Fragment{
         @Override
         protected void onPostExecute(String result) {
             pDialog.dismiss();
-            outputText.setText(result);
+            if (!pDialog.isShowing())
+            {
+                TextView arrive_km = (TextView) rootView.findViewById(R.id.arrive_info);
+                arrive_km.setText(String.valueOf(distance));
+
+                TextView arrive_min = (TextView) rootView.findViewById(R.id.time_info);
+                arrive_min.setText(String.valueOf(duration));
+
+                outputText.setText(String.valueOf(lat) +" " + String.valueOf(lng));
+            }
             setupMap();
         }
     }
@@ -247,7 +287,6 @@ public class FragmentTab1_Home extends Fragment{
     private void setupMap(){
         map = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_home)).getMap();
         map.getUiSettings().setZoomControlsEnabled(true);
-
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
@@ -268,6 +307,15 @@ public class FragmentTab1_Home extends Fragment{
         for(int i=0; i<dList.size(); i++) {
             drawMarker(dList.get(i).getPosition(), dList.get(i).getTitle(), dList.get(i).getSnip());
         }
+
+        //GET THE LAT, LNG FROM JSON BUS_LOCATION_GET
+        //THE MOST RECENT ROW
+        //map.addMarker(new MarkerOptions().position(new LatLng(lat,lng))).setTitle("Bus");
+        //drawMarker(new LatLng(lat,lng),"Bus","wtf");
+
+        if(now != null) now.remove();
+        // Creating a LatLng object for the current location
+        now = map.addMarker(new MarkerOptions().position(new LatLng(lat,lng)));
 
         // Zoom in, animating the camera.
         map.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
