@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.Locale;
 
 // Now is bus schedule
-public class FragmentTab2_Seat extends Fragment {
+public class FragmentTab2_Today extends Fragment {
     private static String url2 = "http://bus.atilal.com/route_station.php?";
     String time;
     JSONObject info;

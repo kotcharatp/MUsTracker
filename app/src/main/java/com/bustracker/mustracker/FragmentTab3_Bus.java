@@ -110,21 +110,18 @@ public class FragmentTab3_Bus extends Fragment {
                                 .setContentText("Hello World!")
                                 .setSound(Uri.parse(notiRingtone));
 
-                if(notiVibrate) {
-                    mBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+                if (notiVibrate) {
+                    mBuilder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
                 }
 
                 NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 
-                if(notiNoOff){
+                if (notiNoOff) {
                     notificationManager.notify(001, mBuilder.build());
                 }
 
             }
         });
-
-        //GET JSON DATA FROM SERVER
-        new JSONParse().execute();
 
         routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
 
@@ -153,6 +150,9 @@ public class FragmentTab3_Bus extends Fragment {
         routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
         routeArrayAdapter.notifyDataSetChanged();
         mylist.setAdapter(routeArrayAdapter);
+
+        //GET JSON DATA FROM SERVER
+        new JSONParse().execute();
 
         mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -216,20 +216,6 @@ public class FragmentTab3_Bus extends Fragment {
                                 busList.add(busSchedule.get(k));
                             }
                         }
-                        /* On clicklistener for snipper in google map
-                        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                            @Override
-                            public void onInfoWindowClick(Marker marker) {
-                                for (int k = 0; k < busList.size(); k++) {
-                                    startActivity(new Intent(getActivity(), schedule_details.class));
-                                    Intent intent = new Intent(getActivity(), schedule_details.class);
-                                    intent.putExtra("time", busSchedule.get(k).getTime());
-                                    intent.putExtra("bus_num", busSchedule.get(k).getBusno());
-                                    intent.putExtra("phoneNum", busSchedule.get(k).getTel());
-                                    intent.putExtra("route_name", busSchedule.get(k).getRoute());
-                                }
-                            }
-                        });*/
 
                         mMap.clear();
                         setUpMap();
@@ -295,6 +281,7 @@ public class FragmentTab3_Bus extends Fragment {
             p.setIndeterminate(false);
             p.setCancelable(true);
             p.show();
+
         }
 
         @Override
@@ -352,7 +339,31 @@ public class FragmentTab3_Bus extends Fragment {
             outputText.setText(result);
             adapter_route2.notifyDataSetChanged();
             routeArrayAdapter.notifyDataSetChanged();
+
+            routeSpinner.setSelection(0);
+
+                    for (int j = 0; j < routeD.size(); j++) {
+                        if (routeD.get(j).getRoute().equals(MainActivity.routeEnglish.get(0))) {
+                            dList.add(routeD.get(j));
+                        }
+                    }
+
+                    for (int k = 0; k < busSchedule.size(); k++) {
+                        if (busSchedule.get(k).getRoute().equals(MainActivity.routeEnglish.get(0))) {
+                            busList.add(busSchedule.get(k));
+                        }
+                    }
+
+                    mMap.clear();
+                    setUpMap();
+                    plotRouteStation(dList);
+                    routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
+                    routeArrayAdapter.notifyDataSetChanged();
+                    totalRoute.setText(getResources().getString(R.string.numberroute) + " " + busList.size());
+                    mylist.setAdapter(routeArrayAdapter);
+
         }
+
     }
 
     private String getDirectionsUrl(LatLng origin,LatLng dest){
@@ -639,6 +650,7 @@ public class FragmentTab3_Bus extends Fragment {
 
             }
         });
+
     }
 
 }

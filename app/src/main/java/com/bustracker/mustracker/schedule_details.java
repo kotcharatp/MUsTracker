@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,8 +85,10 @@ public class schedule_details extends Activity {
         //travelText.setText("30 mins");
 
         TextView detail = (TextView) findViewById(R.id.detail);
-        detail.setText(getString(R.string.driver) + "  " + driver + "\n" +
-                getString(R.string.tel) + "  " + phone);
+        String sourceString = "<b>" + getString(R.string.driver) + "</b> " + driver +
+                "\n<b>" + getString(R.string.tel) + "</b> " + phone;
+        detail.setText(Html.fromHtml(sourceString));
+
 
         ImageButton call = (ImageButton) findViewById(R.id.call);
         call.setOnClickListener(new View.OnClickListener() {

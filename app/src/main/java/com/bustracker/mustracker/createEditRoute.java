@@ -204,7 +204,7 @@ public class createEditRoute extends AppCompatActivity {
                 }
                 //Set spinner based on the value from chosen schedule object from FragmentTab3_Bus
                 if(intent.hasExtra("station")){
-                    Log.d("sttion", adapter_station.getItem(0));
+                    Log.d("sp_station", stationIntent);
                     sp_station.setSelection(adapter_station.getPosition(stationIntent));
                 }
             }
@@ -378,12 +378,6 @@ public class createEditRoute extends AppCompatActivity {
 
         if(days == "") days = "Every Monday";
         comment = null;
-        /*comment = dataSource.createComment(sp_route.getSelectedItem().toString() + "(" + outputText.getText().toString() + ")" + "\n"
-                + sp_station.getSelectedItem().toString() + "\n" + days + "\n" + h + ":"+ m);
-
-        public Comment createComment(String route, String station, String time, String notifyday, String notifytime) {*/
-        //Log.d("Imhere", comment.toString());
-        Log.d("Hello", sp_station.toString() );
         comment = dataSource.createComment(
                 sp_route.getSelectedItem().toString(),
                 sp_station.getSelectedItem().toString(),

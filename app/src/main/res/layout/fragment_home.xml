@@ -11,7 +11,7 @@
         android:id="@+id/map_home"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="400dp"
-        android:layout_height="290dp"
+        android:layout_height="275dp"
         tools:context="com.bustracker.mustracker.MapsActivity"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />

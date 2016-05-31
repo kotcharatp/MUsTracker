@@ -23,7 +23,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 FragmentTab1_Home tab1 = new FragmentTab1_Home();
                 return tab1;
             case 1:
-                FragmentTab2_Seat tab2 = new FragmentTab2_Seat();
+                FragmentTab2_Today tab2 = new FragmentTab2_Today();
                 return tab2;
             case 2:
                 FragmentTab3_Bus tab3 = new FragmentTab3_Bus();

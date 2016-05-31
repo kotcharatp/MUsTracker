@@ -160,7 +160,7 @@ public class FragmentTab1_Home extends Fragment{
             String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
                     TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                     TimeUnit.MILLISECONDS.toSeconds(millis)-TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-            System.out.println(hms);
+           // System.out.println(hms);
             timerText.setText(hms);
         }
 
@@ -201,8 +201,14 @@ public class FragmentTab1_Home extends Fragment{
                     busNo = info.getInt("bus_num");
                 }
 
+                LatLng origin = STATION1;
+                LatLng destination = new LatLng(lat, lng);
+                //private String getDirectionsUrl(LatLng origin,LatLng dest){
+                String urlDuration = getDirectionsUrl(origin, destination);
+
                 //GET DURATION FROM GOOGLE DIRECTION API
                 JSONObject objDuration = new JSONObject(MyHttpURL.getData("https://maps.googleapis.com/maps/api/directions/json?origin=13.792686,100.326425&destination=13.746655,100.535724&sensor=false"));
+                //JSONObject objDuration = new JSONObject(MyHttpURL.getData(urlDuration);
                 JSONArray routesDu = objDuration.getJSONArray("routes");
                 JSONObject inRoutesDu = (JSONObject) routesDu.get(0);
                 JSONArray legsDu = inRoutesDu.getJSONArray("legs");
@@ -342,5 +348,28 @@ public class FragmentTab1_Home extends Fragment{
         // Add new marker to the Google Map Android API V2
         options.title(title).snippet(snip);
         map.addMarker(options);
+    }
+
+    private String getDirectionsUrl(LatLng origin,LatLng dest){
+
+        // Origin of route
+        String str_origin = "origin="+origin.latitude+","+origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination="+dest.latitude+","+dest.longitude;
+
+        // Sensor enabled
+        String sensor = "sensor=false";
+
+        // Building the parameters to the web service
+        String parameters = str_origin+"&"+str_dest+"&"+sensor;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
+
+        return url;
     }
 }
