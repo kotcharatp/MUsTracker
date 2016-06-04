@@ -1,7 +1,9 @@
-package com.bustracker.mustracker;
+package com.bustracker.mustracker.Class;
 
 import android.content.Context;
 import android.content.res.Resources;
+
+import com.bustracker.mustracker.NavigationSetting;
 import com.bustracker.mustracker.R;
 
 import java.util.ArrayList;
@@ -90,7 +92,18 @@ public class routeSchedule {
     //public void setId(long id) {this._id = id; }
     public String getRoute() {return route; }
     public void setRoute(String route) { this.route = route; }
-    public String getDriver() {return driver; }
+    public String getDriver() {
+        String language = NavigationSetting.getContext().getResources().getConfiguration().locale.getLanguage();
+        //For make driver name Thai in case the user choose thai language
+        String driverLanguage = new String();
+
+        if(language.contains("en")){
+            driverLanguage = driver;
+        } else{
+            driverLanguage = driverThai;
+        }
+
+        return driverLanguage; }
     public void setDriver(String name) {this.driver = name; }
     public void setTime(String time) {this.time = time; }
     //public String getTime() {return time;}
@@ -113,7 +126,6 @@ public class routeSchedule {
 
         String driverLanguage = new String();
 
-        //Log.d("Language ", MainActivity.getContext().getResources().getConfiguration().locale.getLanguage());
         String language = NavigationSetting.getContext().getResources().getConfiguration().locale.getLanguage();
         //For make driver name Thai in case the user choose thai language
         if(language.contains("en")){

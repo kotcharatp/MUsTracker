@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bustracker.mustracker.Class.itemData;
+
 import java.util.ArrayList;
 
 public class languageAdapter extends ArrayAdapter<itemData> {

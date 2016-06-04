@@ -6,10 +6,7 @@ package com.bustracker.mustracker;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,17 +19,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bustracker.mustracker.Class.plotRoute;
 import com.bustracker.mustracker.Database.Comment;
 import com.bustracker.mustracker.Database.CommentDataSource;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,8 +35,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +85,18 @@ public class FragmentTab1_Home extends Fragment{
             buffer = temp.split("\n");
             String time = buffer[0].substring(buffer[0].indexOf("(")+1,buffer[0].indexOf(")"));
             routeT = buffer[0].split("\\(");
-            route_name = routeT[0];
+            //route_name = routeT[0];
+
+            if(NavigationSetting.checkLanguage.contains("en")) {
+                route_name = routeT[0];
+            } else {
+                for (int j = 0; j<createEditRoute.routeEnglish1.size(); j++) {
+                    if (createEditRoute.routeEnglish1.get(j).equals(routeT[0])) {
+                        route_name = createEditRoute.routeThai1.get(j);
+                    }
+                }
+            }
+
             hourMinute = time.split(":");
             if(today.hour <= Integer.parseInt(hourMinute[0])){
                 check_time = true;
@@ -214,7 +216,14 @@ public class FragmentTab1_Home extends Fragment{
                 JSONArray legsDu = inRoutesDu.getJSONArray("legs");
                 JSONObject inLegsDu = (JSONObject) legsDu.get(0);
                 JSONObject durationObj = inLegsDu.getJSONObject("duration");
-                duration = durationObj.getString("text");
+                //duration = durationObj.getString("text");
+
+                if(NavigationSetting.checkLanguage.contains("en")) {
+                    duration = durationObj.getString("text");
+                } else {
+                    String[] distanceTemp = durationObj.getString("text").split(" ");
+                    duration = distanceTemp[0] + " นาที";
+                }
 
 
                 //GET DISTANCE FROM GOOGLE DIRECTION API
@@ -224,7 +233,13 @@ public class FragmentTab1_Home extends Fragment{
                 JSONArray legsDi = inRoutesDi.getJSONArray("legs");
                 JSONObject inLegsDi = (JSONObject) legsDi.get(0);
                 JSONObject distanceObj = inLegsDi.getJSONObject("distance");
-                distance = distanceObj.getString("text");
+
+                if(NavigationSetting.checkLanguage.contains("en")) {
+                    distance = distanceObj.getString("text");
+                } else {
+                    String[] distanceTemp = distanceObj.getString("text").split(" ");
+                    distance = distanceTemp[0] + " กม.";
+                }
 
 
                 //GET LOCATION from LOCATION.PHP
@@ -237,35 +252,22 @@ public class FragmentTab1_Home extends Fragment{
                     JSONObject info = (JSONObject) routeDrop.get(i);
 
                     String route = info.getString("route");
-                    if(!MainActivity.routeEnglish.contains(route)) MainActivity.routeEnglish.add(route);
+                    if(!NavigationSetting.routeEnglish.contains(route)) NavigationSetting.routeEnglish.add(route);
 
                     String routeThai = info.getString("route_thai");
-                    if(!MainActivity.routeThai.contains(routeThai)) MainActivity.routeThai.add(routeThai);
+                    if(!NavigationSetting.routeThai.contains(routeThai)) NavigationSetting.routeThai.add(routeThai);
 
                     String stationEng = info.getString("station");
-                    if(!MainActivity.stationEnglish.contains(stationEng)) MainActivity.stationEnglish.add(stationEng);
+                    if(!NavigationSetting.stationEnglish.contains(stationEng)) NavigationSetting.stationEnglish.add(stationEng);
 
                     String stationThai = info.getString("station_thai");
-                    if(!MainActivity.stationThai.contains(stationThai)) MainActivity.stationThai.add(stationThai);
+                    if(!NavigationSetting.stationThai.contains(stationThai)) NavigationSetting.stationThai.add(stationThai);
 
                     LatLng point = new LatLng(info.getDouble("latitude"), info.getDouble("longitude"));
 
                     routeD.add(new plotRoute(route, point, stationEng, stationThai));
                 }
 
-                /*JSONObject objPlot = new JSONObject(contentRoute);
-                JSONArray plot = objPlot.getJSONArray("station");
-
-                for (int i = 0; i < routeDrop.length(); i++){
-                    JSONObject info = (JSONObject) plot.get(i);
-
-                    String route = info.getString("route");
-                    LatLng point = new LatLng(info.getDouble("latitude"), info.getDouble("longitude"));
-                    String title = info.getString("station");
-                    String snip = info.getString("station_thai");
-
-                    MainActivity.plotData.add(new plotRoute(route, point, title, snip));
-                }*/
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -340,11 +342,8 @@ public class FragmentTab1_Home extends Fragment{
          * For the start location, the color of marker is GREEN and
          * for the end location, the color of marker is RED.
          */
-        if (mMarkerPoints.size() == 1) {
-            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        } else {
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
-        }
+
+        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_station_icon));
         // Add new marker to the Google Map Android API V2
         options.title(title).snippet(snip);
         map.addMarker(options);

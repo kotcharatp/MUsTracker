@@ -2,15 +2,9 @@ package com.bustracker.mustracker;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,10 +14,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bustracker.mustracker.Class.plotRoute;
+
+import java.util.ArrayList;
+
 //LINK WITH PAGER ADAPTER
 public class NavigationSetting extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static Context mContext;
     public static String checkLanguage;
+
+    //For dropdown
+    public static ArrayList<String> routeEnglish = new ArrayList<String>();
+    public static ArrayList<String> routeThai = new ArrayList<String>();
+    public static ArrayList<String> stationEnglish = new ArrayList<String>();
+    public static ArrayList<String> stationThai = new ArrayList<String>();
+    public static ArrayList<String> stationTime = new ArrayList<String>();
+    public static ArrayList<String> time = new ArrayList<String>();
+
+
+    //For plot in the map
+    //public static ArrayList<ArrayList<plotRoute>> plot = new ArrayList<ArrayList<plotRoute>>();
+    public static ArrayList<plotRoute> plotData = new ArrayList<plotRoute>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +60,7 @@ public class NavigationSetting extends AppCompatActivity implements NavigationVi
         mContext = this;
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("\n" + getResources().getString(R.string.home)));
-        tabLayout.addTab(tabLayout.newTab().setText("\n" + "Route Today"));
+        tabLayout.addTab(tabLayout.newTab().setText("\n" + getResources().getString(R.string.routeTdy)));
         tabLayout.addTab(tabLayout.newTab().setText("\n"+ getResources().getString(R.string.busschedule)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

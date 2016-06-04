@@ -4,6 +4,7 @@
 
     <string name="home">Home</string>
     <string name="busschedule">Bus Schedule</string>
+    <string name="routeTdy">Route Today</string>
     <string name="buswill">The bus will approximately arrive</string>
 
     <!-- For page home -->
@@ -14,6 +15,8 @@
     <string name="pinkloades">Pinkloa Pork Noodle Station</string>
     <string name="start">Start</string>
     <string name="destination"></string>
+    <string name="arrivein">Arrive in</string>
+    <string name="spend">Spend</string>
 
     <!--Default route for translate to Thai-->
     <string name="defaultroute">Default Route</string>
@@ -55,17 +58,45 @@
         <item>@string/siriraj</item>
     </string-array>
 
+    <!-- List layout comment -->
+    <string name="route">Route:</string>
+    <string name="station">Station:</string>
+    <string name="round">Round:</string>
+    <string name="notify">Notify:</string>
+
     <!-- For print in list on bus schedule page -->
     <string name="busno">Bus number</string>
     <string name="driver">Driver:</string>
     <string name="tel">Tel:</string>
+    <string name="at">At:</string>
+    <string name="addDialog1">Do you want to view the bus schedule details or add notification to this route?</string>
+    <string name="addnoroute">Add to notify route</string>
+    <string name="moreroutede">View schedule details</string>
+    
+    <!-- For print in create edit route --> 
+    <string name="routee">Route</string>
+    <string name="stationn">Station</string>
+    <string name="day">Day</string>
+    <string name="addRoute">Add Route</string>
+    <string name="deleteRoute">Delete Route</string>
+    <string name="finish">Finish, Start MUST bus</string>
+    <string name="success">Successfully added new notification</string>
 
     <!-- For schedule detail page-->
     <string name="travelTime">Approximate travel time</string>
     <string name="tapanywhere">Tap anywhere to dismiss</string>
     <string name="minute">minutes</string>
     <string name="numberroute">Total round</string>
+    <string name="sure">Are you sure you want to add this station in your notification list?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
+    <!-- For route today page -->
+    <string name="mondayy">MONDAY</string>
+    <string name="tuesdayy">TUESDAY</string>
+    <string name="wednesdayy">WEDNESDAY</string>
+    <string name="thursdayy">THURSDAY</string>
+    <string name="fridayy">FRIDAY</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -78,13 +109,22 @@
     <string name="TheBus">Time Table</string>
     <string name="SetNotiTime">Set your notification time</string>
     <string name="yourRouteStation">List of your route and station</string>
+    <string name="technique">Technique</string>
+    <string name="mu">Mahidol University</string>
+    <string name="mustbususer">The Must Bus User</string>
+
+    <string name="monday">Every Monday</string>
+    <string name="tuesday">Every Tuesday</string>
+    <string name="wednesday">Every Wednesday</string>
+    <string name="thursday">Every Thursday</string>
+    <string name="friday">Every Friday</string>
 
     <string-array name="eng_days_array">
-        <item>Every Monday</item>
-        <item>Every Tuesday</item>
-        <item>Every Wednesday</item>
-        <item>Every Thursday</item>
-        <item>Every Friday</item>
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
     </string-array>
 
     <string-array name="thai_days_array">

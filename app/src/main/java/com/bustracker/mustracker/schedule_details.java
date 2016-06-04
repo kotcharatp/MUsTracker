@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bustracker.mustracker.Class.stationClass;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +38,7 @@ public class schedule_details extends Activity {
 
     public String route;
     public String time;
-    TextView travelText;
+    TextView travelText, appText;
     public List<stationClass> stationList;
     public List<stationClass> stationNotday;
     ArrayAdapter<stationClass> stationClassArrayAdapter;
@@ -55,6 +57,7 @@ public class schedule_details extends Activity {
         stationNotday = new ArrayList<stationClass>();
 
         travelText = (TextView) findViewById(R.id.travelText);
+        appText = (TextView) findViewById(R.id.appText);
 
         Intent intent = getIntent();
 
@@ -86,7 +89,7 @@ public class schedule_details extends Activity {
 
         TextView detail = (TextView) findViewById(R.id.detail);
         String sourceString = "<b>" + getString(R.string.driver) + "</b> " + driver +
-                "\n<b>" + getString(R.string.tel) + "</b> " + phone;
+                "<br><b>" + getString(R.string.tel) + "</b> " + phone;
         detail.setText(Html.fromHtml(sourceString));
 
 
@@ -119,8 +122,8 @@ public class schedule_details extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(schedule_details.this);
                 alertDialogBuilder.setCancelable(true);
-                alertDialogBuilder.setMessage("Are you sure you want to add this station in your notification list?");
-                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setMessage(getString(R.string.sure));
+                alertDialogBuilder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(schedule_details.this, createEditRoute.class);
@@ -132,7 +135,7 @@ public class schedule_details extends Activity {
                         startActivity(intent);
                     }
                 });
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -185,9 +188,6 @@ public class schedule_details extends Activity {
                     SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
                     Date d = new Date();
                     String dayOfTheWeek = sdf.format(d);
-                    Log.d("day", dayOfTheWeek);
-
-                    //dayOfTheWeek.equals(day);
 
                     if(route.equals(routeGet) && time.equals(timeLeave)){
                         if(!station.isEmpty()) {
@@ -234,10 +234,18 @@ public class schedule_details extends Activity {
         public View getView(int position, View convertView, ViewGroup parent) {
             stationClass d = objects.get(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.station_list_layout, null);
+            View view = inflater.inflate(R.layout.listlayout_schedule_details, null);
 
-            TextView timeText = (TextView) view.findViewById(R.id.routeText);
-            timeText.setText(d.getStation());
+            TextView stationText = (TextView) view.findViewById(R.id.routeText);
+            if(createEditRoute.checkLanguage.contains("en")){
+                stationText.setText(d.getStation());
+            } else {
+                for(int i=0; i<createEditRoute.stationEngTranslate.size(); i++){
+                    if(d.getStation().equals(createEditRoute.stationEngTranslate.get(i))){
+                        stationText.setText(createEditRoute.stationThaiTranslate.get(i));
+                    }
+                }
+            }
 
             TextView arriveText = (TextView) view.findViewById(R.id.textView58);
             arriveText.setText(d.getTime_travel());

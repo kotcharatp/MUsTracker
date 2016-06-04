@@ -5,11 +5,11 @@
         <item
             android:id="@+id/nav_route"
             android:icon="@drawable/bus2_icon"
-            android:title="Your Route and Station" />
+            android:title= "@string/yourRouteStation" />
         <item
             android:id="@+id/nav_noti"
             android:icon="@drawable/noti_icon"
-            android:title="Set Notification" />
+            android:title="@string/SetNotification" />
         <!--<item-->
         <!--android:id="@+id/nav_slideshow"-->
         <!--android:icon="@drawable/ic_menu_slideshow"-->
@@ -20,12 +20,12 @@
         <!--android:title="Tools" />-->
     </group>
 
-    <item android:title="Technique">
+    <item android:title="@string/technique">
         <menu>
             <item
                 android:id="@+id/nav_setting"
                 android:icon="@drawable/setting_icon"
-                android:title="Setting" />
+                android:title="@string/action_settings" />
 
             <!--<item-->
             <!--android:id="@+id/nav_share"-->

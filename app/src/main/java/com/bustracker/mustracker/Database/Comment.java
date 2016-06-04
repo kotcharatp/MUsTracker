@@ -1,6 +1,13 @@
 package com.bustracker.mustracker.Database;
 
+import android.content.res.Resources;
+import android.util.Log;
+
+import com.bustracker.mustracker.NavigationSetting;
+import com.bustracker.mustracker.createEditRoute;
+
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Cat on 22-May-16.
@@ -26,7 +33,8 @@ public class Comment {
     public long getId() {return id;}
     public void setId(long id) {this.id = id;}
 
-    public String getRoute() {return route;}
+    public String getRoute() { return route;
+    }
     public void setRoute(String route) {this.route = route; }
     public String getStation() {return station; }
     public void setStation(String station) {this.station = station; }

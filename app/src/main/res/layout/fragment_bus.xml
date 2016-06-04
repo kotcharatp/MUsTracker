@@ -19,12 +19,11 @@
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:id="@+id/spinner_language"
-        android:background="@drawable/spinner_border"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp"
         android:spinnerMode="dropdown"
-        android:prompt="@string/routeMU" />
+        android:background="@drawable/signup_text_border"
+        android:prompt="@string/routeMU"
+        android:layout_below="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
 
     <fragment
         android:layout_width="100dp"
@@ -34,7 +33,7 @@
         android:layout_below="@+id/spinner_language"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="86dp" />
+        android:layout_marginTop="30dp" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -44,25 +43,25 @@
         android:layout_below="@+id/location_map"
         android:background="#ffffff" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/totalRoute"
-        android:layout_alignStart="@+id/spinner_language"
-        android:layout_below="@+id/spinner_language"
-        android:layout_alignEnd="@+id/spinner_language"
-        android:layout_marginTop="25dp"
-        android:textSize="30dp"
-        android:textColor="#FFFFFF"
-        android:gravity="center" />
-
     <Button
         android:layout_width="40dp"
         android:layout_height="60dp"
         android:text="Noti"
         android:id="@+id/noti"
-        android:layout_alignBottom="@+id/totalRoute"
-        android:layout_alignEnd="@+id/totalRoute" />
+        android:layout_below="@+id/spinner_language"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/routee"
+        android:id="@+id/textView2"
+        android:textAlignment="center"
+        android:background="@drawable/rounded_info"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp" />
 
 </RelativeLayout>

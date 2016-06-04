@@ -27,7 +27,7 @@
         android:background="@drawable/rounded_info"
         android:autoText="false"
         android:gravity="center"
-        android:text="Route"
+        android:text="@string/routee"
         android:layout_below="@+id/travelText"
         android:layout_alignStart="@+id/station"
         android:layout_marginTop="60dp" />
@@ -54,7 +54,7 @@
         android:layout_below="@+id/spinner_route"
         android:layout_alignStart="@+id/spinner_route"
         android:layout_marginTop="20dp"
-        android:text="Station" />
+        android:text="@string/stationn" />
 
     <Spinner
         android:id="@+id/spinner_station"
@@ -68,7 +68,7 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Set your notification time"
+        android:text="@string/SetNotiTime"
         android:id="@+id/time"
         android:textSize="15dp"
         android:background="@drawable/rounded_info"
@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:id="@+id/day"
+        android:id="@+id/appText"
         android:textColor="#ffffff"
         android:textSize="50dp"
         android:contextClickable="false"
@@ -109,7 +109,7 @@
         android:id="@+id/setNotiButton"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:text="SET NOTIFICATION"
+        android:text="@string/SetNotification"
         android:background="@drawable/rounded_button"
         android:textColor="#ffffff"
         android:onClick="gotoCreateEditRoute"

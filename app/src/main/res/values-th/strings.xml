@@ -23,7 +23,7 @@
 <string name="outputText">กำลังโหลดข้อมูล กรุณารอ...</string>
 <string name="busno">หมายเลขรถ</string>
 <string name="driver">คนขับ: </string>
-<string name="tel">เบอร์โทร: </string>
+<string name="tel">เบอร์:</string>
 
     <string name="action_settings">ตั้งค่า</string>
     <string name="hello_blank_fragment"></string>
@@ -39,7 +39,50 @@
     <string name="TheBus">รถประจำทางจะมาถึงประมาณ</string>
     <string name="SetNotiTime">ตั้งเวลาการแจ้งเตือน</string>
     <string name="yourRouteStation">เส้นทางและสถานีสำหรับแจ้งเตือน</string>
-
+    <string name="at">เวลา: </string>
+    <string name="minute">นาที</string>
+    <string name="numberroute"></string>
+    <string name="pref_title_ringtone">ริงโทน</string>
+    <string name="pref_title_new_message_notifications">การตั้งเตือน</string>
+    <string name="pref_title_vibrate">ตั้งเตือนแบบสั่น</string>
+    <string name="tapanywhere">กดตรงไหนก็ได้เพื่อปิด</string>
+    <string name="travelTime">ใช้เวลาเดินทางประมาณ</string>
+    <string name="notify">ตั้งเตือน: </string>
+    <string name="round">รอบ:</string>
+    <string name="route">เส้นทาง:</string>
+    <string name="setDay">เลือกวัน</string>
+    <string name="station">สถานี:</string>
+    <string name="routee">เส้นทาง</string>
+    <string name="thursday">ทุกวันพฤหัสบดี</string>
+    <string name="tuesday">ทุกวันอังคาร</string>
+    <string name="wednesday">ทุกวันพุธ</string>
+    <string name="app_name"></string>
+    <string name="friday">ทุกวันศุกร์</string>
+    <string name="monday">ทุกวันจันทร์</string>
+    <string name="stationn">สถานี</string>
+    <string name="day">วัน</string>
+    <string name="deleteRoute">ลบเส้นทาง</string>
+    <string name="addRoute">เพิ่มเส้นทาง</string>
+    <string name="finish">เสร็จสิ้น</string>
+    <string name="routeTdy">เส้นทางวันนี้</string>
+    <string name="arrivein">จะถึงในอีก</string>
+    <string name="spend">ใช้เวลาเดินทาง</string>
+    <string name="tuesdayy">วันอังคาร</string>
+    <string name="wednesdayy">วันพุธ</string>
+    <string name="thursdayy">วันพฤหัสบดี</string>
+    <string name="mondayy">วันจันทร์</string>
+    <string name="fridayy">วันศุกร์</string>
+    <string name="technique">เทคนิค</string>
+    <string name="mu">มหาวิทยาลัยมหิดล</string>
+    <string name="mustbususer">ผู้ใช้งาน Must Bus</string>
+    <string name="navigation_drawer_close"></string>
+    <string name="addDialog1">คุณต้องการดูรายระเอียดของรอบรถบัสหรือเพิ่มการแจ้งเตือนเส้นทางนี้?</string>
+    <string name="addnoroute">เพิ่มการแจ้งเตือนเส้นทางนี้</string>
+    <string name="moreroutede">ดูรายละเอียดตารางของเส้นทางนี้</string>
+    <string name="sure">คุณแน่ใจว่าต้องการเพิ่มสถานีนี้ในการแจ้งเตือนไหม?</string>
+    <string name="yes">ใช่</string>
+    <string name="no">ไม่</string>
+    <string name="success">เพิ่มการแจ้งเตือนเรียบร้อยแล้ว</string>
 
 
 </resources>

@@ -3,57 +3,27 @@ package com.bustracker.mustracker;
 /**
  * Created by kotcharat on 1/31/16.
  */
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.bustracker.mustracker.Class.routeSchedule;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 
 // Now is bus schedule
 public class FragmentTab2_Today extends Fragment {
@@ -81,7 +51,7 @@ public class FragmentTab2_Today extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_seat, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_today, container, false);
         final TextView stationTime = (TextView) rootView.findViewById(R.id.stationTime);
 
         //TIME PICKER
@@ -89,24 +59,24 @@ public class FragmentTab2_Today extends Fragment {
         notifyTime.setIs24HourView(true);
 
         //CHECK DAY
-        TextView dayText = (TextView) rootView.findViewById(R.id.day);
+        TextView dayText = (TextView) rootView.findViewById(R.id.appText);
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         switch (day) {
             case Calendar.SATURDAY:
-                dayText.setText("MONDAY"); break;
+                dayText.setText(getString(R.string.mondayy)); break;
             case Calendar.SUNDAY:
-                dayText.setText("MONDAY"); break;
+                dayText.setText(getString(R.string.mondayy)); break;
             case Calendar.MONDAY:
-                dayText.setText("MONDAY"); break;
+                dayText.setText(getString(R.string.mondayy)); break;
             case Calendar.TUESDAY:
-                dayText.setText("TUESDAY"); break;
+                dayText.setText(getString(R.string.tuesdayy)); break;
             case Calendar.WEDNESDAY:
-                dayText.setText("WEDNESDAY"); break;
+                dayText.setText(getString(R.string.wednesdayy)); break;
             case Calendar.THURSDAY:
-                dayText.setText("THURSDAY"); break;
+                dayText.setText(getString(R.string.thursdayy)); break;
             case Calendar.FRIDAY:
-                dayText.setText("FRIDAY"); break;
+                dayText.setText(getString(R.string.fridayy)); break;
         }
 
         //SPINNER 1

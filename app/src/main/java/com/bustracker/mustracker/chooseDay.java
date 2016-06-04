@@ -1,6 +1,10 @@
 package com.bustracker.mustracker;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +21,6 @@ public class chooseDay extends Activity {
     ListView listView;
     ArrayAdapter<String> adapter;
     String[] days;
-    String lan;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,13 +33,10 @@ public class chooseDay extends Activity {
         listView = (ListView) findViewById(R.id.list);
         button = (Button) findViewById(R.id.testbutton);
 
-        Intent i = getIntent();
-        if(i.getExtras().getString("language").equals("en")) {days = getResources().getStringArray(R.array.eng_days_array); lan = "en";}
-        else {days = getResources().getStringArray(R.array.thai_days_array); lan = "th";}
-
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, days);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, getResources().getStringArray(R.array.eng_days_array));
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setAdapter(adapter);
+
     }
 
     public void gotoCreateEditRoute(View v) {
@@ -53,17 +53,36 @@ public class chooseDay extends Activity {
         String[] outputStrArr = new String[selectedItems.size()];
 
         for (int i = 0; i < selectedItems.size(); i++) {
-            outputStrArr[i] = selectedItems.get(i);
+            String dayLanguage = selectedItems.get(i);
+            if(createEditRoute.checkLanguage.equals("en")){
+                outputStrArr[i] = dayLanguage;
+            } else {
+                for(int j=0; j<createEditRoute.dayEng.size(); j++){
+                    if(createEditRoute.dayThai.get(j).equals(dayLanguage)){
+                        outputStrArr[i] = createEditRoute.dayEng.get(j);
+                    }
+                }
+            }
+            //outputStrArr[i] = selectedItems.get(i);
         }
 
         Intent intent = new Intent(getApplicationContext(), createEditRoute.class);
 
+        //Get selected item
+        int temp1 = 0;
+        int temp2 = 0;
+        Intent i = getIntent();
+        temp1 = i.getIntExtra("chosenRoute", 0);
+        temp2 = i.getIntExtra("chosenStation", 0);
+
         // Create a bundle object
         Bundle b = new Bundle();
         b.putStringArray("selectedItems", outputStrArr);
-        intent.putExtra("language",lan);
         // Add the bundle to the intent.
         intent.putExtras(b);
+
+        intent.putExtra("chosenRoute", temp1);
+        intent.putExtra("chosenStation", temp2);
 
         // start the ResultActivity
         startActivity(intent);

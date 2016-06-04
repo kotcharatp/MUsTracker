@@ -1,4 +1,4 @@
-package com.bustracker.mustracker;
+package com.bustracker.mustracker.Class;
 
 import com.google.android.gms.maps.model.LatLng;
 

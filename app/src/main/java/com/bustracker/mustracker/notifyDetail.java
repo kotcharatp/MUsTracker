@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,22 +65,52 @@ public class notifyDetail extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             Comment d = objects.get(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.comment_list_layout, null);
+            View view = inflater.inflate(R.layout.lsitlayout_comment, null);
 
             TextView routeText = (TextView) view.findViewById(R.id.routeText);
-            routeText.setText(d.getRoute());
+            if(createEditRoute.checkLanguage.contains("en")){
+                routeText.setText(d.getRoute());
+            } else {
+                for(int i=0; i< createEditRoute.routeEnglish1.size(); i++){
+                    if(d.getRoute().equals(createEditRoute.routeEnglish1.get(i))){
+                        routeText.setText(createEditRoute.routeThai1.get(i));
+                    }
+                }
+            }
 
             TextView stationText = (TextView) view.findViewById(R.id.stationText);
-            stationText.setText(d.getStation());
+            if(createEditRoute.checkLanguage.contains("en")){
+                stationText.setText(d.getStation());
+            } else {
+                for(int i=0; i<createEditRoute.stationEngTranslate.size(); i++){
+                    if(d.getStation().equals(createEditRoute.stationEngTranslate.get(i))){
+                        stationText.setText(createEditRoute.stationThaiTranslate.get(i));
+                    }
+                }
+            }
 
             TextView roundText = (TextView) view.findViewById(R.id.roundText);
             roundText.setText(d.getTime());
 
             TextView notifyText = (TextView) view.findViewById(R.id.notifydayText);
-            notifyText.setText(d.getNotifyday());
+            if(createEditRoute.checkLanguage.contains("en")){
+                notifyText.setText(d.getNotifyday());
+            } else {
+                StringBuilder sb = new StringBuilder();
+                String data = d.getNotifyday();
+                String[] items = data.split("\n");
+                for (String item : items) {
+                    for (int j = 0; j < createEditRoute.dayEng.size(); j++) {
+                        if (createEditRoute.dayEng.get(j).equals(item)) {
+                            sb.append(createEditRoute.dayThai.get(j) + "\n");
+                        }
+                    }
+                }
+                notifyText.setText(sb);
+            }
 
-            TextView timeText = (TextView) view.findViewById(R.id.notifyTimeText);
-            timeText.setText(d.getNotifyTime());
+            TextView notifyTimeText = (TextView) view.findViewById(R.id.notidyTimeText);
+            notifyTimeText.setText(d.getNotifyTime());
 
             return view;
         }

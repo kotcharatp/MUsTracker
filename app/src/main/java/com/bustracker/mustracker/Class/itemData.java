@@ -1,4 +1,4 @@
-package com.bustracker.mustracker;
+package com.bustracker.mustracker.Class;
 
 /**
  * Created by Cat on 08-May-16.

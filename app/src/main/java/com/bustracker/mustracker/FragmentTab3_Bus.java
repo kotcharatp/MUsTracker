@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bustracker.mustracker.Class.plotRoute;
+import com.bustracker.mustracker.Class.routeSchedule;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -64,11 +67,7 @@ public class FragmentTab3_Bus extends Fragment {
     private static GoogleMap mMap;
     ArrayAdapter<routeSchedule> routeArrayAdapter;
 
-    //Array list for each route
-    /*public List<routeSchedule> satopaList;
-    public List<routeSchedule> satosiList;
-    public List<routeSchedule> phatosaList;
-    public List<routeSchedule> sitosaList;*/
+
     public List<routeSchedule> busSchedule, busList;
     public List<plotRoute> dList;
 
@@ -90,7 +89,7 @@ public class FragmentTab3_Bus extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_bus, container, false);
         outputText = (TextView) rootView.findViewById(R.id.textView);
-        totalRoute = (TextView) rootView.findViewById(R.id.totalRoute);
+        //totalRoute = (TextView) rootView.findViewById(R.id.totalRoute);
 
 
         //Get preference from SettingActivity
@@ -131,12 +130,12 @@ public class FragmentTab3_Bus extends Fragment {
         Log.d("Language at bus", getResources().getConfiguration().locale.getLanguage());
 
         if(lan.equals("en")){
-            adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeEnglish);
-            adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, NavigationSetting.routeEnglish);
+            adapter_route2.setDropDownViewResource(R.layout.spinnerlayout_fragment_bus);
             routeSpinner.setAdapter(adapter_route2);
         } else {
-            adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, MainActivity.routeThai);
-            adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, NavigationSetting.routeThai);
+            adapter_route2.setDropDownViewResource(R.layout.spinnerlayout_fragment_bus);
             routeSpinner.setAdapter(adapter_route2);
         }
 
@@ -160,7 +159,7 @@ public class FragmentTab3_Bus extends Fragment {
                 final int temp = position;
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                alertDialogBuilder.setPositiveButton("Add to notify route", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setPositiveButton(getString(R.string.addnoroute), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), createEditRoute.class);
@@ -171,7 +170,7 @@ public class FragmentTab3_Bus extends Fragment {
                         startActivity(intent);
                     }
                 });
-                alertDialogBuilder.setNegativeButton("View schedule details", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setNegativeButton(getString(R.string.moreroutede), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -186,7 +185,7 @@ public class FragmentTab3_Bus extends Fragment {
                     }
                 });
                 alertDialogBuilder.setCancelable(true);
-                alertDialogBuilder.setMessage("Do you want to view the bus schedule details or add notification to this route?");
+                alertDialogBuilder.setMessage(getString(R.string.addDialog1));
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
 
@@ -200,19 +199,19 @@ public class FragmentTab3_Bus extends Fragment {
                 busList.clear();
                 dList.clear();
 
-                //routeSpinner.getSelectedItem().toString().equals(MainActivity.routeThai.get(i)
+                //routeSpinner.getSelectedItem().toString().equals(NavigationSetting.routeThai.get(i)
 
-                for (int i = 0; i < MainActivity.routeEnglish.size(); i++) {
-                    //if (routeSpinner.getSelectedItem().toString().equals(MainActivity.routeEnglish.get(i))) {
+                for (int i = 0; i < NavigationSetting.routeEnglish.size(); i++) {
+                    //if (routeSpinner.getSelectedItem().toString().equals(NavigationSetting.routeEnglish.get(i))) {
                     if (position == i) {
                         for (int j = 0; j < routeD.size(); j++) {
-                            if (routeD.get(j).getRoute().equals(MainActivity.routeEnglish.get(i))) {
+                            if (routeD.get(j).getRoute().equals(NavigationSetting.routeEnglish.get(i))) {
                                 dList.add(routeD.get(j));
                             }
                         }
 
                         for (int k = 0; k < busSchedule.size(); k++) {
-                            if (busSchedule.get(k).getRoute().equals(MainActivity.routeEnglish.get(i))) {
+                            if (busSchedule.get(k).getRoute().equals(NavigationSetting.routeEnglish.get(i))) {
                                 busList.add(busSchedule.get(k));
                             }
                         }
@@ -222,7 +221,7 @@ public class FragmentTab3_Bus extends Fragment {
                         plotRouteStation(dList);
                         routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
                         routeArrayAdapter.notifyDataSetChanged();
-                        totalRoute.setText(getResources().getString(R.string.numberroute) + " " + busList.size());
+                        //totalRoute.setText(getResources().getString(R.string.numberroute) + " " + busList.size());
 
                     }
                     dList.clear();
@@ -322,7 +321,7 @@ public class FragmentTab3_Bus extends Fragment {
                     String title = info.getString("station");
                     String snip = info.getString("station_thai");
 
-                    MainActivity.plotData.add(new plotRoute(route, point, title, snip));
+                    NavigationSetting.plotData.add(new plotRoute(route, point, title, snip));
                     routeD.add(new plotRoute(route, point, title, snip));
                 }
 
@@ -343,13 +342,13 @@ public class FragmentTab3_Bus extends Fragment {
             routeSpinner.setSelection(0);
 
                     for (int j = 0; j < routeD.size(); j++) {
-                        if (routeD.get(j).getRoute().equals(MainActivity.routeEnglish.get(0))) {
+                        if (routeD.get(j).getRoute().equals(NavigationSetting.routeEnglish.get(0))) {
                             dList.add(routeD.get(j));
                         }
                     }
 
                     for (int k = 0; k < busSchedule.size(); k++) {
-                        if (busSchedule.get(k).getRoute().equals(MainActivity.routeEnglish.get(0))) {
+                        if (busSchedule.get(k).getRoute().equals(NavigationSetting.routeEnglish.get(0))) {
                             busList.add(busSchedule.get(k));
                         }
                     }
@@ -359,7 +358,7 @@ public class FragmentTab3_Bus extends Fragment {
                     plotRouteStation(dList);
                     routeArrayAdapter = new RouteArrayAdapter(getActivity(), 0, busList);
                     routeArrayAdapter.notifyDataSetChanged();
-                    totalRoute.setText(getResources().getString(R.string.numberroute) + " " + busList.size());
+                    //totalRoute.setText(getResources().getString(R.string.numberroute) + " " + busList.size());
                     mylist.setAdapter(routeArrayAdapter);
 
         }
@@ -581,7 +580,7 @@ public class FragmentTab3_Bus extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             routeSchedule d = objects.get(position);
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.list_layout, null);
+            View view = inflater.inflate(R.layout.listlayout_fragment_bus, null);
 
             TextView driverText = (TextView) view.findViewById(R.id.driverText);
             driverText.setText(d.getDriver());

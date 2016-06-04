@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <TextView
         android:layout_width="70dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:id="@+id/routeText"
         android:minHeight="50dp"
         android:minWidth="50dp"
@@ -13,18 +13,19 @@
         android:gravity="center"
         android:textSize="27dp"
         android:textStyle="bold"
-        android:textColor="#06365a" />
+        android:textColor="#06365a"
+        android:layout_marginLeft="10dp" />
 
 
     <ImageView
-        android:layout_width="50dp"
+        android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/busnoImg"
-        android:layout_alignTop="@+id/driverText"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/driverText"
         android:foregroundGravity="center"
-        android:layout_marginLeft="5dp" />
+        android:src="@drawable/busno_1"
+        android:layout_alignTop="@+id/driverText"
+        android:layout_toEndOf="@+id/driverText"
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:layout_width="140dp"
@@ -37,7 +38,7 @@
         android:layout_toEndOf="@+id/textView6" />
 
     <TextView
-        android:layout_width="30dp"
+        android:layout_width="35dp"
         android:layout_height="20dp"
         android:id="@+id/textView8"
         android:minHeight="50dp"
@@ -47,7 +48,7 @@
         android:textStyle="bold"
         android:layout_below="@+id/driverText"
         android:layout_toEndOf="@+id/routeText"
-        android:layout_marginLeft="40dp" />
+        android:layout_marginLeft="30dp" />
 
     <TextView
         android:layout_width="150dp"
@@ -70,18 +71,19 @@
         android:textStyle="bold"
         android:layout_alignTop="@+id/driverText"
         android:layout_toEndOf="@+id/routeText"
-        android:layout_marginLeft="40dp" />
+        android:layout_marginLeft="30dp" />
 
     <TextView
         android:layout_width="70dp"
         android:layout_height="20dp"
         android:id="@+id/textView9"
-        android:textSize="10dp"
+        android:textSize="8dp"
         android:minHeight="50dp"
         android:textColor="#0b5c94"
         android:textAlignment="center"
         android:text="@string/busno"
         android:textStyle="bold"
         android:layout_below="@+id/busnoImg"
-        android:layout_alignEnd="@+id/busnoImg" />
+        android:layout_toEndOf="@+id/telText"
+        android:layout_marginTop="2dp" />
 </RelativeLayout>
