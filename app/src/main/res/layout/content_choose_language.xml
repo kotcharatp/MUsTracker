@@ -31,7 +31,7 @@
         android:layout_marginTop="30dp" />
 
     <Spinner
-        android:id="@+id/spinner_language"
+        android:id="@+id/routeSpinner"
         android:layout_width="330dp"
         android:layout_height="40dp"
         android:background="@drawable/signup_text_border"
@@ -44,10 +44,10 @@
         android:layout_height="40dp"
         android:text="Next"
         android:id="@+id/button"
-        android:layout_below="@+id/spinner_language"
+        android:layout_below="@+id/routeSpinner"
         android:layout_marginTop="20dp"
-        android:layout_alignStart="@+id/spinner_language"
-        android:layout_alignEnd="@+id/spinner_language"
+        android:layout_alignStart="@+id/routeSpinner"
+        android:layout_alignEnd="@+id/routeSpinner"
         android:background="@drawable/rounded_button"
         android:contextClickable="false"
         android:textColor="#ffffff"

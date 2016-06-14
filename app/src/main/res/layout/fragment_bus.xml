@@ -18,7 +18,7 @@
     <Spinner
         android:layout_width="300dp"
         android:layout_height="40dp"
-        android:id="@+id/spinner_language"
+        android:id="@+id/routeSpinner"
         android:spinnerMode="dropdown"
         android:background="@drawable/signup_text_border"
         android:prompt="@string/routeMU"
@@ -30,7 +30,7 @@
         android:layout_height="200dp"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/location_map"
-        android:layout_below="@+id/spinner_language"
+        android:layout_below="@+id/routeSpinner"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="30dp" />
@@ -48,7 +48,7 @@
         android:layout_height="60dp"
         android:text="Noti"
         android:id="@+id/noti"
-        android:layout_below="@+id/spinner_language"
+        android:layout_below="@+id/routeSpinner"
         android:layout_alignParentEnd="true" />
 
     <TextView

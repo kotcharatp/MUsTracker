@@ -39,7 +39,8 @@
         android:background="@drawable/signup_text_border"
         android:layout_marginLeft="20dp"
         android:layout_below="@+id/route"
-        android:layout_centerHorizontal="true"></Spinner>
+        android:layout_centerHorizontal="true"
+        android:spinnerMode="dropdown"></Spinner>
 
     <TextView
         android:layout_width="320dp"

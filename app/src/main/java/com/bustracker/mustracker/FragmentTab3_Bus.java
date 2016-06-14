@@ -18,7 +18,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,6 +97,7 @@ public class FragmentTab3_Bus extends Fragment {
         final boolean notiVibrate = SettingsActivity.NotificationPreferenceFragment.getNotiVibration(getContext());
 
         //Test notification button --> Remove when done
+        /*
         Button noti = (Button) rootView.findViewById(R.id.noti);
         noti.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,11 +118,10 @@ public class FragmentTab3_Bus extends Fragment {
                 if (notiNoOff) {
                     notificationManager.notify(001, mBuilder.build());
                 }
-
             }
-        });
+        });*/
 
-        routeSpinner = (Spinner) rootView.findViewById(R.id.spinner_language);
+        routeSpinner = (Spinner) rootView.findViewById(R.id.routeSpinner);
 
         ArrayList<String> res;
         final String lan = getResources().getConfiguration().locale.getLanguage();
@@ -131,13 +130,11 @@ public class FragmentTab3_Bus extends Fragment {
 
         if(lan.equals("en")){
             adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, NavigationSetting.routeEnglish);
-            adapter_route2.setDropDownViewResource(R.layout.spinnerlayout_fragment_bus);
-            routeSpinner.setAdapter(adapter_route2);
         } else {
             adapter_route2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, NavigationSetting.routeThai);
-            adapter_route2.setDropDownViewResource(R.layout.spinnerlayout_fragment_bus);
-            routeSpinner.setAdapter(adapter_route2);
         }
+        adapter_route2.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        routeSpinner.setAdapter(adapter_route2);
 
         mylist = (ListView) rootView.findViewById(R.id.listView);
 
@@ -297,9 +294,9 @@ public class FragmentTab3_Bus extends Fragment {
                 for (int i = 0; i < station.length(); i++) {
                     JSONObject info = (JSONObject) station.get(i);
 
-                    String routeS = info.getString("route_name");
-                    String driver = info.getString("driver_name");
-                    String driver_thai = info.getString("driver_Thai");
+                    String routeS = info.getString("route");
+                    String driver = info.getString("driver");
+                    String driver_thai = info.getString("driver_thai");
                     String phone = info.getString("phoneNum");
                     String time = info.getString("time");
                     int busnum = info.getInt("bus_num");
@@ -626,6 +623,7 @@ public class FragmentTab3_Bus extends Fragment {
         final boolean notiVibrate = SettingsActivity.NotificationPreferenceFragment.getNotiVibration(getContext());
 
         //Test notification button --> Remove when done
+
         Button noti = (Button) rootView.findViewById(R.id.noti);
         noti.setOnClickListener(new View.OnClickListener() {
             @Override

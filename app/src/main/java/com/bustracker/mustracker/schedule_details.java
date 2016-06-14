@@ -43,6 +43,7 @@ public class schedule_details extends Activity {
     public List<stationClass> stationNotday;
     ArrayAdapter<stationClass> stationClassArrayAdapter;
     String travelMin;
+    ListView mylist;
 
 
     @Override
@@ -106,15 +107,12 @@ public class schedule_details extends Activity {
             }
         });
 
-        final ListView mylist = (ListView) findViewById(R.id.myList);
+        mylist = (ListView) findViewById(R.id.myList);
 
-        String listRes = "stationList";
         if(stationList.size()==0){
             stationClassArrayAdapter = new StationArrayAdapter(this, 0, stationNotday);
-            listRes = "stationNotday";
         } else stationClassArrayAdapter = new StationArrayAdapter(this, 0, stationList);
 
-        stationClassArrayAdapter.notifyDataSetChanged();
         mylist.setAdapter(stationClassArrayAdapter);
 
         mylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -192,8 +190,10 @@ public class schedule_details extends Activity {
                     if(route.equals(routeGet) && time.equals(timeLeave)){
                         if(!station.isEmpty()) {
                             if(day.equals(dayOfTheWeek)) {
+                                //Filter station time for tdy(current viewing day)
                                 stationList.add(new stationClass(station, day, timeLeave, timeTravel));
                             }else if(day.equals("Monday")) {
+                                //If the viewing day doesnot have record, default value will come from data on Monday
                                 stationNotday.add(new stationClass(station, day, timeLeave, timeTravel));
                             }
                         }
@@ -211,6 +211,10 @@ public class schedule_details extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
+            if(stationList.size()==0){
+                stationClassArrayAdapter = new StationArrayAdapter(schedule_details.this, 0, stationNotday);
+            } else stationClassArrayAdapter = new StationArrayAdapter(schedule_details.this, 0, stationList);
+            mylist.setAdapter(stationClassArrayAdapter);
             stationClassArrayAdapter.notifyDataSetChanged();
             travelText.setText(travelMin);
             p.dismiss();
